@@ -137,10 +137,24 @@ namespace Dungeon_Crawl
                     {
                         gold[sX + cX, sY + cY] = rand.Next(1, 30);
                     }
-                    if (rand.Next(1800) == 0)
+                    if (rand.Next(1400) == 0)
                     {
                         items[sX + cX, sY + cY] = new ItemCache();
-                        items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
+                        if (rand.Next(2) == 0)
+                        {
+                            items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
+                        }
+                        else
+                        {
+                            if (Program.player.species != Species._darkElf)
+                            {
+                                items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.NextBool()), 1);
+                            }
+                            else
+                            {
+                                items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.NextBool()), 1);
+                            }
+                        }
                     }
                 }
             }
