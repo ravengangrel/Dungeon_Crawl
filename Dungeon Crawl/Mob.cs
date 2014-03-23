@@ -17,6 +17,7 @@ namespace Dungeon_Crawl
         public int attack = 0;
         public int health = 0;
         public int maxhealth = 0;
+        public Path pathToPlayer;
 
         public static List<Mob> mobList = new List<Mob>();
 
@@ -49,35 +50,15 @@ namespace Dungeon_Crawl
 
         public void update()
         {
-            if (ai == 0)
+            if (ai == 0 && World.rand.Next(3) != 0)
             {
-                if (World.rand.Next(2) == 0)
+                try
                 {
-                    if (Program.renderX < posX && !World.map[posX - 1, posY].solid)
-                    {
-                        posX--;
-                    }
-                    if (Program.renderX > posX && !World.map[posX + 1, posY].solid)
-                    {
-                        posX++;
-                    }
-                    if (Program.renderY < posY && !World.map[posX, posY - 1].solid)
-                    {
-                        posY--;
-                    }
-                    if (Program.renderY > posY && !World.map[posX, posY + 1].solid)
-                    {
-                        posY++;
-                    }
-                    while ((Program.renderX == posX && Program.renderY == posY) || World.map[posX, posY].solid)
-                    {
-                        if (Program.renderX == posX && Program.renderY == posY)
-                        {
-                            Program.player.hurt(attack, false, "You got attacked for " + attack + " damage!");
-                        }
-                        posX += 1 - World.rand.Next(3);
-                        posY += 1 - World.rand.Next(3);
-                    }
+                    posX = pathToPlayer.points[1].X;
+                    posY = pathToPlayer.points[1].Y;
+                }
+                catch
+                {
                 }
             }
         }
@@ -100,6 +81,14 @@ namespace Dungeon_Crawl
             foreach (Mob m in mobList)
             {
                 m.update();
+            }
+        }
+
+        public static void updatePaths()
+        {
+            foreach (Mob m in mobList)
+            {
+                m.pathToPlayer = Path.calcPath(new Point(m.posX, m.posY), new Point(Program.renderX, Program.renderY), true, false, 1000);
             }
         }
     }

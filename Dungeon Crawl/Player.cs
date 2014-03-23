@@ -66,20 +66,43 @@ namespace Dungeon_Crawl
         {
             for (int x = 0; x < inventory.Length; x++)
             {
-                if (inventory[x] == i)
+                try
                 {
-                    inventoryStacks[x] += amt;
-                    return;
+                    if (inventory[x].Equals(i))
+                    {
+                        inventoryStacks[x] += amt;
+                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        return;
+                    }
+                    else
+                    {
+                        if (inventoryStacks[x] == 0)
+                        {
+                            inventory[x] = i;
+                            inventoryStacks[x] = amt;
+                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                            return;
+                        }
+                    }
                 }
-                else
+                catch
                 {
                     if (inventoryStacks[x] == 0)
                     {
                         inventory[x] = i;
                         inventoryStacks[x] = amt;
+                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
                         return;
                     }
                 }
+            }
+        }
+
+        public void addToInventory(ItemCache i)
+        {
+            foreach (KeyValuePair<Item, int> pair in i.items)
+            {
+                addToInventory(pair.Key, pair.Value);
             }
         }
 

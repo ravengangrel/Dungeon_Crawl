@@ -275,6 +275,11 @@ namespace Dungeon_Crawl
                         player.addGold(World.gold[renderX, renderY]);
                         World.gold[renderX, renderY] = 0;
                     }
+                    if (World.items[renderX, renderY] != null)
+                    {
+                        player.addToInventory(World.items[renderX, renderY]);
+                        World.items[renderX, renderY] = null;
+                    }
                     turn = false;
                     if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
                     {
@@ -292,6 +297,17 @@ namespace Dungeon_Crawl
                         if (Program.selectedSlot > player.inventory.Length - 1)
                         {
                             Program.selectedSlot = 0;
+                        }
+                    }
+                    if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock)
+                    {
+                        if (player.inventoryStacks[Program.selectedSlot] > 0)
+                        {
+                            player.inventory[Program.selectedSlot].useItem(player);
+                            if (player.inventory[Program.selectedSlot].consumable)
+                            {
+                                player.inventoryStacks[Program.selectedSlot]--;
+                            }
                         }
                     }
                     if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
@@ -349,6 +365,7 @@ namespace Dungeon_Crawl
                         player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
                     }
                 }
+                Mob.updatePaths();
                 Mob.updateMobs();
                 currTurn++;
             }

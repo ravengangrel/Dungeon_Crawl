@@ -75,8 +75,11 @@
     <Compile Include="BaseStatSet.cs" />
     <Compile Include="Class.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="ItemCache.cs" />
     <Compile Include="Mob.cs" />
+    <Compile Include="Path.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="StatSet.cs" />
     <Compile Include="StatMod.cs" />
     <Compile Include="StatusHandler.cs" />

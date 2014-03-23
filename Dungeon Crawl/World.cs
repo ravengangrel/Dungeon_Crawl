@@ -43,6 +43,7 @@ namespace Dungeon_Crawl
     {
         public static Tile[,] map = new Tile[1000, 1000];
         public static int[,] gold = new int[1000, 1000];
+        public static ItemCache[,] items = new ItemCache[1000, 1000];
         public static Random rand = new Random();
 
         public static void draw(int x , int y)
@@ -53,7 +54,12 @@ namespace Dungeon_Crawl
             }
             else
             {
-                if (gold[x, y] > 0)
+                if (items[x, y] != null)
+                {
+                    ConsoleEx.TextColor(ConsoleForeground.Cyan, ConsoleBackground.Black);
+                    Console.Write('@');
+                }
+                else if (gold[x, y] > 0)
                 {
                     ConsoleEx.TextColor(ConsoleForeground.Yellow, ConsoleBackground.Black);
                     Console.Write('G');
@@ -63,7 +69,7 @@ namespace Dungeon_Crawl
 
         public static Boolean isEmpty(int x, int y)
         {
-            return gold[x, y] == 0;
+            return gold[x, y] == 0 && items[x, y] == null;
         }
 
         public static void genMap()
@@ -81,7 +87,7 @@ namespace Dungeon_Crawl
             map[sX, sY] = Tile.stoneFloor;
             Program.renderX = sX;
             Program.renderY = sY;
-            Mob.spawnMob(Mob._mobZombie, Program.renderX + 1, Program.renderY + 1);
+            Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
             int cX = 0;
             int cY = 0;
             for (int z = 0; z < rand.Next(2, 6) + 3; z++)
@@ -130,6 +136,11 @@ namespace Dungeon_Crawl
                     if (rand.Next(1200) == 0)
                     {
                         gold[sX + cX, sY + cY] = rand.Next(1, 30);
+                    }
+                    if (rand.Next(1800) == 0)
+                    {
+                        items[sX + cX, sY + cY] = new ItemCache();
+                        items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
                     }
                 }
             }
