@@ -40,9 +40,10 @@ namespace Dungeon_Crawl
             //Draw the species list
             while (!hasSelectedSpecies)
             {
-                ConsoleEx.DrawRectangle(BorderStyle.LineSingle, 0, 0, 30, Species.speciesList.Length + 1, false);
-                Util.writeLn("Select a species", 1, 0);
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 70, Species.speciesList.Length + 3, false);
+                Util.writeLn("Select a species", 2, 0);
                 Species.drawAllSpecies();
+                Util.writeLn(Species.speciesList[selectedSpecies].lore, 1, Species.speciesList.Length + 2);
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 if (keyInfo.Key == ConsoleKey.DownArrow)
                 {
@@ -70,8 +71,15 @@ namespace Dungeon_Crawl
             selectedSpecies = 0;
             while (!hasSelectedClass)
             {
-                ConsoleEx.DrawRectangle(BorderStyle.LineSingle, 0, 0, 30, Class.classList.Length + 1, false);
-                Util.writeLn("Select a class--Species: " + currSpecies.abbrv, 1, 0);
+                ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, Class.classList.Length + 2, 70, Species.speciesList.Length + 3, false);
+                Util.writeLn("Select a species", Class.classList.Length + 4, 0);
+                Species.drawAllSpecies(Class.classList.Length + 2);
+                Util.writeLn(Species.speciesList[selectedSpecies].lore, 1, Species.speciesList.Length + 2 + Class.classList.Length + 2);
+
+                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 70, Class.classList.Length + 1, false);
+                Util.writeLn("Select a class--Species: " + currSpecies.abbrv, 2, 0);
                 Class.drawAllClasses();
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 if (keyInfo.Key == ConsoleKey.DownArrow)

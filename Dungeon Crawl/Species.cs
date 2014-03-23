@@ -12,6 +12,7 @@ namespace Dungeon_Crawl
         public Armor armor;
         public string abbrv = "Hu";
         public string name = "Human";
+        public string lore = "";
 
         //All the species
         public static Species _human = new Species();
@@ -34,6 +35,7 @@ namespace Dungeon_Crawl
             _human.armor = Armor.DEFAULT;
             _human.abbrv = "Hu";
             _human.name = "Human";
+            _human.lore = "A race of people who live above the earth";
 
             _highElf.baseStats = new BaseStatSet(9, 11, 12, 10, 10, 2);
             _highElf.size = Size.MEDIUM;
@@ -112,6 +114,15 @@ namespace Dungeon_Crawl
                 }
             }
             ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+        }
+        public static void drawAllSpecies(int y)
+        {
+            for (int x = 0; x < speciesList.Length; x++)
+            {
+                Console.SetCursorPosition(1, y + x + 1);
+                drawSpecies(speciesList[x]);
+            }
+            //ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
         }
     }
 }
