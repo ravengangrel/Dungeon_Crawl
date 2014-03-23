@@ -43,6 +43,7 @@ namespace Dungeon_Crawl
     {
         public static Tile[,] map = new Tile[1000, 1000];
         public static int[,] gold = new int[1000, 1000];
+        public static ItemCache[,] items = new ItemCache[1000, 1000];
         public static Random rand = new Random();
 
         public static void draw(int x , int y)
@@ -53,7 +54,12 @@ namespace Dungeon_Crawl
             }
             else
             {
-                if (gold[x, y] > 0)
+                if (items[x, y] != null)
+                {
+                    ConsoleEx.TextColor(ConsoleForeground.Cyan, ConsoleBackground.Black);
+                    Console.Write('@');
+                }
+                else if (gold[x, y] > 0)
                 {
                     ConsoleEx.TextColor(ConsoleForeground.Yellow, ConsoleBackground.Black);
                     Console.Write('G');
@@ -63,7 +69,7 @@ namespace Dungeon_Crawl
 
         public static Boolean isEmpty(int x, int y)
         {
-            return gold[x, y] == 0;
+            return gold[x, y] == 0 && items[x, y] == null;
         }
 
         public static void genMap()

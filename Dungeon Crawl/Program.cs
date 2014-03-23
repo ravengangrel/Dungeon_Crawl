@@ -275,6 +275,11 @@ namespace Dungeon_Crawl
                         player.addGold(World.gold[renderX, renderY]);
                         World.gold[renderX, renderY] = 0;
                     }
+                    if (World.items[renderX, renderY] != null)
+                    {
+                        player.addToInventory(World.items[renderX, renderY]);
+                        World.items[renderX, renderY] = null;
+                    }
                     turn = false;
                     if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
                     {

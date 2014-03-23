@@ -83,6 +83,14 @@ namespace Dungeon_Crawl
             }
         }
 
+        public void addToInventory(ItemCache i)
+        {
+            foreach (KeyValuePair<Item, int> pair in i.items)
+            {
+                addToInventory(pair.Key, pair.Value);
+            }
+        }
+
         public void addGold(int addGold)
         {
             if (status.hasAttr("Loot") || species == Species._mountainDwarf)
