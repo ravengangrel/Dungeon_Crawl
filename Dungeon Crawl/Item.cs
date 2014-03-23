@@ -118,6 +118,13 @@ namespace Dungeon_Crawl
             items[1] = new Item("Cloth Robe").setWeight(3).setArmor(2).setEquipSlot(3).setEquippable(true); //1 defense
             items[2] = new Item("Grape").setWeight(0.02).setEquippable(false).setEdible(true).setFood(25); //Refill 25 food
             items[3] = new Item("Dark Acolyte Robe").setWeight(3).setArmor(1).setEquipSlot(3).setEquippable(true); //1 defense
+
+            items[4] = new Item("Leather Gloves").setWeight(2).setArmor(1).setEquipSlot(2).setEquippable(true);
+            items[5] = new Item("Leather Bracers").setWeight(2).setArmor(2).setEquipSlot(1).setEquippable(true);
+            items[6] = new Item("Leather Tunic").setWeight(4).setArmor(3).setEquipSlot(3).setEquippable(true);
+            items[7] = new Item("Leather Cap").setWeight(1).setArmor(1).setEquipSlot(0).setEquippable(true);
+            items[8] = new Item("Leather Pants").setWeight(4).setArmor(2).setEquipSlot(4).setEquippable(true);
+            items[9] = new Item("Leather Moccasins").setWeight(3).setArmor(1).setEquipSlot(5).setEquippable(true);
         }
 
         public Boolean Equals(Item i)

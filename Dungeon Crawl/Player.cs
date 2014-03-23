@@ -34,6 +34,7 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
+            /*
             if (species == Species._darkElf)
             {
                 addToInventory(Item.get(3), 1, false);
@@ -42,9 +43,16 @@ namespace Dungeon_Crawl
             {
                 addToInventory(Item.get(1), 1, false);
             }
+            */
+            addToInventory(Item.get(4), 1, false);
+            addToInventory(Item.get(5), 1, false);
+            addToInventory(Item.get(6), 1, false);
+            addToInventory(Item.get(7), 1, false);
+            addToInventory(Item.get(8), 1, false);
+            addToInventory(Item.get(9), 1, false);
             addToInventory(Item.get(0), 1, false);
             equipment = new Equipment();
-            status.addStatus(new Status("Invisible", 1, 20, ConsoleForeground.Cyan, ConsoleBackground.Black));
+            //status.addStatus(new Status("Invisible", 1, 20, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
 
         public Boolean canEquipSelectedItem()
