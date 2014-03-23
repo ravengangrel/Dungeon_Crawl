@@ -35,6 +35,7 @@ namespace Dungeon_Crawl
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
             addToInventory(Item.get(1), 1, false);
+            addToInventory(Item.get(0), 1, false);
             equipment = new Equipment();
             //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
         }

@@ -386,9 +386,12 @@ namespace Dungeon_Crawl
                             msgLog.Add("You are intangible and cannot wield any items!");
                         }
                     }
-                    else if (!player.canEquipSelectedItem())
+                    else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
                     {
-                        msgLog.Add("You can't equip anything in that slot!");
+                        if (player.inventory[Program.selectedSlot].equippable)
+                        {
+                            msgLog.Add("You can't equip anything in that slot!");
+                        }
                     }
                     iteration++;
                 }
