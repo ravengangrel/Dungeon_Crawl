@@ -109,6 +109,7 @@ namespace Dungeon_Crawl
         {
             Console.Clear();
             ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 26, 26, false);
+
             for (int y = -14; y < 13; y++)
             {
                 for (int x = -14; x < 13; x++)
@@ -330,6 +331,7 @@ namespace Dungeon_Crawl
                     }
                     iteration++;
                 }
+                player.hunger--;
                 currTurn++;
             }
         }
