@@ -210,7 +210,7 @@ namespace Dungeon_Crawl
                     }
                     if (player.status.statusEffects.Count > 0)
                     {
-                        Util.writeLn(s, 90, 1 + x);
+                        Util.writeLn(s, 91, 1 + x);
                     }
                     else
                     {
@@ -226,7 +226,7 @@ namespace Dungeon_Crawl
                     }
                     if (player.status.statusEffects.Count > 0)
                     {
-                        Util.writeLn(s, 90, 1 + x);
+                        Util.writeLn(s, 91, 1 + x);
                     }
                     else
                     {

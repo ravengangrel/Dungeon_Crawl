@@ -59,15 +59,15 @@ namespace Dungeon_Crawl
         {
             evasion = Math.Max(0, (int)(((int)Math.Floor(((dexterity / 3) + 1) - (Player.calcInvWeight(Program.player) / 1000))) + (stealth / 2)));
             armor = 0;
+            if (Program.player.status.hasAttr("Stoneflesh"))
+            {
+                armor += Program.player.status.getLvl("Stoneflesh");
+            }
             for (int x = 0; x < Program.player.equipment.equipSlots.Length; x++)
             {
                 if (Program.player.equipment.equipSlots[x] != null)
                 {
                     armor += Program.player.equipment.equipSlots[x].armor;
-                    if (Program.player.status.hasAttr("Stoneflesh"))
-                    {
-                        armor += Program.player.status.getLvl("Stoneflesh");
-                    }
                 }
             }
         }
