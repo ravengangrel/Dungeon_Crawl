@@ -61,7 +61,10 @@ namespace Dungeon_Crawl
             armor = 0;
             for (int x = 0; x < Program.player.equipment.equipSlots.Length; x++)
             {
-                armor += Program.player.equipment.equipSlots[x].armor;
+                if (Program.player.equipment.equipSlots[x] != null)
+                {
+                    armor += Program.player.equipment.equipSlots[x].armor;
+                }
             }
         }
     }
