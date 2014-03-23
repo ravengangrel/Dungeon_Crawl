@@ -16,3 +16,12 @@ C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\o
 C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.application
 C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.exe
 C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.exe
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.exe.manifest
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.application
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.exe
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.exe.manifest
+C:\Users\Ian\Documents\GitHub\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.application

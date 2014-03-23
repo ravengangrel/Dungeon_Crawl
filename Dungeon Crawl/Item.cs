@@ -51,7 +51,6 @@ namespace Dungeon_Crawl
         public static void init()
         {
             items[0] = new Item("Bread").setWeight(0.2).setEquippable(false);
-
         }
     }
 }
