@@ -108,7 +108,7 @@ namespace Dungeon_Crawl
             bool genDeep = false;
             for (int z = 0; z < rand.Next(2, 6) + 3; z++)
             {
-                for (int a = 0; a < rand.Next(8000, 15000); a++)
+                for (int a = 0; a < rand.Next(80000, 150000); a++)
                 {
                     if (rand.Next(2) == 0)
                     {
