@@ -69,6 +69,20 @@ namespace Dungeon_Crawl
             return false;
         }
 
+        public void removeAttr(String attrName)
+        {
+            if (hasAttr(attrName))
+            {
+                for (int x = 0; x < statusEffects.Count; x++)
+                {
+                    if (statusEffects[x].name == attrName)
+                    {
+                        statusEffects.Remove(statusEffects[x]);
+                    }
+                }
+            }
+        }
+
         public int getLvl(String attrName)
         {
             if (hasAttr(attrName))

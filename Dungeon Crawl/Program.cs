@@ -411,6 +411,24 @@ namespace Dungeon_Crawl
                 Mob.updatePaths();
                 Mob.updateMobs();
                 player.stats.calcStats();
+                if (World.map[renderX, renderY] == Tile.shallowWater)
+                {
+                    player.status.removeAttr("Wet");
+                    player.status.addStatus(new Status("Wet", 1, true, ConsoleForeground.Blue, ConsoleBackground.Black));
+                }
+                else
+                {
+                    player.status.removeAttr("Wet");
+                }
+                if (World.map[renderX, renderY] == Tile.deepWater)
+                {
+                    player.status.removeAttr("Wet+");
+                    player.status.addStatus(new Status("Wet+", 1, true, ConsoleForeground.Navy, ConsoleBackground.Black));
+                }
+                else
+                {
+                    player.status.removeAttr("Wet+");
+                }
                 currTurn++;
             }
         }
