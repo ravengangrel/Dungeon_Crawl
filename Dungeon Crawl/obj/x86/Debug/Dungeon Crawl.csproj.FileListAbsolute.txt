@@ -1,0 +1,18 @@
+C:\Users\Ian\AppData\Local\Temporary Projects\Dungeon Crawl\bin\Debug\Dungeon Crawl.exe
+C:\Users\Ian\AppData\Local\Temporary Projects\Dungeon Crawl\bin\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\AppData\Local\Temporary Projects\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.exe
+C:\Users\Ian\AppData\Local\Temporary Projects\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\documents\visual studio 2010\Projects\Dungeon Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.exe
+C:\Users\Ian\documents\visual studio 2010\Projects\Dungeon Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\documents\visual studio 2010\Projects\Dungeon Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.exe
+C:\Users\Ian\documents\visual studio 2010\Projects\Dungeon Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\documents\visual studio 2010\Projects\Dungeon Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.exe.manifest
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.application
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.exe
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\bin\Debug\Dungeon Crawl.pdb
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.exe.manifest
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.application
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.exe
+C:\Users\Ian\Documents\Visual Studio 2010\Projects\Dungeon_Crawl\Dungeon Crawl\obj\x86\Debug\Dungeon Crawl.pdb
