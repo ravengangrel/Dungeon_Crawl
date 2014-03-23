@@ -411,7 +411,7 @@ namespace Dungeon_Crawl
                 Mob.updatePaths();
                 Mob.updateMobs();
                 player.stats.calcStats();
-                if (World.map[renderX, renderY] == Tile.shallowWater)
+                if (World.map[renderX, renderY] == Tile.shallowWater && !player.status.hasAttr("Fly"))
                 {
                     player.status.removeAttr("Wet");
                     player.status.addStatus(new Status("Wet", 1, true, ConsoleForeground.Blue, ConsoleBackground.Black));
@@ -420,7 +420,7 @@ namespace Dungeon_Crawl
                 {
                     player.status.removeAttr("Wet");
                 }
-                if (World.map[renderX, renderY] == Tile.deepWater)
+                if (World.map[renderX, renderY] == Tile.deepWater && !player.status.hasAttr("Fly"))
                 {
                     player.status.removeAttr("Wet+");
                     player.status.addStatus(new Status("Wet+", 1, true, ConsoleForeground.Navy, ConsoleBackground.Black));
