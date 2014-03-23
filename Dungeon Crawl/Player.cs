@@ -71,6 +71,7 @@ namespace Dungeon_Crawl
                     if (inventory[x].Equals(i))
                     {
                         inventoryStacks[x] += amt;
+                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
                         return;
                     }
                     else
@@ -79,6 +80,7 @@ namespace Dungeon_Crawl
                         {
                             inventory[x] = i;
                             inventoryStacks[x] = amt;
+                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
                             return;
                         }
                     }
@@ -89,6 +91,7 @@ namespace Dungeon_Crawl
                     {
                         inventory[x] = i;
                         inventoryStacks[x] = amt;
+                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
                         return;
                     }
                 }

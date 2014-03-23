@@ -140,7 +140,7 @@ namespace Dungeon_Crawl
                     if (rand.Next(1800) == 0)
                     {
                         items[sX + cX, sY + cY] = new ItemCache();
-                        items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(4) + 2);
+                        items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
                     }
                 }
             }
