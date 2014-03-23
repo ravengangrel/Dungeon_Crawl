@@ -19,6 +19,7 @@ namespace Dungeon_Crawl
         public static Species _woodElf = new Species();
         public static Species _hillOrc = new Species();
         public static Species _mountainDwarf = new Species();
+        public static Species _gnome = new Species();
 
         public static Species[] speciesList;
         
@@ -56,7 +57,11 @@ namespace Dungeon_Crawl
             _mountainDwarf.abbrv = "Md";
             _mountainDwarf.name = "Mountain Dwarf";
 
-
+            _gnome.baseStats = new BaseStatSet(8, 14, 12, 9, 11, 1);
+            _gnome.size = Size.TINY;
+            _gnome.armor = Armor.DEFAULT;
+            _gnome.abbrv = "Gn";
+            _gnome.name = "Gnome";
 
             //All accessible species
             //If a species is not in this list, it's not accessible by the player
@@ -65,7 +70,8 @@ namespace Dungeon_Crawl
                 _highElf,
                 _woodElf,
                 _hillOrc,
-                _mountainDwarf
+                _mountainDwarf,
+                _gnome
             };
         }
 
