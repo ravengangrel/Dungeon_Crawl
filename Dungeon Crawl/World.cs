@@ -148,7 +148,11 @@ namespace Dungeon_Crawl
                     {
                         cY--;
                     }
-                    if (rand.Next(4000) == 0)
+                    if (rand.Next(2000) == 0 && !genWater)
+                    {
+                        genWater = !genWater;
+                    }
+                    if (rand.Next(400) == 0 && genWater)
                     {
                         genWater = !genWater;
                     }
