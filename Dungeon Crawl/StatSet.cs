@@ -64,6 +64,10 @@ namespace Dungeon_Crawl
                 if (Program.player.equipment.equipSlots[x] != null)
                 {
                     armor += Program.player.equipment.equipSlots[x].armor;
+                    if (Program.player.status.hasAttr("Stoneflesh"))
+                    {
+                        armor += Program.player.status.getLvl("Stoneflesh");
+                    }
                 }
             }
         }
