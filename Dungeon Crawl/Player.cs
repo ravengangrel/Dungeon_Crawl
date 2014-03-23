@@ -204,6 +204,8 @@ namespace Dungeon_Crawl
             }
             Console.SetCursorPosition(x, y + 12);
             Console.Write("EV: " + stats.evasion);
+            Console.SetCursorPosition(x, y + 13);
+            Console.Write("DEF: " + stats.armor);
         }
 
         public ConsoleForeground hungerColor(int x)

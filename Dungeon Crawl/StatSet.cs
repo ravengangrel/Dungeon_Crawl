@@ -25,6 +25,7 @@ namespace Dungeon_Crawl
         public int level = 1;
 
         public int evasion = 0;
+        public int armor = 0;
 
         public StatSet(int s, int d, int i, int w, int h, int m)
         {
@@ -57,6 +58,11 @@ namespace Dungeon_Crawl
         public void calcStats()
         {
             evasion = Math.Max(0, (int)(((int)Math.Floor(((dexterity / 3) + 1) - (Player.calcInvWeight(Program.player) / 1000))) + (stealth / 2)));
+            armor = 0;
+            for (int x = 0; x < Program.player.equipment.equipSlots.Length; x++)
+            {
+                armor += Program.player.equipment.equipSlots[x].armor;
+            }
         }
     }
 }
