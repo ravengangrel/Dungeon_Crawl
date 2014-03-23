@@ -88,7 +88,12 @@ namespace Dungeon_Crawl
             if (status.hasAttr("Loot") || species == Species._mountainDwarf)
             {
                 stats.gold += (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))));
-                Program.msgLog.Add("You found " + addGold + " gold, and after some looking found " + (((int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))))) - addGold) + " more gold!");
+                Program.msgLog.Add("You found " + (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot")))) + " gold!");
+            }
+            else if (status.hasAttr("Greed") || species == Species._trollGnome)
+            {
+                stats.gold += (int)((float)addGold * (0.9f - (0.05f * status.getLvl("Greed"))));
+                Program.msgLog.Add("You found " + (int)((float)addGold * (0.9f - (0.05f * status.getLvl("Greed")))) + " gold!");
             }
             else
             {
