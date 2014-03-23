@@ -434,19 +434,19 @@ namespace Dungeon_Crawl
         }
         public static Boolean canMoveRight()
         {
-            return !World.map[renderX + 1, renderY].solid;
+            return !World.map[renderX + 1, renderY].solid && (World.map[renderX + 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveLeft()
         {
-            return !World.map[renderX - 1, renderY].solid;
+            return !World.map[renderX - 1, renderY].solid && (World.map[renderX - 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveUp()
         {
-            return !World.map[renderX, renderY - 1].solid;
+            return !World.map[renderX, renderY - 1].solid && (World.map[renderX, renderY - 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveDown()
         {
-            return !World.map[renderX, renderY + 1].solid;
+            return !World.map[renderX, renderY + 1].solid && (World.map[renderX, renderY + 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
     }
 }

@@ -185,7 +185,7 @@ namespace Dungeon_Crawl
                     }
                     else
                     {
-                        if (rand.Next(20) == 0)
+                        if (rand.Next(70) == 0)
                         {
                             genDeep = !genDeep;
                         }
