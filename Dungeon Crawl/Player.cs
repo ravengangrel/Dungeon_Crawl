@@ -37,6 +37,17 @@ namespace Dungeon_Crawl
             //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
         }
 
+
+        public static double calcInvWeight(Player p)
+        {
+            double i = 0;
+            for (int x = 0; x < p.inventory.Length; x++)
+            {
+                i += p.inventory[x].weight * p.inventoryStacks[x];
+            }
+            return i;
+        }
+
         public static string chooseHungerMsg()
         {
             if (World.rand.Next(2) == 0)
@@ -168,6 +179,8 @@ namespace Dungeon_Crawl
                 ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
                 Console.Write("\n");
             }
+            Console.SetCursorPosition(x, y + 12);
+            Console.Write("EV: " + stats.evasion);
         }
 
         public ConsoleForeground hungerColor(int x)

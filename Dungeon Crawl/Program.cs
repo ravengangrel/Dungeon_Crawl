@@ -381,6 +381,7 @@ namespace Dungeon_Crawl
                 }
                 Mob.updatePaths();
                 Mob.updateMobs();
+                player.stats.calcStats();
                 currTurn++;
             }
         }

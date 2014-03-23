@@ -23,6 +23,8 @@ namespace Dungeon_Crawl
         public int reqXp = 10;
         public int level = 1;
 
+        public int evasion = 0;
+
         public StatSet(int s, int d, int i, int w, int h, int m)
         {
             strength = s;
@@ -43,6 +45,11 @@ namespace Dungeon_Crawl
         public StatSet adjust()
         {
             return new StatSet(Math.Max(strength, 0), Math.Max(dexterity, 0), Math.Max(intelligence, 0), Math.Max(wisdom, 0), Math.Max(health, 0), Math.Max(mana, 0));
+        }
+
+        public void calcStats()
+        {
+            evasion = Math.Max(0, (int)Math.Floor(((dexterity / 3) + 1) - (Player.calcInvWeight(Program.player) / 1000)));
         }
     }
 }
