@@ -14,6 +14,7 @@ namespace Dungeon_Crawl
         public static Class _fighter = new Class();
         public static Class _ranger = new Class();
         public static Class _mage = new Class();
+        public static Class _samurai = new Class();
 
         public static Class[] classList;
 
@@ -32,6 +33,11 @@ namespace Dungeon_Crawl
             _mage.name = "Mage";
             _mage.abbrv = "Ma";
             _mage.statMod = new StatMod(-3, -2, 2, 2, -2, 3);
+            
+            _samurai.name = "Samurai";
+            _samurai.abbrv = "Sa";
+            _samurai.statMod = new StatMod(3, 3, 3, 1, -5, 3);
+
 
             //All available classes
             //If it's not in the list, it can't be accessed
@@ -39,6 +45,7 @@ namespace Dungeon_Crawl
                 _fighter,
                 _ranger,
                 _mage
+                _samurai
             };
         }
 
