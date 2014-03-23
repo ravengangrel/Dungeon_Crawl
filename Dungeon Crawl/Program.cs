@@ -98,7 +98,7 @@ namespace Dungeon_Crawl
             Console.Clear();
             Console.WriteLine("What is your name?");
             player = new Player(Console.ReadLine(), currSpecies, currClass);
-            Console.WriteLine("You are a " + player.identifier);
+            //Console.WriteLine("You are a " + player.identifier);
             Console.WriteLine();
             player.WriteStats();
             Console.ReadLine();

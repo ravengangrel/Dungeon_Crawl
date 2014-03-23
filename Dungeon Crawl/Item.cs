@@ -13,7 +13,7 @@ namespace Dungeon_Crawl
         public Boolean bound = false;
         public Boolean discoveredBound = false;
 
-        public static Item[] items = new Item[32000];
+        public static Item[] items = new Item[64000];
 
         public Item(string n)
         {
