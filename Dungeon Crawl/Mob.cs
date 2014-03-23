@@ -50,8 +50,17 @@ namespace Dungeon_Crawl
 
         public void update()
         {
-            posX = pathToPlayer.points[0].X;
-            posY = pathToPlayer.points[0].Y;
+            if (ai == 0 && World.rand.Next(3) != 0)
+            {
+                try
+                {
+                    posX = pathToPlayer.points[1].X;
+                    posY = pathToPlayer.points[1].Y;
+                }
+                catch
+                {
+                }
+            }
         }
 
         public static List<Mob> getMobsAtPos(int x, int y)

@@ -109,8 +109,6 @@ namespace Dungeon_Crawl
         public static void renderGame()
         {
             Console.Clear();
-            Mob.updatePaths();
-            Mob.updateMobs();
             ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 26, 26, false);
 
             for (int y = -14; y < 13; y++)
@@ -351,6 +349,8 @@ namespace Dungeon_Crawl
                         player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
                     }
                 }
+                Mob.updatePaths();
+                Mob.updateMobs();
                 currTurn++;
             }
         }

@@ -16,8 +16,16 @@ namespace Dungeon_Crawl
         public static int calcManhattan(Point start, Point end)
         {
             int dist = 0;
-            dist += Math.Abs(end.X - start.X) - 1;
-            dist += Math.Abs(end.Y - start.Y) - 1;
+            int xDistance = Math.Abs(start.X - end.X);
+            int yDistance = Math.Abs(start.Y - end.Y);
+            if (xDistance > yDistance)
+            {
+                dist = 14 * yDistance + 10 * (xDistance - yDistance);
+            }
+            else
+            {
+                dist = 14 * xDistance + 10 * (yDistance - xDistance);
+            }
             return dist;
         }
     }

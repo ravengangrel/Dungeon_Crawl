@@ -21,7 +21,7 @@ namespace Dungeon_Crawl
             writer.Close();
         }
 
-        public static Path calcPath(Point s, Point end, bool cardinal = true, bool ignoreWalls = false, int maxLength = 40000)
+        public static Path calcPath(Point s, Point end, bool cardinal = false, bool ignoreWalls = false, int maxLength = 40000)
         {
             Path path = new Path();
             bool skipPoint = false;
@@ -33,9 +33,9 @@ namespace Dungeon_Crawl
                 timeout--;
                 start = path.points[path.points.Count - 1];
                 int[,] pointMap = new int[3, 3];
-                for (int x = -1; x <= 1; x++)
+                for (int y = -1; y <= 1; y++)
                 {
-                    for (int y = -1; y <= 1; y++)
+                    for (int x = -1; x <= 1; x++)
                     {
                         skipPoint = false;
                         if (start.X + x < 0 || start.X + x > 999 || start.Y + y < 0 || start.Y + y > 999)
@@ -58,7 +58,7 @@ namespace Dungeon_Crawl
                         }
                         if (!skipPoint && !path.points.Contains(new Point(start.X + x, start.Y + y)))
                         {
-                            pointMap[x + 1, y + 1] = (int)((Util.calcManhattan(new Point(start.X + x, start.Y + y), end) * 10) + (Math.Sqrt(Math.Abs(x + y)) * 10));
+                            pointMap[x + 1, y + 1] = (int)((Util.calcManhattan(new Point(start.X + x, start.Y + y), end)) + (Math.Sqrt(Math.Abs(x + y)) * 10));
                         }
                         else
                         {
@@ -67,11 +67,11 @@ namespace Dungeon_Crawl
                     }
                 }
                 List<Point> poss = new List<Point>();
-                for (int x = -1; x <= 1; x++)
+                for (int y = -1; y <= 1; y++)
                 {
-                    for (int y = -1; y <= 1; y++)
+                    for (int x = -1; x <= 1; x++)
                     {
-                        if (pointMap[x + 1, y + 1] != -1)
+                        if (pointMap[x + 1, y + 1] > 0)
                         {
                             poss.Add(new Point(x + 1, y + 1));
                         }
@@ -91,10 +91,6 @@ namespace Dungeon_Crawl
                     }
                 }
                 path.points.Add(new Point(start.X + (lowestPoint.X - 1), start.Y + (lowestPoint.Y - 1)));
-                if (path.points[path.points.Count - 1].X == end.X && path.points[path.points.Count - 1].Y == end.Y)
-                {
-                    break;
-                }
             }
             path.print();
             return path;
