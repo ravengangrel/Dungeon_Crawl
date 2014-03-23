@@ -16,7 +16,7 @@ namespace Dungeon_Crawl
         public Item[] inventory = new Item[30];
         public int[] inventoryStacks = new int[30];
         public Boolean[] inventoryEquip = new Boolean[30];
-        public int hunger = 400;
+        public int hunger = 15000;
 
         //-5000 to -2500- Starving
         //-2500 to -1000- Hungry
@@ -104,8 +104,36 @@ namespace Dungeon_Crawl
             if (species != Species._faerie)
             {
                 Console.SetCursorPosition(x, y + 10);
-                Console.WriteLine(calcHungerStatus());
+                int adjHunger = (Math.Min(Math.Max(hunger, -5000), 7000) + 5000) / 1000;
+                ConsoleEx.TextColor(hungerColor(adjHunger - 1), ConsoleBackground.Black);
+                Console.Write(calcHungerStatus() + " ");
+                for (int a = 0; a < adjHunger; a++)
+                {
+                    ConsoleEx.TextColor(hungerColor(a), ConsoleBackground.Black);
+                    Console.Write("|");
+                }
+                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                Console.Write("\n");
             }
+        }
+
+        public ConsoleForeground hungerColor(int x)
+        {
+            ConsoleForeground[] colors = new ConsoleForeground[] {
+                ConsoleForeground.Maroon,
+                ConsoleForeground.Maroon,
+                ConsoleForeground.Red,
+                ConsoleForeground.Red,
+                ConsoleForeground.Red,
+                ConsoleForeground.Green,
+                ConsoleForeground.Green,
+                ConsoleForeground.Olive,
+                ConsoleForeground.Olive,
+                ConsoleForeground.DarkGreen,
+                ConsoleForeground.DarkGreen,
+                ConsoleForeground.DarkGreen
+            };
+            return colors[x];
         }
 
         public string calcHungerStatus()
