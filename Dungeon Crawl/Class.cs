@@ -44,7 +44,7 @@ namespace Dungeon_Crawl
             classList = new Class[] {
                 _fighter,
                 _ranger,
-                _mage
+                _mage,
                 _samurai
             };
         }
