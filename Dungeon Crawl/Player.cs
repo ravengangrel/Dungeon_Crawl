@@ -12,6 +12,7 @@ namespace Dungeon_Crawl
         public StatSet stats;
         public Species species;
         public Class career;
+        public Equipment equipment;
         public StatusHandler status = new StatusHandler();
         public Item[] inventory = new Item[30];
         public int[] inventoryStacks = new int[30];

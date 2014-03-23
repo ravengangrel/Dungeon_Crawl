@@ -18,6 +18,10 @@ namespace Dungeon_Crawl
         public Boolean discoveredBound = false;
         public Boolean edible = false;
         public Boolean consumable = false;
+        public Boolean equipped = false;
+
+        public int slotEquip = -1;
+
 
         public static Item[] items = new Item[75000];
 
@@ -30,6 +34,12 @@ namespace Dungeon_Crawl
         {
             foodFill = i;
             setEdible(true);
+            return this;
+        }
+
+        public Item setEquipSlot(int i)
+        {
+            slotEquip = i;
             return this;
         }
 

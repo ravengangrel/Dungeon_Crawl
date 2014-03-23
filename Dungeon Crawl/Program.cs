@@ -329,28 +329,44 @@ namespace Dungeon_Crawl
                     {
                         if (player.species != Species._faerie)
                         {
-                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable)
+                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && ((player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] != null) || (!player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] == null)))
                             {
                                 try
                                 {
                                     if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
                                     {
-                                        player.inventoryEquip[Program.selectedSlot] = !player.inventoryEquip[Program.selectedSlot];
+                                        player.inventory[Program.selectedSlot].equipped = !player.inventory[Program.selectedSlot].equipped;
+                                        if (player.inventory[Program.selectedSlot].equipped)
+                                        {
+                                            player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
+                                        }
+                                        else
+                                        {
+                                            player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
+                                        }
                                         turn = false;
                                     }
-                                    else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventoryEquip[Program.selectedSlot])
+                                    else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventory[Program.selectedSlot].equipped)
                                     {
                                         msgLog.Add("You can't unequip a bound item!");
                                     }
                                 }
                                 catch
                                 {
-                                    player.inventoryEquip[Program.selectedSlot] = true;
+                                    player.inventory[Program.selectedSlot].equipped = true;
+                                    if (player.inventory[Program.selectedSlot].equipped)
+                                    {
+                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
+                                    }
+                                    else
+                                    {
+                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
+                                    }
                                     turn = false;
                                 }
                                 try
                                 {
-                                    if (player.inventoryEquip[Program.selectedSlot] && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
+                                    if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
                                     {
                                         player.inventory[Program.selectedSlot].discoveredBound = true;
                                     }
@@ -369,6 +385,10 @@ namespace Dungeon_Crawl
                             turn = true;
                             msgLog.Add("You are intangible and cannot wield any items!");
                         }
+                    }
+                    else if (!((player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] != null) || (!player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] == null)))
+                    {
+                        msgLog.Add("You already have something equipped in that slot!");
                     }
                     iteration++;
                 }
