@@ -67,7 +67,7 @@ namespace Dungeon_Crawl
         public void WriteStats()
         {
             Console.WriteLine("Health: " + stats.health);
-            Console.WriteLine("Mana: " + stats.mana);
+            Console.WriteLine("Ether: " + stats.mana);
             Console.WriteLine("Strength: " + stats.strength);
             Console.WriteLine("Dexterity: " + stats.dexterity);
             Console.WriteLine("Intelligence: " + stats.intelligence);
@@ -80,7 +80,7 @@ namespace Dungeon_Crawl
             Console.SetCursorPosition(x, y);
             Console.WriteLine("Health: " + stats.health + "/" + stats.maxHealth);
             Console.SetCursorPosition(x, y + 1);
-            Console.WriteLine("Mana: " + stats.mana + "/" + stats.maxMana);
+            Console.WriteLine("Ether: " + stats.mana + "/" + stats.maxMana);
             Console.SetCursorPosition(x, y + 2);
             Console.WriteLine("Gold: " + stats.gold);
             Console.SetCursorPosition(x, y + 4);
