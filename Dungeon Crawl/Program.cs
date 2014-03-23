@@ -29,6 +29,7 @@ namespace Dungeon_Crawl
             Class.init();
             Tile.init();
             Item.init();
+            Mob.init();
             showMainMenu();
         }
         public static void showMainMenu()
@@ -134,7 +135,16 @@ namespace Dungeon_Crawl
                             }
                             else
                             {
-                                World.draw(renderX + x, renderY + y);
+                                if (Mob.getMobsAtPos(renderX + x, renderY + y).Count == 0)
+                                {
+                                    World.draw(renderX + x, renderY + y);
+                                }
+                                else
+                                {
+                                    ConsoleEx.TextColor(Mob.getMobsAtPos(renderX + x, renderY + y)[0].colorFore, Mob.getMobsAtPos(renderX + x, renderY + y)[0].colorBack);
+                                    Console.Write(Mob.getMobsAtPos(renderX + x, renderY + y)[0].symbol);
+                                    msgLog.Add(Mob.getMobsAtPos(renderX + x, renderY + y)[0].name + " has been spotted near you!");
+                                }
                             }
 
                         }
@@ -339,6 +349,7 @@ namespace Dungeon_Crawl
                         player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
                     }
                 }
+                Mob.updateMobs();
                 currTurn++;
             }
         }
