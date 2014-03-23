@@ -51,7 +51,7 @@ namespace Dungeon_Crawl
             _hillOrc.abbrv = "Ho";
             _hillOrc.name = "Hill Orc";
 
-            _mountainDwarf.baseStats = new BaseStatSet(13, 11, 8, 8, 14, 0);
+            _mountainDwarf.baseStats = new BaseStatSet(13, 12, 7, 8, 14, 0);
             _mountainDwarf.size = Size.SMALL;
             _mountainDwarf.armor = Armor.DEFAULT;
             _mountainDwarf.abbrv = "Md";

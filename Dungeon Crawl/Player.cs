@@ -52,10 +52,10 @@ namespace Dungeon_Crawl
 
         public void addGold(int addGold)
         {
-            if (status.hasAttr("Loot"))
+            if (status.hasAttr("Loot") || species == Species._mountainDwarf)
             {
                 stats.gold += (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))));
-                Program.msgLog.Add("You found " + addGold + " gold, but managed to scrounge up " + (((int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))))) - addGold) + " more gold!");
+                Program.msgLog.Add("You found " + addGold + " gold, and after some looking found " + (((int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))))) - addGold) + " more gold!");
             }
             else
             {
