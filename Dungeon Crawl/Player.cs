@@ -44,6 +44,7 @@ namespace Dungeon_Crawl
             }
             addToInventory(Item.get(0), 1, false);
             equipment = new Equipment();
+            status.addStatus(new Status("Invisible", 1, 20, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
 
         public Boolean canEquipSelectedItem()

@@ -13,7 +13,7 @@ namespace Dungeon_Crawl
         public static Class currClass;
         public static Player player;
 
-        public static int renderX = 999;
+        public static int renderX = 0;
         public static int renderY = 0;
 
         public static int currTurn = 0;
@@ -146,7 +146,12 @@ namespace Dungeon_Crawl
                             if (renderX + x == renderX && renderY + y == renderY)
                             {
                                 ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                                if (player.status.hasAttr("Invisible"))
+                                {
+                                    ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
+                                }
                                 Console.Write("P");
+                                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
                             }
                             else
                             {

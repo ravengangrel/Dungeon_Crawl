@@ -104,13 +104,27 @@ namespace Dungeon_Crawl
             {
                 Console.SetCursorPosition(x, y + a);
                 ConsoleEx.TextColor(statusEffects[a].colorFore, statusEffects[a].colorBack);
-                if (statusEffects[a].permanent)
+                if (statusEffects[a].level > 1)
                 {
-                     Console.Write(statusEffects[a].name + " " + statusEffects[a].level);
+                    if (statusEffects[a].permanent)
+                    {
+                        Console.Write(statusEffects[a].name + " " + statusEffects[a].level);
+                    }
+                    else
+                    {
+                        Console.Write(statusEffects[a].name + " " + statusEffects[a].level + " (" + statusEffects[a].timeLeft + " turns left)");
+                    }
                 }
                 else
                 {
-                    Console.Write(statusEffects[a].name + " " + statusEffects[a].level + " (" + statusEffects[a].timeLeft + " turns left)");
+                    if (statusEffects[a].permanent)
+                    {
+                        Console.Write(statusEffects[a].name);
+                    }
+                    else
+                    {
+                        Console.Write(statusEffects[a].name + " (" + statusEffects[a].timeLeft + " turns left)");
+                    }
                 }
                 ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);                
             }
