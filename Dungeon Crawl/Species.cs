@@ -42,12 +42,14 @@ namespace Dungeon_Crawl
             _highElf.armor = Armor.DEFAULT;
             _highElf.abbrv = "He";
             _highElf.name = "High Elf";
+            _highElf.lore = "Proud denizens with powerful magic";
 
             _woodElf.baseStats = new BaseStatSet(7, 13, 11, 11, 11, 1);
             _woodElf.size = Size.MEDIUM;
             _woodElf.armor = Armor.DEFAULT;
             _woodElf.abbrv = "We";
             _woodElf.name = "Wood Elf";
+            _woodElf.lore = "Masters of the forest that are in tune with nature";
 
             _hillOrc.baseStats = new BaseStatSet(14, 10, 7, 6, 17, 0);
             _hillOrc.size = Size.LARGE;
