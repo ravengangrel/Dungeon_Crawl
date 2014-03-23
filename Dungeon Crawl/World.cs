@@ -81,7 +81,7 @@ namespace Dungeon_Crawl
             map[sX, sY] = Tile.stoneFloor;
             Program.renderX = sX;
             Program.renderY = sY;
-            Mob.spawnMob(Mob._mobZombie, Program.renderX + 1, Program.renderY + 1);
+            Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
             int cX = 0;
             int cY = 0;
             for (int z = 0; z < rand.Next(2, 6) + 3; z++)

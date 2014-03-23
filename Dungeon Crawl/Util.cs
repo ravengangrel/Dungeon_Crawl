@@ -12,5 +12,13 @@ namespace Dungeon_Crawl
             Console.SetCursorPosition(x, y);
             Console.WriteLine(s);
         }
+
+        public static int calcManhattan(Point start, Point end)
+        {
+            int dist = 0;
+            dist += Math.Abs(end.X - start.X) - 1;
+            dist += Math.Abs(end.Y - start.Y) - 1;
+            return dist;
+        }
     }
 }
