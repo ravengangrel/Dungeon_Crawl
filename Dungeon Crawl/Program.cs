@@ -334,7 +334,7 @@ namespace Dungeon_Crawl
                 if (player.species != Species._faerie)
                 {
                     player.hunger--;
-                    if (player.hunger < -4500)
+                    if (player.hunger < -4500 && World.rand.Next(100) < 73)
                     {
                         player.hurt(World.rand.Next(4) + 1, true);
                     }
