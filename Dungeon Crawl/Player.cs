@@ -101,8 +101,11 @@ namespace Dungeon_Crawl
             Console.WriteLine("Wisdom: " + stats.wisdom);
             Console.SetCursorPosition(x, y + 8);
             Console.WriteLine("Level: " + stats.level + " (%" + (((float)stats.xp / (float)stats.reqXp) * 100) + ")");
-            Console.SetCursorPosition(x, y + 10);
-            Console.WriteLine(calcHungerStatus());
+            if (species != Species._faerie)
+            {
+                Console.SetCursorPosition(x, y + 10);
+                Console.WriteLine(calcHungerStatus());
+            }
         }
 
         public string calcHungerStatus()
