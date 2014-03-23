@@ -285,39 +285,47 @@ namespace Dungeon_Crawl
                     }
                     if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
                     {
-                        if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable)
+                        if (player.species != Species._faerie)
                         {
-                            try
+                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable)
                             {
-                                if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
+                                try
                                 {
-                                    player.inventoryEquip[Program.selectedSlot] = !player.inventoryEquip[Program.selectedSlot];
+                                    if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
+                                    {
+                                        player.inventoryEquip[Program.selectedSlot] = !player.inventoryEquip[Program.selectedSlot];
+                                        turn = false;
+                                    }
+                                    else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventoryEquip[Program.selectedSlot])
+                                    {
+                                        msgLog.Add("You can't unequip a bound item!");
+                                    }
+                                }
+                                catch
+                                {
+                                    player.inventoryEquip[Program.selectedSlot] = true;
                                     turn = false;
                                 }
-                                else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventoryEquip[Program.selectedSlot])
+                                try
                                 {
-                                    msgLog.Add("You can't unequip a bound item!");
+                                    if (player.inventoryEquip[Program.selectedSlot] && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
+                                    {
+                                        player.inventory[Program.selectedSlot].discoveredBound = true;
+                                    }
+                                }
+                                catch
+                                {
                                 }
                             }
-                            catch
+                            else
                             {
-                                player.inventoryEquip[Program.selectedSlot] = true;
-                                turn = false;
-                            }
-                            try
-                            {
-                                if (player.inventoryEquip[Program.selectedSlot] && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
-                                {
-                                    player.inventory[Program.selectedSlot].discoveredBound = true;
-                                }
-                            }
-                            catch
-                            {
+                                turn = true;
                             }
                         }
                         else
                         {
                             turn = true;
+                            msgLog.Add("You are intangible and cannot wield any items!");
                         }
                     }
                     iteration++;
