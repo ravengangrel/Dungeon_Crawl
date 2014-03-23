@@ -8,6 +8,7 @@ namespace Dungeon_Crawl
     public enum Armor
     {
         DEFAULT,
+        FAERIE,
         NONE
     }
 }

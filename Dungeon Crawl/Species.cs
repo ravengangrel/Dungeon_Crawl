@@ -82,7 +82,7 @@ namespace Dungeon_Crawl
 
             _faerie.baseStats = new BaseStatSet(5, 6, 10, 10, 17, 6);
             _faerie.size = Size.TINY;
-            _faerie.armor = Armor.NONE;
+            _faerie.armor = Armor.FAERIE;
             _faerie.abbrv = "Fa";
             _faerie.name = "Faerie";
             _faerie.lore = "An insubstantial energy mass, imbued with magic to the core";
