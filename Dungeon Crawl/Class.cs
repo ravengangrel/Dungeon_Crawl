@@ -45,7 +45,6 @@ namespace Dungeon_Crawl
                 _fighter,
                 _ranger,
                 _mage
-                _samurai
             };
         }
 

@@ -16,6 +16,14 @@ namespace Dungeon_Crawl
         public Item[] inventory = new Item[30];
         public int[] inventoryStacks = new int[30];
         public Boolean[] inventoryEquip = new Boolean[30];
+        public int hunger = 400;
+
+        //-5000 to -2500- Starving
+        //-2500 to -1000- Hungry
+        //-1000 to 0- Slightly Hungry
+        //0 to 1000- Fed
+        //1000 to 2500- Well Fed
+        //2500 to 5000- Stuffed
 
         public Player(string n, Species sp, Class c)
         {
@@ -93,6 +101,50 @@ namespace Dungeon_Crawl
             Console.WriteLine("Wisdom: " + stats.wisdom);
             Console.SetCursorPosition(x, y + 8);
             Console.WriteLine("Level: " + stats.level + " (%" + (((float)stats.xp / (float)stats.reqXp) * 100) + ")");
+            if (species != Species._faerie)
+            {
+                Console.SetCursorPosition(x, y + 10);
+                Console.WriteLine(calcHungerStatus());
+            }
+        }
+
+        public string calcHungerStatus()
+        {
+            if (species != Species._faerie)
+            {
+                if (hunger <= -2500)
+                {
+                    return "Starving";
+                }
+                else if (hunger <= -1000)
+                {
+                    return "Hungry";
+                }
+                else if (hunger < 0)
+                {
+                    return "Slightly Hungry";
+                }
+                else if (hunger <= 1000)
+                {
+                    return "Fed";
+                }
+                else if (hunger <= 2500)
+                {
+                    return "Well Fed";
+                }
+                else if (hunger <= 5000)
+                {
+                    return "Stuffed";
+                }
+                else
+                {
+                    return "Bloated";
+                }
+            }
+            else
+            {
+                return "Energized";
+            }
         }
     }
 }
