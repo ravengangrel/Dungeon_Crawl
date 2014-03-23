@@ -56,30 +56,35 @@ namespace Dungeon_Crawl
             _hillOrc.armor = Armor.DEFAULT;
             _hillOrc.abbrv = "Ho";
             _hillOrc.name = "Hill Orc";
+            _hillOrc.lore = "Powerful brutes that worship the god-king of their race";
 
             _mountainDwarf.baseStats = new BaseStatSet(13, 12, 7, 8, 14, 0);
             _mountainDwarf.size = Size.SMALL;
             _mountainDwarf.armor = Armor.DEFAULT;
             _mountainDwarf.abbrv = "Md";
             _mountainDwarf.name = "Mountain Dwarf";
+            _mountainDwarf.lore = "A subterrarean race who are skilled at making coin last";
 
             _gnome.baseStats = new BaseStatSet(8, 14, 12, 9, 11, 1);
             _gnome.size = Size.TINY;
             _gnome.armor = Armor.DEFAULT;
             _gnome.abbrv = "Gn";
             _gnome.name = "Gnome";
+            _gnome.lore = "Once enslaved as garden sentries, these are skilled at hiding";
 
             _faerie.baseStats = new BaseStatSet(5, 6, 10, 10, 17, 6);
             _faerie.size = Size.TINY;
             _faerie.armor = Armor.NONE;
             _faerie.abbrv = "Fa";
             _faerie.name = "Faerie";
+            _faerie.lore = "An insubstantial energy mass, imbued with magic to the core";
 
             _trollGnome.baseStats = new BaseStatSet(10, 10, 8, 9, 16, 1);
             _trollGnome.size = Size.SMALL;
             _trollGnome.armor = Armor.DEFAULT;
             _trollGnome.abbrv = "Tg";
             _trollGnome.name = "Troll Gnome";
+            _trollGnome.lore = "This brutish cousin of gnomes suffers from severe greed";
 
             //All accessible species
             //If a species is not in this list, it's not accessible by the player
