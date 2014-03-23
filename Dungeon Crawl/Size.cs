@@ -11,6 +11,7 @@ namespace Dungeon_Crawl
         SMALL,
         MEDIUM,
         LARGE,
-        HUGE
+        HUGE,
+        GIGANTUAN
     }
 }
