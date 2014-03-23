@@ -14,9 +14,9 @@ namespace Dungeon_Crawl
         public Class career;
         public Equipment equipment;
         public StatusHandler status = new StatusHandler();
-        public Item[] inventory = new Item[30];
-        public int[] inventoryStacks = new int[30];
-        public Boolean[] inventoryEquip = new Boolean[30];
+        public Item[] inventory = new Item[39];
+        public int[] inventoryStacks = new int[39];
+        public Boolean[] inventoryEquip = new Boolean[39];
         public int hunger = 1000;
 
         //-5000 to -2500- Starving
@@ -99,7 +99,7 @@ namespace Dungeon_Crawl
             {
                 try
                 {
-                    if (inventory[x].Equals(i))
+                    if (inventory[x].Equals(i) && inventory[x].consumable)
                     {
                         inventoryStacks[x] += amt;
                         if (msg)

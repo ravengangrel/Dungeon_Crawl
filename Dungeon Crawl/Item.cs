@@ -23,7 +23,6 @@ namespace Dungeon_Crawl
         public int slotEquip = -1;
         public int armor = 0;
 
-
         public static Item[] items = new Item[75000];
 
         public Item(string n)
