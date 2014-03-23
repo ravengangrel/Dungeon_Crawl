@@ -23,6 +23,7 @@ namespace Dungeon_Crawl
         public static Species _gnome = new Species();
         public static Species _faerie = new Species();
         public static Species _trollGnome = new Species();
+        public static Species _darkElf = new Species();
 
         public static Species[] speciesList;
         
@@ -43,6 +44,13 @@ namespace Dungeon_Crawl
             _highElf.abbrv = "He";
             _highElf.name = "High Elf";
             _highElf.lore = "Proud denizens with powerful magic";
+
+            _darkElf.baseStats = new BaseStatSet(9, 11, 12, 9, 9, 1).setStealth(3);
+            _darkElf.size = Size.MEDIUM;
+            _darkElf.armor = Armor.DEFAULT;
+            _darkElf.abbrv = "De";
+            _darkElf.name = "Dark Elf";
+            _darkElf.lore = "An evil, cunning version of the high elf";
 
             _woodElf.baseStats = new BaseStatSet(7, 13, 11, 11, 11, 1);
             _woodElf.size = Size.MEDIUM;
@@ -92,6 +100,7 @@ namespace Dungeon_Crawl
                 _human,
                 _highElf,
                 _woodElf,
+                _darkElf,
                 _hillOrc,
                 _mountainDwarf,
                 _gnome,
