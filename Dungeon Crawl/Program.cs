@@ -200,7 +200,7 @@ namespace Dungeon_Crawl
                     {
                         s = "> " + s;
                     }
-                    if (player.inventoryEquip[x])
+                    if (player.inventoryEquip[x] || player.inventory[x].equipped)
                     {
                         s = s + " (Equipped)";
                     }
@@ -329,7 +329,7 @@ namespace Dungeon_Crawl
                     {
                         if (player.species != Species._faerie)
                         {
-                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && ((player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] != null) || (!player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] == null)))
+                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
                             {
                                 try
                                 {
@@ -386,9 +386,9 @@ namespace Dungeon_Crawl
                             msgLog.Add("You are intangible and cannot wield any items!");
                         }
                     }
-                    else if (!((player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] != null) || (!player.inventory[Program.selectedSlot].equipped && player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] == null)))
+                    else if (!player.canEquipSelectedItem())
                     {
-                        msgLog.Add("You already have something equipped in that slot!");
+                        msgLog.Add("You can't equip anything in that slot!");
                     }
                     iteration++;
                 }

@@ -34,10 +34,19 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
-            addToInventory(Item.get(0), 1, false);
+            addToInventory(Item.get(1), 1, false);
+            equipment = new Equipment();
             //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
         }
 
+        public Boolean canEquipSelectedItem()
+        {
+            if (inventoryStacks[Program.selectedSlot] > 0 && inventory[Program.selectedSlot].slotEquip > -1)
+            {
+                return ((inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] != null) || (!inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] == null));
+            }
+            return false;
+        }
 
         public static double calcInvWeight(Player p)
         {

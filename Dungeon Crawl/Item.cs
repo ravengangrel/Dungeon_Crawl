@@ -37,6 +37,20 @@ namespace Dungeon_Crawl
             return this;
         }
 
+        /// <summary>
+        /// Set the equip slot for that item
+        /// </summary>
+        /// <param name="i">
+        /// 0- Head
+        /// 1- Arms
+        /// 2- Hands
+        /// 3- Body
+        /// 4- Greaves
+        /// 5- Boots
+        /// 6- Ring
+        /// 7- Amulet
+        /// </param>
+        /// <returns></returns>
         public Item setEquipSlot(int i)
         {
             slotEquip = i;
@@ -95,6 +109,7 @@ namespace Dungeon_Crawl
         public static void init()
         {
             items[0] = new Item("Bread").setWeight(0.2).setEquippable(false).setEdible(true).setFood(1000); //Refill 1000 food
+            items[1] = new Item("Cloth Robe").setEquipSlot(3).setEquippable(true);
         }
 
         public Boolean Equals(Item i)

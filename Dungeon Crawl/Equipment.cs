@@ -22,7 +22,7 @@ namespace Dungeon_Crawl
             null, //head 0
             null, //arms 1
             null, //hands 2
-            null, //chest 3
+            null, //body 3
             null, //greaves 4
             null, //boots 5
             

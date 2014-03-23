@@ -74,6 +74,7 @@
     <Compile Include="Armor.cs" />
     <Compile Include="BaseStatSet.cs" />
     <Compile Include="Class.cs" />
+    <Compile Include="Equipment.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemCache.cs" />
     <Compile Include="Mob.cs" />
