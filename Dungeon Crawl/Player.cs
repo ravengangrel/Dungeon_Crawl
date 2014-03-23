@@ -16,7 +16,7 @@ namespace Dungeon_Crawl
         public Item[] inventory = new Item[30];
         public int[] inventoryStacks = new int[30];
         public Boolean[] inventoryEquip = new Boolean[30];
-        public int hunger = 15000;
+        public int hunger = 1000;
 
         //-5000 to -2500- Starving
         //-2500 to -1000- Hungry
@@ -37,12 +37,28 @@ namespace Dungeon_Crawl
             //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
         }
 
-        public void hurt(int amt, Boolean ignoreArmor)
+        public static string chooseHungerMsg()
+        {
+            if (World.rand.Next(2) == 0)
+            {
+                return "Your stomach growls...";
+            }
+            else
+            {
+                return "Your stomach rumbles...";
+            }
+        }
+
+        public void hurt(int amt, Boolean ignoreArmor, string s)
         {
             stats.health -= amt;
             if (stats.health < 0)
             {
                 stats.health = 0;
+            }
+            if (s != "")
+            {
+                Program.msgLog.Add(s);
             }
         }
 
@@ -114,7 +130,7 @@ namespace Dungeon_Crawl
             {
                 Console.SetCursorPosition(x, y + 10);
                 int adjHunger = (Math.Min(Math.Max(hunger, -5000), 7000) + 5000) / 1000;
-                ConsoleEx.TextColor(hungerColor(adjHunger - 1), ConsoleBackground.Black);
+                ConsoleEx.TextColor(hungerColor(Math.Max(adjHunger - 1, 0)), ConsoleBackground.Black);
                 Console.Write(calcHungerStatus() + " ");
                 for (int a = 0; a < adjHunger; a++)
                 {

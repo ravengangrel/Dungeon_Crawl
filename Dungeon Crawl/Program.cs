@@ -336,7 +336,7 @@ namespace Dungeon_Crawl
                     player.hunger--;
                     if (player.hunger < -4500 && World.rand.Next(100) < 73)
                     {
-                        player.hurt(World.rand.Next(4) + 1, true);
+                        player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
                     }
                 }
                 currTurn++;
