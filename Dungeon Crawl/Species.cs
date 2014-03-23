@@ -21,6 +21,7 @@ namespace Dungeon_Crawl
         public static Species _mountainDwarf = new Species();
         public static Species _gnome = new Species();
         public static Species _faerie = new Species();
+        public static Species _trollGnome = new Species();
 
         public static Species[] speciesList;
         
@@ -70,6 +71,12 @@ namespace Dungeon_Crawl
             _faerie.abbrv = "Fa";
             _faerie.name = "Faerie";
 
+            _trollGnome.baseStats = new BaseStatSet(10, 10, 8, 9, 16, 1);
+            _trollGnome.size = Size.SMALL;
+            _trollGnome.armor = Armor.DEFAULT;
+            _trollGnome.abbrv = "Tg";
+            _trollGnome.name = "Troll Gnome";
+
             //All accessible species
             //If a species is not in this list, it's not accessible by the player
             speciesList = new Species[] {
@@ -79,6 +86,7 @@ namespace Dungeon_Crawl
                 _hillOrc,
                 _mountainDwarf,
                 _gnome,
+                _trollGnome,
                 _faerie
             };
         }

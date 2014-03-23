@@ -16,7 +16,7 @@ namespace Dungeon_Crawl
         public Item[] inventory = new Item[30];
         public int[] inventoryStacks = new int[30];
         public Boolean[] inventoryEquip = new Boolean[30];
-        public int hunger = 400;
+        public int hunger = 1000;
 
         //-5000 to -2500- Starving
         //-2500 to -1000- Hungry
@@ -35,6 +35,31 @@ namespace Dungeon_Crawl
             stats.xp = 0;
             addToInventory(Item.get(0), 1);
             //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
+        }
+
+        public static string chooseHungerMsg()
+        {
+            if (World.rand.Next(2) == 0)
+            {
+                return "Your stomach growls...";
+            }
+            else
+            {
+                return "Your stomach rumbles...";
+            }
+        }
+
+        public void hurt(int amt, Boolean ignoreArmor, string s)
+        {
+            stats.health -= amt;
+            if (stats.health < 0)
+            {
+                stats.health = 0;
+            }
+            if (s != "")
+            {
+                Program.msgLog.Add(s);
+            }
         }
 
         public void addToInventory(Item i, int amt)
@@ -63,7 +88,12 @@ namespace Dungeon_Crawl
             if (status.hasAttr("Loot") || species == Species._mountainDwarf)
             {
                 stats.gold += (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))));
-                Program.msgLog.Add("You found " + addGold + " gold, and after some looking found " + (((int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))))) - addGold) + " more gold!");
+                Program.msgLog.Add("You found " + (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot")))) + " gold!");
+            }
+            else if (status.hasAttr("Greed") || species == Species._trollGnome)
+            {
+                stats.gold += (int)((float)addGold * (0.9f - (0.05f * status.getLvl("Greed"))));
+                Program.msgLog.Add("You found " + (int)((float)addGold * (0.9f - (0.05f * status.getLvl("Greed")))) + " gold!");
             }
             else
             {
@@ -104,8 +134,36 @@ namespace Dungeon_Crawl
             if (species != Species._faerie)
             {
                 Console.SetCursorPosition(x, y + 10);
-                Console.WriteLine(calcHungerStatus());
+                int adjHunger = (Math.Min(Math.Max(hunger, -5000), 7000) + 5000) / 1000;
+                ConsoleEx.TextColor(hungerColor(Math.Max(adjHunger - 1, 0)), ConsoleBackground.Black);
+                Console.Write(calcHungerStatus() + " ");
+                for (int a = 0; a < adjHunger; a++)
+                {
+                    ConsoleEx.TextColor(hungerColor(a), ConsoleBackground.Black);
+                    Console.Write("|");
+                }
+                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                Console.Write("\n");
             }
+        }
+
+        public ConsoleForeground hungerColor(int x)
+        {
+            ConsoleForeground[] colors = new ConsoleForeground[] {
+                ConsoleForeground.Maroon,
+                ConsoleForeground.Maroon,
+                ConsoleForeground.Red,
+                ConsoleForeground.Red,
+                ConsoleForeground.Red,
+                ConsoleForeground.Green,
+                ConsoleForeground.Green,
+                ConsoleForeground.Olive,
+                ConsoleForeground.Olive,
+                ConsoleForeground.DarkGreen,
+                ConsoleForeground.DarkGreen,
+                ConsoleForeground.DarkGreen
+            };
+            return colors[x];
         }
 
         public string calcHungerStatus()
