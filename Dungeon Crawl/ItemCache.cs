@@ -17,7 +17,7 @@ namespace Dungeon_Crawl
             }
             else
             {
-                items.Add(i, amt);
+                items.Add(i.clone(), amt);
             }
         }
     }

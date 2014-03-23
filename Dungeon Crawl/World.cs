@@ -137,6 +137,11 @@ namespace Dungeon_Crawl
                     {
                         gold[sX + cX, sY + cY] = rand.Next(1, 30);
                     }
+                    if (rand.Next(1800) == 0)
+                    {
+                        items[sX + cX, sY + cY] = new ItemCache();
+                        items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(4) + 2);
+                    }
                 }
             }
         }
