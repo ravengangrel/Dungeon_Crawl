@@ -331,7 +331,14 @@ namespace Dungeon_Crawl
                     }
                     iteration++;
                 }
-                player.hunger--;
+                if (player.species != Species._faerie)
+                {
+                    player.hunger--;
+                    if (player.hunger < -4500)
+                    {
+                        player.hurt(World.rand.Next(4) + 1, true);
+                    }
+                }
                 currTurn++;
             }
         }

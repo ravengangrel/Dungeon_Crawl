@@ -37,6 +37,15 @@ namespace Dungeon_Crawl
             //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
         }
 
+        public void hurt(int amt, Boolean ignoreArmor)
+        {
+            stats.health -= amt;
+            if (stats.health < 0)
+            {
+                stats.health = 0;
+            }
+        }
+
         public void addToInventory(Item i, int amt)
         {
             for (int x = 0; x < inventory.Length; x++)
