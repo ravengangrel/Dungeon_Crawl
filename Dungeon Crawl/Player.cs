@@ -12,6 +12,7 @@ namespace Dungeon_Crawl
         public StatSet stats;
         public Species species;
         public Class career;
+        public Equipment equipment;
         public StatusHandler status = new StatusHandler();
         public Item[] inventory = new Item[30];
         public int[] inventoryStacks = new int[30];
@@ -33,8 +34,31 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
-            addToInventory(Item.get(0), 1);
-            //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
+            addToInventory(Item.get(1), 1, false);
+            addToInventory(Item.get(0), 1, false);
+            equipment = new Equipment();
+        }
+
+        public Boolean canEquipSelectedItem()
+        {
+            if (inventoryStacks[Program.selectedSlot] > 0 && inventory[Program.selectedSlot].slotEquip > -1)
+            {
+                return ((inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] != null) || (!inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] == null));
+            }
+            return false;
+        }
+
+        public static double calcInvWeight(Player p)
+        {
+            double i = 0;
+            for (int x = 0; x < p.inventory.Length; x++)
+            {
+                if (p.inventoryStacks[x] > 0)
+                {
+                    i += p.inventory[x].weight * p.inventoryStacks[x];
+                }
+            }
+            return i;
         }
 
         public static string chooseHungerMsg()
@@ -62,7 +86,7 @@ namespace Dungeon_Crawl
             }
         }
 
-        public void addToInventory(Item i, int amt)
+        public void addToInventory(Item i, int amt, bool msg = true)
         {
             for (int x = 0; x < inventory.Length; x++)
             {
@@ -71,7 +95,10 @@ namespace Dungeon_Crawl
                     if (inventory[x].Equals(i))
                     {
                         inventoryStacks[x] += amt;
-                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        if (msg)
+                        {
+                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        }
                         return;
                     }
                     else
@@ -80,7 +107,10 @@ namespace Dungeon_Crawl
                         {
                             inventory[x] = i;
                             inventoryStacks[x] = amt;
-                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                            if (msg)
+                            {
+                                Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                            }
                             return;
                         }
                     }
@@ -91,7 +121,10 @@ namespace Dungeon_Crawl
                     {
                         inventory[x] = i;
                         inventoryStacks[x] = amt;
-                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        if (msg)
+                        {
+                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        }
                         return;
                     }
                 }
@@ -168,6 +201,10 @@ namespace Dungeon_Crawl
                 ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
                 Console.Write("\n");
             }
+            Console.SetCursorPosition(x, y + 12);
+            Console.Write("EV: " + stats.evasion);
+            Console.SetCursorPosition(x, y + 13);
+            Console.Write("DEF: " + stats.armor);
         }
 
         public ConsoleForeground hungerColor(int x)

@@ -13,6 +13,7 @@ namespace Dungeon_Crawl
         public int wisdom = 0;
         public int health = 0;
         public int mana = 0;
+        public int stealth = 0;
 
         public BaseStatSet(int s, int d, int i, int w, int h, int m)
         {
@@ -26,7 +27,13 @@ namespace Dungeon_Crawl
 
         public StatSet addStatMod(StatMod m)
         {
-            return new StatSet(strength + m.strength, dexterity + m.dexterity, intelligence + m.intelligence, wisdom + m.wisdom, health + m.health, mana + m.mana);
+            return new StatSet(strength + m.strength, dexterity + m.dexterity, intelligence + m.intelligence, wisdom + m.wisdom, health + m.health, mana + m.mana).setStealth(m.stealth + stealth);
+        }
+
+        public BaseStatSet setStealth(int i)
+        {
+            stealth = i;
+            return this;
         }
     }
 }

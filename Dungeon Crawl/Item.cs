@@ -18,6 +18,11 @@ namespace Dungeon_Crawl
         public Boolean discoveredBound = false;
         public Boolean edible = false;
         public Boolean consumable = false;
+        public Boolean equipped = false;
+
+        public int slotEquip = -1;
+        public int armor = 0;
+
 
         public static Item[] items = new Item[75000];
 
@@ -30,6 +35,32 @@ namespace Dungeon_Crawl
         {
             foodFill = i;
             setEdible(true);
+            return this;
+        }
+
+        /// <summary>
+        /// Set the equip slot for that item
+        /// </summary>
+        /// <param name="i">
+        /// 0- Head
+        /// 1- Arms
+        /// 2- Hands
+        /// 3- Body
+        /// 4- Greaves
+        /// 5- Boots
+        /// 6- Ring
+        /// 7- Amulet
+        /// </param>
+        /// <returns></returns>
+        public Item setEquipSlot(int i)
+        {
+            slotEquip = i;
+            return this;
+        }
+
+        public Item setArmor(int i)
+        {
+            armor = i;
             return this;
         }
 
@@ -85,6 +116,8 @@ namespace Dungeon_Crawl
         public static void init()
         {
             items[0] = new Item("Bread").setWeight(0.2).setEquippable(false).setEdible(true).setFood(1000); //Refill 1000 food
+            items[1] = new Item("Cloth Robe").setWeight(3).setArmor(1).setEquipSlot(3).setEquippable(true); //1 defense
+            items[2] = new Item("Grape").setWeight(0.02).setEquippable(false).setEdible(true).setFood(25); //Refill 25 food
         }
 
         public Boolean Equals(Item i)
@@ -96,5 +129,6 @@ namespace Dungeon_Crawl
             if (i.foodFill != foodFill) { return false; }
             return true;
         }
+
     }
 }

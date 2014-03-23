@@ -15,6 +15,7 @@ namespace Dungeon_Crawl
         public static Class _ranger = new Class();
         public static Class _mage = new Class();
         public static Class _samurai = new Class();
+        public static Class _stalker = new Class();
 
         public static Class[] classList;
 
@@ -33,6 +34,10 @@ namespace Dungeon_Crawl
             _mage.name = "Mage";
             _mage.abbrv = "Ma";
             _mage.statMod = new StatMod(-3, -2, 2, 2, -2, 3);
+
+            _stalker.name = "Stalker";
+            _stalker.abbrv = "St";
+            _stalker.statMod = new StatMod(-1, 3, -1, -2, -1, 0).setStealth(4); //2 stealth only counts as 1 point for stat purposes
             
             _samurai.name = "Samurai";
             _samurai.abbrv = "Sa";
@@ -44,7 +49,8 @@ namespace Dungeon_Crawl
             classList = new Class[] {
                 _fighter,
                 _ranger,
-                _mage
+                _mage,
+                _stalker
             };
         }
 

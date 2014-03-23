@@ -40,9 +40,16 @@ namespace Dungeon_Crawl
             //Draw the species list
             while (!hasSelectedSpecies)
             {
-                ConsoleEx.DrawRectangle(BorderStyle.LineSingle, 0, 0, 30, Species.speciesList.Length + 1, false);
-                Util.writeLn("Select a species", 1, 0);
+                string bufferClear = "";
+                for (int x = 0; x < 69; x++)
+                {
+                    bufferClear += " ";
+                }
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 70, Species.speciesList.Length + 3, false);
+                Util.writeLn("Select a species", 2, 0);
                 Species.drawAllSpecies();
+                Util.writeLn(bufferClear, 1, Species.speciesList.Length + 2);
+                Util.writeLn(Species.speciesList[selectedSpecies].lore, 1, Species.speciesList.Length + 2);
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 if (keyInfo.Key == ConsoleKey.DownArrow)
                 {
@@ -70,8 +77,15 @@ namespace Dungeon_Crawl
             selectedSpecies = 0;
             while (!hasSelectedClass)
             {
-                ConsoleEx.DrawRectangle(BorderStyle.LineSingle, 0, 0, 30, Class.classList.Length + 1, false);
-                Util.writeLn("Select a class--Species: " + currSpecies.abbrv, 1, 0);
+                ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, Class.classList.Length + 2, 70, Species.speciesList.Length + 3, false);
+                Util.writeLn("Select a species", Class.classList.Length + 4, 0);
+                Species.drawAllSpecies(Class.classList.Length + 2);
+                Util.writeLn(currSpecies.lore, 1, Species.speciesList.Length + 2 + Class.classList.Length + 2);
+
+                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 70, Class.classList.Length + 1, false);
+                Util.writeLn("Select a class--Species: " + currSpecies.abbrv, 2, 0);
                 Class.drawAllClasses();
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 if (keyInfo.Key == ConsoleKey.DownArrow)
@@ -102,6 +116,7 @@ namespace Dungeon_Crawl
             //Console.WriteLine("You are a " + player.identifier);
             Console.WriteLine();
             player.WriteStats();
+            player.stats.calcStats();
             Console.ReadLine();
             World.genMap();
             startGame();
@@ -185,7 +200,7 @@ namespace Dungeon_Crawl
                     {
                         s = "> " + s;
                     }
-                    if (player.inventoryEquip[x])
+                    if (player.inventoryEquip[x] || player.inventory[x].equipped)
                     {
                         s = s + " (Equipped)";
                     }
@@ -195,7 +210,7 @@ namespace Dungeon_Crawl
                     }
                     if (player.status.statusEffects.Count > 0)
                     {
-                        Util.writeLn(s, 90, 1 + x);
+                        Util.writeLn(s, 91, 1 + x);
                     }
                     else
                     {
@@ -211,7 +226,7 @@ namespace Dungeon_Crawl
                     }
                     if (player.status.statusEffects.Count > 0)
                     {
-                        Util.writeLn(s, 90, 1 + x);
+                        Util.writeLn(s, 91, 1 + x);
                     }
                     else
                     {
@@ -314,28 +329,44 @@ namespace Dungeon_Crawl
                     {
                         if (player.species != Species._faerie)
                         {
-                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable)
+                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
                             {
                                 try
                                 {
                                     if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
                                     {
-                                        player.inventoryEquip[Program.selectedSlot] = !player.inventoryEquip[Program.selectedSlot];
+                                        player.inventory[Program.selectedSlot].equipped = !player.inventory[Program.selectedSlot].equipped;
+                                        if (player.inventory[Program.selectedSlot].equipped)
+                                        {
+                                            player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
+                                        }
+                                        else
+                                        {
+                                            player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
+                                        }
                                         turn = false;
                                     }
-                                    else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventoryEquip[Program.selectedSlot])
+                                    else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventory[Program.selectedSlot].equipped)
                                     {
                                         msgLog.Add("You can't unequip a bound item!");
                                     }
                                 }
                                 catch
                                 {
-                                    player.inventoryEquip[Program.selectedSlot] = true;
+                                    player.inventory[Program.selectedSlot].equipped = true;
+                                    if (player.inventory[Program.selectedSlot].equipped)
+                                    {
+                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
+                                    }
+                                    else
+                                    {
+                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
+                                    }
                                     turn = false;
                                 }
                                 try
                                 {
-                                    if (player.inventoryEquip[Program.selectedSlot] && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
+                                    if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
                                     {
                                         player.inventory[Program.selectedSlot].discoveredBound = true;
                                     }
@@ -355,6 +386,13 @@ namespace Dungeon_Crawl
                             msgLog.Add("You are intangible and cannot wield any items!");
                         }
                     }
+                    else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
+                    {
+                        if (player.inventory[Program.selectedSlot].equippable)
+                        {
+                            msgLog.Add("You can't equip anything in that slot!");
+                        }
+                    }
                     iteration++;
                 }
                 if (player.species != Species._faerie)
@@ -367,6 +405,7 @@ namespace Dungeon_Crawl
                 }
                 Mob.updatePaths();
                 Mob.updateMobs();
+                player.stats.calcStats();
                 currTurn++;
             }
         }

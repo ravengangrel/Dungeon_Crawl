@@ -13,6 +13,7 @@ namespace Dungeon_Crawl
         public int wisdom = 0;
         public int health = 0;
         public int mana = 0;
+        public int stealth = 0;
 
         /// <summary>
         /// This is the constructor for a statistics modification
@@ -31,6 +32,12 @@ namespace Dungeon_Crawl
             wisdom = w;
             health = h;
             mana = m;
+        }
+
+        public StatMod setStealth(int i)
+        {
+            stealth = i;
+            return this;
         }
     }
 }

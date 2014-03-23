@@ -30,6 +30,10 @@ namespace Dungeon_Crawl
             colorFore = cF;
             colorBack = cB;
             permanent = perm;
+            if (perm)
+            {
+                timeLeft = 1;
+            }
         }
     }
 
