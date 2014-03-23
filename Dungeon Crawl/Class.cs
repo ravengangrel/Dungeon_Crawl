@@ -34,9 +34,9 @@ namespace Dungeon_Crawl
             _mage.abbrv = "Ma";
             _mage.statMod = new StatMod(-3, -2, 2, 2, -2, 3);
             
-            _mage.name = "Samurai";
-            _mage.abbrv = "Sa";
-            _mage.statMod = new StatMod(3, 3, 3, 1, -5, 3);
+            _samurai.name = "Samurai";
+            _samurai.abbrv = "Sa";
+            _samurai.statMod = new StatMod(3, 3, 3, 1, -5, 3);
 
 
             //All available classes
