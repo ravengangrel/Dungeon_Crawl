@@ -73,7 +73,7 @@ namespace Dungeon_Crawl
             _mountainDwarf.name = "Mountain Dwarf";
             _mountainDwarf.lore = "A subterrarean race who are skilled at making coin last";
 
-            _gnome.baseStats = new BaseStatSet(8, 14, 12, 9, 11, 1);
+            _gnome.baseStats = new BaseStatSet(8, 14, 10, 9, 11, 1).setStealth(4);
             _gnome.size = Size.TINY;
             _gnome.armor = Armor.DEFAULT;
             _gnome.abbrv = "Gn";
