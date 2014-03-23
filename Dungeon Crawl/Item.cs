@@ -116,8 +116,9 @@ namespace Dungeon_Crawl
         public static void init()
         {
             items[0] = new Item("Bread").setWeight(0.2).setEquippable(false).setEdible(true).setFood(1000); //Refill 1000 food
-            items[1] = new Item("Cloth Robe").setWeight(3).setArmor(1).setEquipSlot(3).setEquippable(true); //1 defense
+            items[1] = new Item("Cloth Robe").setWeight(3).setArmor(2).setEquipSlot(3).setEquippable(true); //1 defense
             items[2] = new Item("Grape").setWeight(0.02).setEquippable(false).setEdible(true).setFood(25); //Refill 25 food
+            items[3] = new Item("Dark Acolyte Robe").setWeight(3).setArmor(1).setEquipSlot(3).setEquippable(true); //1 defense
         }
 
         public Boolean Equals(Item i)

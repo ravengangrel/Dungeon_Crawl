@@ -34,7 +34,14 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
-            addToInventory(Item.get(1), 1, false);
+            if (species == Species._darkElf)
+            {
+                addToInventory(Item.get(3), 1, false);
+            }
+            else
+            {
+                addToInventory(Item.get(1), 1, false);
+            }
             addToInventory(Item.get(0), 1, false);
             equipment = new Equipment();
         }
