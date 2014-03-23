@@ -12,6 +12,7 @@ namespace Dungeon_Crawl
         public int dexterity = 0;
         public int intelligence = 0;
         public int wisdom = 0;
+        public int stealth = 0;
 
         public int health = 0;
         public int mana = 0;
@@ -37,19 +38,25 @@ namespace Dungeon_Crawl
             maxMana = m;
         }
 
+        public StatSet setStealth(int i)
+        {
+            stealth = i;
+            return this;
+        }
+
         public StatSet addStatMod(StatMod m)
         {
-            return new StatSet(strength + m.strength, dexterity + m.dexterity, intelligence + m.intelligence, wisdom + m.wisdom, health + m.health, mana + m.mana);
+            return new StatSet(strength + m.strength, dexterity + m.dexterity, intelligence + m.intelligence, wisdom + m.wisdom, health + m.health, mana + m.mana).setStealth(m.stealth + stealth);
         }
 
         public StatSet adjust()
         {
-            return new StatSet(Math.Max(strength, 0), Math.Max(dexterity, 0), Math.Max(intelligence, 0), Math.Max(wisdom, 0), Math.Max(health, 0), Math.Max(mana, 0));
+            return new StatSet(Math.Max(strength, 0), Math.Max(dexterity, 0), Math.Max(intelligence, 0), Math.Max(wisdom, 0), Math.Max(health, 0), Math.Max(mana, 0)).setStealth(Math.Max(stealth, 0));
         }
 
         public void calcStats()
         {
-            evasion = Math.Max(0, (int)Math.Floor(((dexterity / 3) + 1) - (Player.calcInvWeight(Program.player) / 1000)));
+            evasion = Math.Max(0, (int)(((int)Math.Floor(((dexterity / 3) + 1) - (Player.calcInvWeight(Program.player) / 1000))) + (stealth / 2)));
         }
     }
 }
