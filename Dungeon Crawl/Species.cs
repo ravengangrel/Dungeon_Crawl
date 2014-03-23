@@ -45,7 +45,7 @@ namespace Dungeon_Crawl
             _highElf.name = "High Elf";
             _highElf.lore = "Proud denizens with powerful magic";
 
-            _darkElf.baseStats = new BaseStatSet(9, 11, 12, 9, 9, 1).setStealth(3);
+            _darkElf.baseStats = new BaseStatSet(9, 11, 12, 9, 9, 1).setStealth(6);
             _darkElf.size = Size.MEDIUM;
             _darkElf.armor = Armor.DEFAULT;
             _darkElf.abbrv = "De";
