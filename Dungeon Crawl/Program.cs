@@ -294,6 +294,17 @@ namespace Dungeon_Crawl
                             Program.selectedSlot = 0;
                         }
                     }
+                    if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock)
+                    {
+                        if (player.inventoryStacks[Program.selectedSlot] > 0)
+                        {
+                            player.inventory[Program.selectedSlot].useItem(player);
+                            if (player.inventory[Program.selectedSlot].consumable)
+                            {
+                                player.inventoryStacks[Program.selectedSlot]--;
+                            }
+                        }
+                    }
                     if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
                     {
                         if (player.species != Species._faerie)
