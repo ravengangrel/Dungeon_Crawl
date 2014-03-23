@@ -116,6 +116,7 @@ namespace Dungeon_Crawl
             //Console.WriteLine("You are a " + player.identifier);
             Console.WriteLine();
             player.WriteStats();
+            player.stats.calcStats();
             Console.ReadLine();
             World.genMap();
             startGame();

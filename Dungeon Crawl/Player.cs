@@ -33,7 +33,7 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
-            addToInventory(Item.get(0), 1);
+            addToInventory(Item.get(0), 1, false);
             //status.addStatus(new Status("Loot", 40000, 3, ConsoleForeground.Yellow, ConsoleBackground.Black));
         }
 
@@ -43,7 +43,10 @@ namespace Dungeon_Crawl
             double i = 0;
             for (int x = 0; x < p.inventory.Length; x++)
             {
-                i += p.inventory[x].weight * p.inventoryStacks[x];
+                if (p.inventoryStacks[x] > 0)
+                {
+                    i += p.inventory[x].weight * p.inventoryStacks[x];
+                }
             }
             return i;
         }
@@ -73,7 +76,7 @@ namespace Dungeon_Crawl
             }
         }
 
-        public void addToInventory(Item i, int amt)
+        public void addToInventory(Item i, int amt, bool msg = true)
         {
             for (int x = 0; x < inventory.Length; x++)
             {
@@ -82,7 +85,10 @@ namespace Dungeon_Crawl
                     if (inventory[x].Equals(i))
                     {
                         inventoryStacks[x] += amt;
-                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        if (msg)
+                        {
+                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        }
                         return;
                     }
                     else
@@ -91,7 +97,10 @@ namespace Dungeon_Crawl
                         {
                             inventory[x] = i;
                             inventoryStacks[x] = amt;
-                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                            if (msg)
+                            {
+                                Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                            }
                             return;
                         }
                     }
@@ -102,7 +111,10 @@ namespace Dungeon_Crawl
                     {
                         inventory[x] = i;
                         inventoryStacks[x] = amt;
-                        Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        if (msg)
+                        {
+                            Program.msgLog.Add(amt + " " + i.name + " added to inventory");
+                        }
                         return;
                     }
                 }
