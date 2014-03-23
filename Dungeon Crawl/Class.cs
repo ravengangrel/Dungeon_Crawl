@@ -15,6 +15,8 @@ namespace Dungeon_Crawl
         public static Class _ranger = new Class();
         public static Class _mage = new Class();
         public static Class _samurai = new Class();
+        public static Class _ninja = new Class();
+        public static Class _paladin = new Class();
 
         public static Class[] classList;
 
@@ -37,6 +39,14 @@ namespace Dungeon_Crawl
             _samurai.name = "Samurai";
             _samurai.abbrv = "Sa";
             _samurai.statMod = new StatMod(3, 3, 3, 1, -5, 3);
+            
+            _ninja.name = "Ninja";
+            _ninja.abbrv = "Ni";
+            _ninja.statMod = new StatMod(5, 8, 7, 9, 5, 10);
+            
+            _paladin.name = "Paladin";
+            _paladin.abbrv = "Pa";
+            _paladin.statMod = new StatMod(30, 5, 5, 5, 5, 4);
 
 
             //All available classes
