@@ -66,12 +66,24 @@ namespace Dungeon_Crawl
         {
             for (int x = 0; x < inventory.Length; x++)
             {
-                if (inventory[x] == i)
+                try
                 {
-                    inventoryStacks[x] += amt;
-                    return;
+                    if (inventory[x].Equals(i))
+                    {
+                        inventoryStacks[x] += amt;
+                        return;
+                    }
+                    else
+                    {
+                        if (inventoryStacks[x] == 0)
+                        {
+                            inventory[x] = i;
+                            inventoryStacks[x] = amt;
+                            return;
+                        }
+                    }
                 }
-                else
+                catch
                 {
                     if (inventoryStacks[x] == 0)
                     {

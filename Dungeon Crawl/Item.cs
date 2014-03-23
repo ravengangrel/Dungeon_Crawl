@@ -86,5 +86,15 @@ namespace Dungeon_Crawl
         {
             items[0] = new Item("Bread").setWeight(0.2).setEquippable(false).setEdible(true).setFood(1000); //Refill 1000 food
         }
+
+        public Boolean Equals(Item i)
+        {
+            //This needs to be updated whenever we add new attributes
+            if (i.name != name) { return false; }
+            if (i.bound != bound) { return false; } else { i.discoveredBound = discoveredBound; }
+            if (i.edible != edible) { return false; }
+            if (i.foodFill != foodFill) { return false; }
+            return true;
+        }
     }
 }
