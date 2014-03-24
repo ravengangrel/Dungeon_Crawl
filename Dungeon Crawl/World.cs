@@ -55,6 +55,12 @@ namespace Dungeon_Crawl
             deepWater.moveCost = 3;
         }
 
+        public void drawClary()
+        {
+            ConsoleEx.TextColor(ConsoleForeground.Magenta, ConsoleBackground.Magenta);
+            Console.Write(icon);
+        }
+
         public void draw()
         {
             ConsoleEx.TextColor(colorFore, colorBack);
@@ -70,12 +76,20 @@ namespace Dungeon_Crawl
         public static int[,] gold = new int[1000, 1000];
         public static ItemCache[,] items = new ItemCache[1000, 1000];
         public static Random rand = new Random();
+        public static Point suggestedExit;
 
         public static void draw(int x, int y)
         {
             if (isEmpty(x, y))
             {
-                map[x, y].draw();
+                if (Program.player.status.hasAttr("Clairvoyance") && Program.player.pathToExit.points.Contains(new Point(x, y)))
+                {
+                    map[x, y].drawClary();
+                }
+                else
+                {
+                    map[x, y].draw();
+                }
             }
             else
             {
@@ -112,15 +126,19 @@ namespace Dungeon_Crawl
             map[sX + (1 - rand.Next(3)), sY + (1 - rand.Next(3))] = Tile.stairCase;
             Program.renderX = sX;
             Program.renderY = sY;
-            Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
+            //Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
             int cX = 0;
             int cY = 0;
             bool genWater = false;
             bool genDeep = false;
-            for (int z = 0; z < rand.Next(2, 6) + 3; z++)
+            for (int z = 0; z < 6; z++)
             {
                 for (int a = 0; a < rand.Next(80000, 150000); a++)
                 {
+                    if (map[sX + cX, sY + cY] != Tile.stoneWall && rand.Next(4) == 0)
+                    {
+                        a--;
+                    }
                     if (rand.Next(2) == 0)
                     {
                         if (rand.Next(2) == 0)
@@ -176,27 +194,31 @@ namespace Dungeon_Crawl
                         else
                         {
                             map[sX + cX, sY + cY] = Tile.stairCase;
+                            suggestedExit = new Point(sX + cX, sY + cY);
                         }
-                        if (rand.Next(1200) == 0)
+                        if (map[sX + cX, sY + cY] != Tile.deepWater && map[sX + cX, sY + cY] != Tile.shallowWater && map[sX + cX, sY + cY] != Tile.stairCase)
                         {
-                            gold[sX + cX, sY + cY] = rand.Next(1, 30);
-                        }
-                        if (rand.Next(1400) == 0)
-                        {
-                            items[sX + cX, sY + cY] = new ItemCache();
-                            if (rand.Next(2) == 0)
+                            if (rand.Next(1200) == 0)
                             {
-                                items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
+                                gold[sX + cX, sY + cY] = rand.Next(1, 30);
                             }
-                            else
+                            if (rand.Next(1400) == 0)
                             {
-                                if (Program.player.species != Species._darkElf)
+                                items[sX + cX, sY + cY] = new ItemCache();
+                                if (rand.Next(2) == 0)
                                 {
-                                    items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.NextBool()), 1);
+                                    items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
                                 }
                                 else
                                 {
-                                    items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.NextBool()), 1);
+                                    if (Program.player.species != Species._darkElf)
+                                    {
+                                        items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.NextBool()), 1);
+                                    }
+                                    else
+                                    {
+                                        items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.NextBool()), 1);
+                                    }
                                 }
                             }
                         }

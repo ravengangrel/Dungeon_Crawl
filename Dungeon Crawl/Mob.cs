@@ -86,9 +86,11 @@ namespace Dungeon_Crawl
 
         public static void updatePaths()
         {
+            int count = 0;
             foreach (Mob m in mobList)
             {
-                m.pathToPlayer = Path.calcPath(new Point(m.posX, m.posY), new Point(Program.renderX, Program.renderY), true, false, 1000);
+                m.pathToPlayer = Path.calcPath(new Point(m.posX, m.posY), new Point(Program.renderX, Program.renderY), (m.name + count), true, false, 4000);
+                count++;
             }
         }
     }
