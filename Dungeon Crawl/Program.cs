@@ -538,6 +538,7 @@ namespace Dungeon_Crawl
                     Util.writeLn("Press enter to exit...", 2, 2);
                     Util.writeLn(showingItem.name + " (weight: " + showingItem.weight + ")", 2, 4);
                     Util.writeLn(showingItem.compileTags(), 2, 5);
+                    Util.writeLn(showingItem.compileEnchant(), 2, 6);
                     Console.SetCursorPosition(Console.LargestWindowWidth - 1, Console.LargestWindowHeight - 1);
                     Console.ReadKey();
                     showingItem = null;
