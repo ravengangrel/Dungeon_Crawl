@@ -16,6 +16,9 @@ namespace Dungeon_Crawl
 
         public static Tile stoneWall = new Tile();
         public static Tile stoneFloor = new Tile();
+        public static Tile shallowWater = new Tile();
+        public static Tile deepWater = new Tile();
+        public static Tile stairCase = new Tile();
 
         public static void init()
         {
@@ -30,6 +33,23 @@ namespace Dungeon_Crawl
             stoneFloor.lore = "A stone floor";
             stoneFloor.icon = ' ';
             stoneFloor.solid = false;
+
+            stairCase.name = "Staircase";
+            stairCase.lore = "A staircase";
+            stairCase.icon = '#';
+            stairCase.solid = false;
+
+            shallowWater.name = "Shallow Water";
+            shallowWater.lore = "Looks wet";
+            shallowWater.icon = '~';
+            shallowWater.solid = false;
+            shallowWater.colorFore = ConsoleForeground.Blue;
+            
+            deepWater.name = "Deep Water";
+            deepWater.lore = "Looks really wet";
+            deepWater.icon = '~';
+            deepWater.solid = false;
+            deepWater.colorFore = ConsoleForeground.Navy;
         }
 
         public void draw()
@@ -41,12 +61,14 @@ namespace Dungeon_Crawl
 
     public class World
     {
+        public static string area = "Dungeon";
+        public static int floor = 1;
         public static Tile[,] map = new Tile[1000, 1000];
         public static int[,] gold = new int[1000, 1000];
         public static ItemCache[,] items = new ItemCache[1000, 1000];
         public static Random rand = new Random();
 
-        public static void draw(int x , int y)
+        public static void draw(int x, int y)
         {
             if (isEmpty(x, y))
             {
@@ -83,16 +105,18 @@ namespace Dungeon_Crawl
                 }
             }
             int sX = rand.Next(250, 750);
-            int sY = rand.Next(250, 750);  
-            map[sX, sY] = Tile.stoneFloor;
+            int sY = rand.Next(250, 750);
+            map[sX + (1 - rand.Next(3)), sY + (1 - rand.Next(3))] = Tile.stairCase;
             Program.renderX = sX;
             Program.renderY = sY;
             //Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
             int cX = 0;
             int cY = 0;
+            bool genWater = false;
+            bool genDeep = false;
             for (int z = 0; z < rand.Next(2, 6) + 3; z++)
             {
-                for (int a = 0; a < rand.Next(8000, 15000); a++)
+                for (int a = 0; a < rand.Next(80000, 150000); a++)
                 {
                     if (rand.Next(2) == 0)
                     {
@@ -132,15 +156,62 @@ namespace Dungeon_Crawl
                     {
                         cY--;
                     }
-                    map[sX + cX, sY + cY] = Tile.stoneFloor;
-                    if (rand.Next(1200) == 0)
+                    if (rand.Next(2000) == 0 && !genWater)
                     {
-                        gold[sX + cX, sY + cY] = rand.Next(1, 30);
+                        genWater = !genWater;
                     }
-                    if (rand.Next(1800) == 0)
+                    if (rand.Next(400) == 0 && genWater)
                     {
-                        items[sX + cX, sY + cY] = new ItemCache();
-                        items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
+                        genWater = !genWater;
+                    }
+                    if (!genWater)
+                    {
+                        if (rand.Next(600) != 0)
+                        {
+                            map[sX + cX, sY + cY] = Tile.stoneFloor;
+                        }
+                        else
+                        {
+                            map[sX + cX, sY + cY] = Tile.stairCase;
+                        }
+                        if (rand.Next(1200) == 0)
+                        {
+                            gold[sX + cX, sY + cY] = rand.Next(1, 30);
+                        }
+                        if (rand.Next(1400) == 0)
+                        {
+                            items[sX + cX, sY + cY] = new ItemCache();
+                            if (rand.Next(2) == 0)
+                            {
+                                items[sX + cX, sY + cY].addItem(Item.items[0], rand.Next(2) + 1);
+                            }
+                            else
+                            {
+                                if (Program.player.species != Species._darkElf)
+                                {
+                                    items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.NextBool()), 1);
+                                }
+                                else
+                                {
+                                    items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.NextBool()), 1);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (rand.Next(70) == 0)
+                        {
+                            genDeep = !genDeep;
+                        }
+                        if (genDeep)
+                        {
+                            map[sX + cX, sY + cY] = Tile.deepWater;
+                        }
+                        else
+                        {
+                            map[sX + cX, sY + cY] = Tile.shallowWater;
+                        }
                     }
                 }
             }

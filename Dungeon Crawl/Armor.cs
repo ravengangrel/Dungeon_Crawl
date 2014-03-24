@@ -9,6 +9,7 @@ namespace Dungeon_Crawl
     {
         DEFAULT,
         FAERIE,
+        MERFOLK,
         NONE
     }
 }

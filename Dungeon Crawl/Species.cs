@@ -24,6 +24,7 @@ namespace Dungeon_Crawl
         public static Species _faerie = new Species();
         public static Species _trollGnome = new Species();
         public static Species _darkElf = new Species();
+        public static Species _merfolk = new Species();
 
         public static Species[] speciesList;
         
@@ -37,6 +38,13 @@ namespace Dungeon_Crawl
             _human.abbrv = "Hu";
             _human.name = "Human";
             _human.lore = "A race of people who live above the earth";
+
+            _merfolk.baseStats = new BaseStatSet(8, 11, 12, 8, 15, 0);
+            _merfolk.size = Size.MEDIUM;
+            _merfolk.armor = Armor.MERFOLK;
+            _merfolk.abbrv = "Mf";
+            _merfolk.name = "Merfolk";
+            _merfolk.lore = "Citizens of the oceans, these are amphibious";
 
             _highElf.baseStats = new BaseStatSet(9, 11, 12, 10, 10, 2);
             _highElf.size = Size.MEDIUM;
@@ -98,6 +106,7 @@ namespace Dungeon_Crawl
             //If a species is not in this list, it's not accessible by the player
             speciesList = new Species[] {
                 _human,
+                _merfolk,
                 _highElf,
                 _woodElf,
                 _darkElf,
