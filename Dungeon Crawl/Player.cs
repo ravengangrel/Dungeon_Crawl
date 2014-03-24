@@ -34,16 +34,6 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
-            /*
-            if (species == Species._darkElf)
-            {
-                addToInventory(Item.get(3), 1, false);
-            }
-            else
-            {
-                addToInventory(Item.get(1), 1, false);
-            }
-            */
             if (species != Species._darkElf)
             {
                 addToInventory(Item.get(4), 1, false);
@@ -56,12 +46,13 @@ namespace Dungeon_Crawl
             }
             else
             {
+                status.addStatus(new Status("Shadowbound", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
                 addToInventory(Item.get(4).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(5).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(6).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(7).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(8).addBrand("holy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(9).addBrand("holy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(8).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(9).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(0), 1, false);
             }
             equipment = new Equipment();
@@ -70,7 +61,7 @@ namespace Dungeon_Crawl
 
         public void update()
         {
-            if (species == Species._darkElf)
+            if (status.hasAttr("Shadowbound"))
             {
                 status.removeAttr("Divine Wrath");
                 int wrathCounter = 0;
@@ -87,6 +78,10 @@ namespace Dungeon_Crawl
                 if (wrathCounter > 0)
                 {
                     status.addStatus(new Status("Divine Wrath", wrathCounter, true, ConsoleForeground.White, ConsoleBackground.Black));
+                }
+                if (World.rand.Next(3) != 0)
+                {
+                    hurt(status.getLvl("Divine Wrath"), true, "The ancients strike against you for tainting their blessings!");
                 }
             }
         }
@@ -145,7 +140,7 @@ namespace Dungeon_Crawl
             {
                 stats.health = 0;
             }
-            if (s != "")
+            if (s != "" && amt > 0)
             {
                 Program.msgLog.Add(s);
             }
