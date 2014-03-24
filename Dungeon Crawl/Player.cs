@@ -60,6 +60,10 @@ namespace Dungeon_Crawl
             {
                 status.addStatus(new Status("Magic Sight", 1, true, ConsoleForeground.Yellow, ConsoleBackground.Black));
             }
+            if (species == Species._woodElf)
+            {
+                status.addStatus(new Status("rPoison", 1, true, ConsoleForeground.Green, ConsoleBackground.Black));
+            }
             equipment = new Equipment();
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
