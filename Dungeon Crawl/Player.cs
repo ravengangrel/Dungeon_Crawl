@@ -19,6 +19,8 @@ namespace Dungeon_Crawl
         public Boolean[] inventoryEquip = new Boolean[39];
         public int hunger = 1000;
 
+        public List<Ability> abilities = new List<Ability>();
+
         //-5000 to -2500- Starving
         //-2500 to -1000- Hungry
         //-1000 to 0- Slightly Hungry
@@ -70,6 +72,7 @@ namespace Dungeon_Crawl
                 status.addStatus(new Status("Swimmer", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
             }
             equipment = new Equipment();
+            abilities.Add(new Ability("Rest and Heal", 0, 0));
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
 

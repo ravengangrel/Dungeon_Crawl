@@ -23,6 +23,8 @@ namespace Dungeon_Crawl
 
         public static Item showingItem = null;
 
+        public static bool showAbilities = false;
+
         static void Main(string[] args)
         {
             Console.WindowWidth = Console.LargestWindowWidth;
@@ -198,50 +200,91 @@ namespace Dungeon_Crawl
                 ConsoleEx.DrawRectangle(BorderStyle.Text, 54, 0, 35, player.status.statusEffects.Count + 1, false);
                 player.status.drawStatus(55, 1);
             }
-            for (int x = 0; x < player.inventory.Length; x++)
+            if (!showAbilities)
             {
-                if (player.inventoryStacks[x] > 0)
+                for (int x = 0; x < player.inventory.Length; x++)
                 {
-                    string s = player.inventoryStacks[x] + " " + player.inventory[x].name;
-                    if (Program.selectedSlot == x)
+                    if (player.inventoryStacks[x] > 0)
                     {
-                        s = "> " + s;
-                    }
-                    if (player.inventoryEquip[x] || player.inventory[x].equipped)
-                    {
-                        s = s + " (Equipped)";
-                    }
-                    if (player.inventory[x].bound && player.inventory[x].discoveredBound)
-                    {
-                        s = s + " (Bound)";
-                    }
-                    if (player.status.statusEffects.Count > 0)
-                    {
-                        Util.writeLn(s, 91, 1 + x);
+                        string s = player.inventoryStacks[x] + " " + player.inventory[x].name;
+                        if (Program.selectedSlot == x)
+                        {
+                            s = "> " + s;
+                        }
+                        if (player.inventoryEquip[x] || player.inventory[x].equipped)
+                        {
+                            s = s + " (Equipped)";
+                        }
+                        if (player.inventory[x].bound && player.inventory[x].discoveredBound)
+                        {
+                            s = s + " (Bound)";
+                        }
+                        if (player.status.statusEffects.Count > 0)
+                        {
+                            Util.writeLn(s, 91, 1 + x);
+                        }
+                        else
+                        {
+                            Util.writeLn(s, 54, 1 + x);
+                        }
                     }
                     else
                     {
-                        Util.writeLn(s, 54, 1 + x);
+                        string s = "Empty Slot";
+                        if (Program.selectedSlot == x)
+                        {
+                            s = "> " + s;
+                        }
+                        if (player.status.statusEffects.Count > 0)
+                        {
+                            Util.writeLn(s, 91, 1 + x);
+                        }
+                        else
+                        {
+                            Util.writeLn(s, 54, 1 + x);
+                        }
+                        player.inventory[x] = null;
+                        player.inventoryStacks[x] = 0;
+                        player.inventoryEquip[x] = false;
                     }
                 }
-                else
+            }
+            else
+            {
+                int iter = 0;
+                string s = "";
+                foreach (Ability a in player.abilities)
                 {
-                    string s = "Empty Slot";
-                    if (Program.selectedSlot == x)
+                    if (iter == Program.selectedSlot)
                     {
-                        s = "> " + s;
+                        s = "> ";
+                    }
+                    s += a.name;
+                    if (a.etherCost > 0)
+                    {
+                        s += "(costs " + a.etherCost + " ether";
+                        if (a.healthCost > 0)
+                        {
+                            s += " and " + a.healthCost + " health)";
+                        }
+                        else
+                        {
+                            s += ")";
+                        }
+                    }
+                    if (a.healthCost > 0 && a.etherCost <= 0)
+                    {
+                        s += "(costs " + a.healthCost + " health)";
                     }
                     if (player.status.statusEffects.Count > 0)
                     {
-                        Util.writeLn(s, 91, 1 + x);
+                        Util.writeLn(s, 91, 1 + iter);
                     }
                     else
                     {
-                        Util.writeLn(s, 54, 1 + x);
+                        Util.writeLn(s, 54, 1 + iter);
                     }
-                    player.inventory[x] = null;
-                    player.inventoryStacks[x] = 0;
-                    player.inventoryEquip[x] = false;
+                    iter++;
                 }
             }
             ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 41, 88, 6, false);
@@ -305,25 +348,51 @@ namespace Dungeon_Crawl
                             World.items[renderX, renderY] = null;
                         }
                         turn = false;
+                        if (keyInfo.Key == ConsoleKey.A)
+                        {
+                            showAbilities = !showAbilities;
+                            turn = true;
+                        }
                         if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
                         {
                             turn = true;
                             Program.selectedSlot--;
                             if (Program.selectedSlot < 0)
                             {
-                                Program.selectedSlot = player.inventory.Length - 1;
+                                if (!showAbilities)
+                                {
+                                    Program.selectedSlot = player.inventory.Length - 1;
+                                }
+                                else
+                                {
+                                    Program.selectedSlot = player.abilities.Count - 1;
+                                }
                             }
                         }
                         if (keyInfo.Key == ConsoleKey.S && !Console.CapsLock)
                         {
                             turn = true;
                             Program.selectedSlot++;
-                            if (Program.selectedSlot > player.inventory.Length - 1)
+                            if (showAbilities)
                             {
-                                Program.selectedSlot = 0;
+                                if (Program.selectedSlot > player.abilities.Count - 1)
+                                {
+                                    Program.selectedSlot = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (Program.selectedSlot > player.inventory.Length - 1)
+                                {
+                                    Program.selectedSlot = 0;
+                                }
                             }
                         }
-                        if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock)
+                        if (keyInfo.Key == ConsoleKey.Enter && showAbilities)
+                        {
+                            player.abilities[Program.selectedSlot].useAbility(player);
+                        }
+                        if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock && !showAbilities)
                         {
                             if (player.inventoryStacks[Program.selectedSlot] > 0)
                             {
@@ -334,11 +403,11 @@ namespace Dungeon_Crawl
                                 }
                             }
                         }
-                        if (keyInfo.Key == ConsoleKey.I && !Console.CapsLock)
+                        if (keyInfo.Key == ConsoleKey.I && !Console.CapsLock && !showAbilities)
                         {
                             showingItem = player.inventory[Program.selectedSlot];
                         }
-                        if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
+                        if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock && !showAbilities)
                         {
                             if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
                             {
