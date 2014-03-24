@@ -18,6 +18,7 @@ namespace Dungeon_Crawl
         public static Tile stoneFloor = new Tile();
         public static Tile shallowWater = new Tile();
         public static Tile deepWater = new Tile();
+        public static Tile stairCase = new Tile();
 
         public static void init()
         {
@@ -32,6 +33,11 @@ namespace Dungeon_Crawl
             stoneFloor.lore = "A stone floor";
             stoneFloor.icon = ' ';
             stoneFloor.solid = false;
+
+            stairCase.name = "Staircase";
+            stairCase.lore = "A staircase";
+            stairCase.icon = '#';
+            stairCase.solid = false;
 
             shallowWater.name = "Shallow Water";
             shallowWater.lore = "Looks wet";
@@ -55,6 +61,8 @@ namespace Dungeon_Crawl
 
     public class World
     {
+        public static string area = "Dungeon";
+        public static int floor = 1;
         public static Tile[,] map = new Tile[1000, 1000];
         public static int[,] gold = new int[1000, 1000];
         public static ItemCache[,] items = new ItemCache[1000, 1000];
@@ -98,7 +106,7 @@ namespace Dungeon_Crawl
             }
             int sX = rand.Next(250, 750);
             int sY = rand.Next(250, 750);
-            map[sX, sY] = Tile.stoneFloor;
+            map[sX + (1 - rand.Next(3)), sY + (1 - rand.Next(3))] = Tile.stairCase;
             Program.renderX = sX;
             Program.renderY = sY;
             //Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
@@ -158,7 +166,14 @@ namespace Dungeon_Crawl
                     }
                     if (!genWater)
                     {
-                        map[sX + cX, sY + cY] = Tile.stoneFloor;
+                        if (rand.Next(600) != 0)
+                        {
+                            map[sX + cX, sY + cY] = Tile.stoneFloor;
+                        }
+                        else
+                        {
+                            map[sX + cX, sY + cY] = Tile.stairCase;
+                        }
                         if (rand.Next(1200) == 0)
                         {
                             gold[sX + cX, sY + cY] = rand.Next(1, 30);

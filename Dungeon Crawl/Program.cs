@@ -193,7 +193,7 @@ namespace Dungeon_Crawl
             Console.SetCursorPosition(2, 27);
             Console.WriteLine("Turn " + currTurn);
             Console.SetCursorPosition(2, 0);
-            Console.Write("Pos: " + renderX + "/" + renderY);
+            Console.Write(World.area + ":" + World.floor);
             player.WriteRPGStats(28, 1);
             if (player.status.statusEffects.Count > 0)
             {
@@ -336,6 +336,12 @@ namespace Dungeon_Crawl
                         if (keyInfo.Key == ConsoleKey.UpArrow && canMoveUp())
                         {
                             renderY = Math.Max(renderY - 1, 0);
+                        }
+                        if (World.map[renderX, renderY] == Tile.stairCase)
+                        {
+                            msgLog.Add("You descend into the darkness...");
+                            World.floor++;
+                            World.genMap();
                         }
                         if (World.gold[renderX, renderY] > 0)
                         {
