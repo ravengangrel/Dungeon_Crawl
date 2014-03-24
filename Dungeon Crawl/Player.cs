@@ -72,7 +72,8 @@ namespace Dungeon_Crawl
                 status.addStatus(new Status("Swimmer", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
             }
             equipment = new Equipment();
-            abilities.Add(new Ability("Rest and Heal", 0, 0));
+            abilities.Add(new Ability("Rest and Heal", AbilityEffect.RESTHEAL, 0, 0));
+            stats.health = stats.maxHealth / 4;
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
 
