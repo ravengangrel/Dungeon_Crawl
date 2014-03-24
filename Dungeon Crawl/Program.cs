@@ -412,6 +412,13 @@ namespace Dungeon_Crawl
                                 {
                                 }
                             }
+                            else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
+                            {
+                                if (player.inventory[Program.selectedSlot].equippable)
+                                {
+                                    msgLog.Add("You can't equip anything in that slot!");
+                                }
+                            }
                             else
                             {
                                 turn = true;
@@ -421,13 +428,6 @@ namespace Dungeon_Crawl
                             //    turn = true;
                             //    msgLog.Add("You are intangible and cannot wield any items!");
                             //}
-                        }
-                        else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
-                        {
-                            if (player.inventory[Program.selectedSlot].equippable)
-                            {
-                                msgLog.Add("You can't equip anything in that slot!");
-                            }
                         }
                         iteration++;
                     }

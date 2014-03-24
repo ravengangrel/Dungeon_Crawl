@@ -59,6 +59,7 @@ namespace Dungeon_Crawl
             if (species == Species._faerie)
             {
                 status.addStatus(new Status("Magic Sight", 1, true, ConsoleForeground.Yellow, ConsoleBackground.Black));
+                status.addStatus(new Status("Fly", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
             }
             if (species == Species._woodElf)
             {
