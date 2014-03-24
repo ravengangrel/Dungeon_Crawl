@@ -21,6 +21,8 @@ namespace Dungeon_Crawl
 
         public static List<string> msgLog = new List<string>();
 
+        public static Item showingItem = null;
+
         static void Main(string[] args)
         {
             Console.WindowWidth = Console.LargestWindowWidth;
@@ -261,93 +263,117 @@ namespace Dungeon_Crawl
             Boolean turn = false;
             while (true)
             {
-                if (!turn)
+                if (showingItem == null)
                 {
-                    renderGame();
-                    turn = true;
-                }
-                int iteration = 0;
-                while (turn)
-                {
-                    if (iteration > 0)
+                    if (!turn)
                     {
                         renderGame();
-                    }
-                    ConsoleKeyInfo keyInfo = Console.ReadKey();
-                    if (keyInfo.Key == ConsoleKey.RightArrow && canMoveRight())
-                    {
-                        renderX = Math.Min(renderX + 1, 999);
-                    }
-                    if (keyInfo.Key == ConsoleKey.LeftArrow && canMoveLeft())
-                    {
-                        renderX = Math.Max(renderX - 1, 0);
-                    }
-                    if (keyInfo.Key == ConsoleKey.DownArrow && canMoveDown())
-                    {
-                        renderY = Math.Min(renderY + 1, 999);
-                    }
-                    if (keyInfo.Key == ConsoleKey.UpArrow && canMoveUp())
-                    {
-                        renderY = Math.Max(renderY - 1, 0);
-                    }
-                    if (!player.status.hasAttr("Fly"))
-                    {
-                        if (World.gold[renderX, renderY] > 0)
-                        {
-                            player.addGold(World.gold[renderX, renderY]);
-                            World.gold[renderX, renderY] = 0;
-                        }
-                        if (World.items[renderX, renderY] != null)
-                        {
-                            player.addToInventory(World.items[renderX, renderY]);
-                            World.items[renderX, renderY] = null;
-                        }
-                    }
-                    else
-                    {
-                        msgLog.Add("You can't pick-up items while flying!");
-                    }
-                    turn = false;
-                    if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
-                    {
                         turn = true;
-                        Program.selectedSlot--;
-                        if (Program.selectedSlot < 0)
-                        {
-                            Program.selectedSlot = player.inventory.Length - 1;
-                        }
                     }
-                    if (keyInfo.Key == ConsoleKey.S && !Console.CapsLock)
+                    int iteration = 0;
+                    while (turn)
                     {
-                        turn = true;
-                        Program.selectedSlot++;
-                        if (Program.selectedSlot > player.inventory.Length - 1)
+                        if (iteration > 0)
                         {
-                            Program.selectedSlot = 0;
+                            renderGame();
                         }
-                    }
-                    if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock)
-                    {
-                        if (player.inventoryStacks[Program.selectedSlot] > 0)
+                        ConsoleKeyInfo keyInfo = Console.ReadKey();
+                        if (keyInfo.Key == ConsoleKey.RightArrow && canMoveRight())
                         {
-                            player.inventory[Program.selectedSlot].useItem(player);
-                            if (player.inventory[Program.selectedSlot].consumable)
+                            renderX = Math.Min(renderX + 1, 999);
+                        }
+                        if (keyInfo.Key == ConsoleKey.LeftArrow && canMoveLeft())
+                        {
+                            renderX = Math.Max(renderX - 1, 0);
+                        }
+                        if (keyInfo.Key == ConsoleKey.DownArrow && canMoveDown())
+                        {
+                            renderY = Math.Min(renderY + 1, 999);
+                        }
+                        if (keyInfo.Key == ConsoleKey.UpArrow && canMoveUp())
+                        {
+                            renderY = Math.Max(renderY - 1, 0);
+                        }
+                        if (!player.status.hasAttr("Fly"))
+                        {
+                            if (World.gold[renderX, renderY] > 0)
                             {
-                                player.inventoryStacks[Program.selectedSlot]--;
+                                player.addGold(World.gold[renderX, renderY]);
+                                World.gold[renderX, renderY] = 0;
+                            }
+                            if (World.items[renderX, renderY] != null)
+                            {
+                                player.addToInventory(World.items[renderX, renderY]);
+                                World.items[renderX, renderY] = null;
                             }
                         }
-                    }
-                    if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
-                    {
-                        if (player.species != Species._faerie)
+                        else
                         {
-                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
+                            msgLog.Add("You can't pick-up items while flying!");
+                        }
+                        turn = false;
+                        if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
+                        {
+                            turn = true;
+                            Program.selectedSlot--;
+                            if (Program.selectedSlot < 0)
                             {
-                                try
+                                Program.selectedSlot = player.inventory.Length - 1;
+                            }
+                        }
+                        if (keyInfo.Key == ConsoleKey.S && !Console.CapsLock)
+                        {
+                            turn = true;
+                            Program.selectedSlot++;
+                            if (Program.selectedSlot > player.inventory.Length - 1)
+                            {
+                                Program.selectedSlot = 0;
+                            }
+                        }
+                        if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock)
+                        {
+                            if (player.inventoryStacks[Program.selectedSlot] > 0)
+                            {
+                                player.inventory[Program.selectedSlot].useItem(player);
+                                if (player.inventory[Program.selectedSlot].consumable)
                                 {
-                                    if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
+                                    player.inventoryStacks[Program.selectedSlot]--;
+                                }
+                            }
+                        }
+                        if (keyInfo.Key == ConsoleKey.I && !Console.CapsLock)
+                        {
+                            showingItem = player.inventory[Program.selectedSlot];
+                        }
+                        if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
+                        {
+                            if (true)
+                            {
+                                if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
+                                {
+                                    try
                                     {
-                                        player.inventory[Program.selectedSlot].equipped = !player.inventory[Program.selectedSlot].equipped;
+                                        if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
+                                        {
+                                            player.inventory[Program.selectedSlot].equipped = !player.inventory[Program.selectedSlot].equipped;
+                                            if (player.inventory[Program.selectedSlot].equipped)
+                                            {
+                                                player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
+                                            }
+                                            else
+                                            {
+                                                player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
+                                            }
+                                            turn = false;
+                                        }
+                                        else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventory[Program.selectedSlot].equipped)
+                                        {
+                                            msgLog.Add("You can't unequip a bound item!");
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        player.inventory[Program.selectedSlot].equipped = true;
                                         if (player.inventory[Program.selectedSlot].equipped)
                                         {
                                             player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
@@ -358,85 +384,79 @@ namespace Dungeon_Crawl
                                         }
                                         turn = false;
                                     }
-                                    else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventory[Program.selectedSlot].equipped)
+                                    try
                                     {
-                                        msgLog.Add("You can't unequip a bound item!");
+                                        if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
+                                        {
+                                            player.inventory[Program.selectedSlot].discoveredBound = true;
+                                        }
+                                    }
+                                    catch
+                                    {
                                     }
                                 }
-                                catch
+                                else
                                 {
-                                    player.inventory[Program.selectedSlot].equipped = true;
-                                    if (player.inventory[Program.selectedSlot].equipped)
-                                    {
-                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
-                                    }
-                                    else
-                                    {
-                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
-                                    }
-                                    turn = false;
-                                }
-                                try
-                                {
-                                    if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
-                                    {
-                                        player.inventory[Program.selectedSlot].discoveredBound = true;
-                                    }
-                                }
-                                catch
-                                {
+                                    turn = true;
                                 }
                             }
-                            else
+                            //else
+                            //{
+                            //    turn = true;
+                            //    msgLog.Add("You are intangible and cannot wield any items!");
+                            //}
+                        }
+                        else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
+                        {
+                            if (player.inventory[Program.selectedSlot].equippable)
                             {
-                                turn = true;
+                                msgLog.Add("You can't equip anything in that slot!");
                             }
                         }
-                        else
+                        iteration++;
+                    }
+                    if (player.species != Species._faerie)
+                    {
+                        player.hunger--;
+                        if (player.hunger < -4500 && World.rand.Next(100) < 73)
                         {
-                            turn = true;
-                            msgLog.Add("You are intangible and cannot wield any items!");
+                            player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
                         }
                     }
-                    else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
+                    Mob.updatePaths();
+                    Mob.updateMobs();
+                    player.stats.calcStats();
+                    if (World.map[renderX, renderY] == Tile.shallowWater && !player.status.hasAttr("Fly"))
                     {
-                        if (player.inventory[Program.selectedSlot].equippable)
-                        {
-                            msgLog.Add("You can't equip anything in that slot!");
-                        }
+                        player.status.removeAttr("Wet");
+                        player.status.addStatus(new Status("Wet", 1, true, ConsoleForeground.Blue, ConsoleBackground.Black));
                     }
-                    iteration++;
-                }
-                if (player.species != Species._faerie)
-                {
-                    player.hunger--;
-                    if (player.hunger < -4500 && World.rand.Next(100) < 73)
+                    else
                     {
-                        player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
+                        player.status.removeAttr("Wet");
                     }
-                }
-                Mob.updatePaths();
-                Mob.updateMobs();
-                player.stats.calcStats();
-                if (World.map[renderX, renderY] == Tile.shallowWater && !player.status.hasAttr("Fly"))
-                {
-                    player.status.removeAttr("Wet");
-                    player.status.addStatus(new Status("Wet", 1, true, ConsoleForeground.Blue, ConsoleBackground.Black));
+                    if (World.map[renderX, renderY] == Tile.deepWater && !player.status.hasAttr("Fly"))
+                    {
+                        player.status.removeAttr("Wet+");
+                        player.status.addStatus(new Status("Wet+", 1, true, ConsoleForeground.Navy, ConsoleBackground.Black));
+                    }
+                    else
+                    {
+                        player.status.removeAttr("Wet+");
+                    }
+                    player.update();
+                    currTurn++;
                 }
                 else
                 {
-                    player.status.removeAttr("Wet");
+                    Console.Clear();
+                    ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, Console.LargestWindowWidth - 10, Console.LargestWindowHeight - 10, false);
+                    Util.writeLn("Press enter to exit...", 2, 2);
+                    Util.writeLn(showingItem.name + " (weight: " + showingItem.weight + ")", 2, 4);
+                    Util.writeLn(showingItem.compileTags(), 2, 5);
+                    Console.ReadLine();
+                    showingItem = null;
                 }
-                if (World.map[renderX, renderY] == Tile.deepWater && !player.status.hasAttr("Fly"))
-                {
-                    player.status.removeAttr("Wet+");
-                    player.status.addStatus(new Status("Wet+", 1, true, ConsoleForeground.Navy, ConsoleBackground.Black));
-                }
-                else
-                {
-                    player.status.removeAttr("Wet+");
-                }
-                currTurn++;
             }
         }
         public static Boolean canMoveRight()

@@ -12,6 +12,7 @@ namespace Dungeon_Crawl
         MEDIUM,
         LARGE,
         HUGE,
-        GARGANTUAN
+        GARGANTUAN,
+        ANY
     }
 }

@@ -44,24 +44,73 @@ namespace Dungeon_Crawl
                 addToInventory(Item.get(1), 1, false);
             }
             */
-            addToInventory(Item.get(4), 1, false);
-            addToInventory(Item.get(5), 1, false);
-            addToInventory(Item.get(6), 1, false);
-            addToInventory(Item.get(7), 1, false);
-            addToInventory(Item.get(8), 1, false);
-            addToInventory(Item.get(9), 1, false);
-            addToInventory(Item.get(0), 1, false);
+            if (species != Species._darkElf)
+            {
+                addToInventory(Item.get(4), 1, false);
+                addToInventory(Item.get(5), 1, false);
+                addToInventory(Item.get(6), 1, false);
+                addToInventory(Item.get(7), 1, false);
+                addToInventory(Item.get(8), 1, false);
+                addToInventory(Item.get(9), 1, false);
+                addToInventory(Item.get(0), 1, false);
+            }
+            else
+            {
+                addToInventory(Item.get(4).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(5).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(6).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(7).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(8).addBrand("holy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(9).addBrand("holy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(0), 1, false);
+            }
             equipment = new Equipment();
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
 
+        public void update()
+        {
+            if (species == Species._darkElf)
+            {
+                status.removeAttr("Divine Wrath");
+                int wrathCounter = 0;
+                for (int x = 0; x < equipment.equipSlots.Length; x++)
+                {
+                    if (equipment.equipSlots[x] != null)
+                    {
+                        if (equipment.equipSlots[x].brands.Contains("holy"))
+                        {
+                            wrathCounter++;
+                        }
+                    }
+                }
+                if (wrathCounter > 0)
+                {
+                    status.addStatus(new Status("Divine Wrath", wrathCounter, true, ConsoleForeground.White, ConsoleBackground.Black));
+                }
+            }
+        }
+
         public Boolean canEquipSelectedItem()
         {
-            if (inventoryStacks[Program.selectedSlot] > 0 && inventory[Program.selectedSlot].slotEquip > -1)
+            try
             {
-                return ((inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] != null) || (!inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] == null));
+                if ((inventory[Program.selectedSlot].equipType == species.armor && !inventory[Program.selectedSlot].weapon) || inventory[Program.selectedSlot].weapon)
+                {
+                    if (inventory[Program.selectedSlot].size == species.size || inventory[Program.selectedSlot].size == Size.ANY)
+                    {
+                        if (inventoryStacks[Program.selectedSlot] > 0 && inventory[Program.selectedSlot].slotEquip > -1)
+                        {
+                            return ((inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] != null) || (!inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] == null));
+                        }
+                    }
+                }
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         public static double calcInvWeight(Player p)

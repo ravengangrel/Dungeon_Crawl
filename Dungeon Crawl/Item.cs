@@ -9,9 +9,13 @@ namespace Dungeon_Crawl
     {
         public String name = "";
 
+        public List<string> brands = new List<string>();
+
         public double weight = 0;
 
         public int foodFill = 0;
+        public int slotEquip = -1;
+        public int armor = 0;
 
         public Boolean equippable = false;
         public Boolean bound = false;
@@ -19,9 +23,10 @@ namespace Dungeon_Crawl
         public Boolean edible = false;
         public Boolean consumable = false;
         public Boolean equipped = false;
+        public Boolean weapon = false;
 
-        public int slotEquip = -1;
-        public int armor = 0;
+        public Armor equipType = Armor.DEFAULT;
+        public Size size = Size.ANY;
 
         public static Item[] items = new Item[75000];
 
@@ -49,11 +54,36 @@ namespace Dungeon_Crawl
         /// 5- Boots
         /// 6- Ring
         /// 7- Amulet
+        /// 8- Weapon
         /// </param>
         /// <returns></returns>
         public Item setEquipSlot(int i)
         {
             slotEquip = i;
+            return this;
+        }
+
+        public Item addBrand(string s)
+        {
+            brands.Add(s);
+            return this;
+        }
+
+        public Item setSpecial(string s)
+        {
+            name = s + " " + name;
+            return this;
+        }
+
+        public Item setArmorType(Armor a)
+        {
+            equipType = a;
+            return this;
+        }
+
+        public Item setSize(Size s)
+        {
+            size = s;
             return this;
         }
 
@@ -137,5 +167,42 @@ namespace Dungeon_Crawl
             return true;
         }
 
+        public string compileTags()
+        {
+            string final = "";
+            if (equippable)
+            {
+                final += "{equip}";
+                if (slotEquip < 6)
+                {
+                    final += "{armor}";
+                }
+                if (slotEquip == 6 || slotEquip == 7)
+                {
+                    final += "{jewelry}";
+                }
+                if (slotEquip == 8)
+                {
+                    final += "{weapon}";
+                }
+            }
+            if (bound && discoveredBound)
+            {
+                final += "{bound}";
+            }
+            if (edible)
+            {
+                final += "{food}";
+            }
+            if (consumable)
+            {
+                final += "{consumable}";
+            }
+            for (int x = 0; x < brands.Count; x++)
+            {
+                final += "{" + brands[x] + "}";
+            }
+            return final;
+        }
     }
 }
