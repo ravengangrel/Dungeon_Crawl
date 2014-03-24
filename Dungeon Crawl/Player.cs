@@ -47,6 +47,7 @@ namespace Dungeon_Crawl
             else
             {
                 status.addStatus(new Status("Shadowbound", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
+                status.addStatus(new Status("Accursed", 1, true, ConsoleForeground.Red, ConsoleBackground.Black));
                 addToInventory(Item.get(4).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(5).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(6).addBrand("unholy").setSpecial("Runed"), 1, false);

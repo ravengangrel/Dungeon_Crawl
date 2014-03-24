@@ -347,33 +347,13 @@ namespace Dungeon_Crawl
                         }
                         if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
                         {
-                            if (true)
+                            if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
                             {
-                                if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
+                                try
                                 {
-                                    try
+                                    if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
                                     {
-                                        if (player.inventoryStacks[Program.selectedSlot] > 0 && !(player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound))
-                                        {
-                                            player.inventory[Program.selectedSlot].equipped = !player.inventory[Program.selectedSlot].equipped;
-                                            if (player.inventory[Program.selectedSlot].equipped)
-                                            {
-                                                player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
-                                            }
-                                            else
-                                            {
-                                                player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
-                                            }
-                                            turn = false;
-                                        }
-                                        else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventory[Program.selectedSlot].equipped)
-                                        {
-                                            msgLog.Add("You can't unequip a bound item!");
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        player.inventory[Program.selectedSlot].equipped = true;
+                                        player.inventory[Program.selectedSlot].equipped = !player.inventory[Program.selectedSlot].equipped;
                                         if (player.inventory[Program.selectedSlot].equipped)
                                         {
                                             player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
@@ -384,21 +364,47 @@ namespace Dungeon_Crawl
                                         }
                                         turn = false;
                                     }
-                                    try
+                                    else if (player.inventory[Program.selectedSlot].bound && player.inventory[Program.selectedSlot].discoveredBound && player.inventory[Program.selectedSlot].equipped)
                                     {
-                                        if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
+                                        msgLog.Add("You can't unequip a bound item!");
+                                    }
+                                }
+                                catch
+                                {
+                                    player.inventory[Program.selectedSlot].equipped = true;
+                                    if (player.inventory[Program.selectedSlot].equipped)
+                                    {
+                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
+                                    }
+                                    else
+                                    {
+                                        player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = null;
+                                    }
+                                    turn = false;
+                                }
+                                try
+                                {
+                                    if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
+                                    {
+                                        player.inventory[Program.selectedSlot].discoveredBound = true;
+                                        if (player.status.hasAttr("Accursed"))
                                         {
-                                            player.inventory[Program.selectedSlot].discoveredBound = true;
+                                            if (World.rand.Next(10) < player.status.getLvl("Accursed"))
+                                            {
+                                                player.inventory[Program.selectedSlot].discoveredBound = false;
+                                                player.inventory[Program.selectedSlot].bound = false;
+                                                player.inventory[Program.selectedSlot].addBrand("was bound");
+                                            }
                                         }
                                     }
-                                    catch
-                                    {
-                                    }
                                 }
-                                else
+                                catch
                                 {
-                                    turn = true;
                                 }
+                            }
+                            else
+                            {
+                                turn = true;
                             }
                             //else
                             //{
