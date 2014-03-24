@@ -16,9 +16,9 @@ namespace Dungeon_Crawl
         public int foodFill = 0;
         public int slotEquip = -1;
         public int armor = 0;
-        public int maxEnchant_attack = 0;
-        public int maxEnchant_block = 0;
-        public int maxEnchant_crit = 0;
+        public int maxEnchant_attack = 9;
+        public int maxEnchant_block = 9;
+        public int maxEnchant_crit = 9;
 
         public Boolean equippable = false;
         public Boolean bound = false;
@@ -177,7 +177,7 @@ namespace Dungeon_Crawl
         {
             if (equippable)
             {
-                return "Can be enchanted to " + this.maxEnchant_attack + "," + this.maxEnchant_block + "," this.maxEnchant_crit; 
+                return "Can be enchanted to " + this.maxEnchant_attack + "," + this.maxEnchant_block + "," + this.maxEnchant_crit; 
             }
             return "";
         }

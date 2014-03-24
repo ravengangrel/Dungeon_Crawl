@@ -58,7 +58,7 @@ namespace Dungeon_Crawl
                         }
                         if (!skipPoint && !path.points.Contains(new Point(start.X + x, start.Y + y)))
                         {
-                            pointMap[x + 1, y + 1] = (int)((Util.calcManhattan(new Point(start.X + x, start.Y + y), end)) + (Math.Sqrt(Math.Abs(x + y)) * 10));
+                            pointMap[x + 1, y + 1] = (int)((Util.calcManhattan(new Point(start.X + x, start.Y + y), end)) + (World.map[start.X + x, start.Y + y].moveCost * 10));
                         }
                         else
                         {

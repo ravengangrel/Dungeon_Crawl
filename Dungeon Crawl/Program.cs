@@ -342,6 +342,7 @@ namespace Dungeon_Crawl
                             msgLog.Add("You descend into the darkness...");
                             World.floor++;
                             World.genMap();
+                            Mob.mobList.Clear();
                         }
                         if (World.gold[renderX, renderY] > 0)
                         {

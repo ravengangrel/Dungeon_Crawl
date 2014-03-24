@@ -13,6 +13,7 @@ namespace Dungeon_Crawl
         public ConsoleForeground colorFore = ConsoleForeground.LightGray;
         public ConsoleBackground colorBack = ConsoleBackground.Black;
         public Boolean solid = true;
+        public double moveCost = 1;
 
         public static Tile stoneWall = new Tile();
         public static Tile stoneFloor = new Tile();
@@ -44,12 +45,14 @@ namespace Dungeon_Crawl
             shallowWater.icon = '~';
             shallowWater.solid = false;
             shallowWater.colorFore = ConsoleForeground.Blue;
+            shallowWater.moveCost = 2;
             
             deepWater.name = "Deep Water";
             deepWater.lore = "Looks really wet";
             deepWater.icon = '~';
             deepWater.solid = false;
             deepWater.colorFore = ConsoleForeground.Navy;
+            deepWater.moveCost = 3;
         }
 
         public void draw()
@@ -109,7 +112,7 @@ namespace Dungeon_Crawl
             map[sX + (1 - rand.Next(3)), sY + (1 - rand.Next(3))] = Tile.stairCase;
             Program.renderX = sX;
             Program.renderY = sY;
-            //Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
+            Mob.spawnMob(Mob._mobZombie, Program.renderX + 5, Program.renderY + 5);
             int cX = 0;
             int cY = 0;
             bool genWater = false;
@@ -156,7 +159,7 @@ namespace Dungeon_Crawl
                     {
                         cY--;
                     }
-                    if (rand.Next(2000) == 0 && !genWater)
+                    if (rand.Next(4000) == 0 && !genWater)
                     {
                         genWater = !genWater;
                     }
