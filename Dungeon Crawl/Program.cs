@@ -290,15 +290,22 @@ namespace Dungeon_Crawl
                     {
                         renderY = Math.Max(renderY - 1, 0);
                     }
-                    if (World.gold[renderX, renderY] > 0)
+                    if (!player.status.hasAttr("Fly"))
                     {
-                        player.addGold(World.gold[renderX, renderY]);
-                        World.gold[renderX, renderY] = 0;
+                        if (World.gold[renderX, renderY] > 0)
+                        {
+                            player.addGold(World.gold[renderX, renderY]);
+                            World.gold[renderX, renderY] = 0;
+                        }
+                        if (World.items[renderX, renderY] != null)
+                        {
+                            player.addToInventory(World.items[renderX, renderY]);
+                            World.items[renderX, renderY] = null;
+                        }
                     }
-                    if (World.items[renderX, renderY] != null)
+                    else
                     {
-                        player.addToInventory(World.items[renderX, renderY]);
-                        World.items[renderX, renderY] = null;
+                        msgLog.Add("You can't pick-up items while flying!");
                     }
                     turn = false;
                     if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
