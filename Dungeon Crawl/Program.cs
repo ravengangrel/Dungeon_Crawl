@@ -13,13 +13,15 @@ namespace Dungeon_Crawl
         public static Class currClass;
         public static Player player;
 
-        public static int renderX = 999;
+        public static int renderX = 0;
         public static int renderY = 0;
 
         public static int currTurn = 0;
         public static int selectedSlot = 0;
 
         public static List<string> msgLog = new List<string>();
+
+        public static Item showingItem = null;
 
         static void Main(string[] args)
         {
@@ -146,7 +148,12 @@ namespace Dungeon_Crawl
                             if (renderX + x == renderX && renderY + y == renderY)
                             {
                                 ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                                if (player.status.hasAttr("Invisible"))
+                                {
+                                    ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
+                                }
                                 Console.Write("P");
+                                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
                             }
                             else
                             {
@@ -256,78 +263,89 @@ namespace Dungeon_Crawl
             Boolean turn = false;
             while (true)
             {
-                if (!turn)
+                if (showingItem == null)
                 {
-                    renderGame();
-                    turn = true;
-                }
-                int iteration = 0;
-                while (turn)
-                {
-                    if (iteration > 0)
+                    if (!turn)
                     {
                         renderGame();
-                    }
-                    ConsoleKeyInfo keyInfo = Console.ReadKey();
-                    if (keyInfo.Key == ConsoleKey.RightArrow && canMoveRight())
-                    {
-                        renderX = Math.Min(renderX + 1, 999);
-                    }
-                    if (keyInfo.Key == ConsoleKey.LeftArrow && canMoveLeft())
-                    {
-                        renderX = Math.Max(renderX - 1, 0);
-                    }
-                    if (keyInfo.Key == ConsoleKey.DownArrow && canMoveDown())
-                    {
-                        renderY = Math.Min(renderY + 1, 999);
-                    }
-                    if (keyInfo.Key == ConsoleKey.UpArrow && canMoveUp())
-                    {
-                        renderY = Math.Max(renderY - 1, 0);
-                    }
-                    if (World.gold[renderX, renderY] > 0)
-                    {
-                        player.addGold(World.gold[renderX, renderY]);
-                        World.gold[renderX, renderY] = 0;
-                    }
-                    if (World.items[renderX, renderY] != null)
-                    {
-                        player.addToInventory(World.items[renderX, renderY]);
-                        World.items[renderX, renderY] = null;
-                    }
-                    turn = false;
-                    if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
-                    {
                         turn = true;
-                        Program.selectedSlot--;
-                        if (Program.selectedSlot < 0)
-                        {
-                            Program.selectedSlot = player.inventory.Length - 1;
-                        }
                     }
-                    if (keyInfo.Key == ConsoleKey.S && !Console.CapsLock)
+                    int iteration = 0;
+                    while (turn)
                     {
-                        turn = true;
-                        Program.selectedSlot++;
-                        if (Program.selectedSlot > player.inventory.Length - 1)
+                        if (iteration > 0)
                         {
-                            Program.selectedSlot = 0;
+                            renderGame();
                         }
-                    }
-                    if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock)
-                    {
-                        if (player.inventoryStacks[Program.selectedSlot] > 0)
+                        ConsoleKeyInfo keyInfo = Console.ReadKey();
+                        if (keyInfo.Key == ConsoleKey.RightArrow && canMoveRight())
                         {
-                            player.inventory[Program.selectedSlot].useItem(player);
-                            if (player.inventory[Program.selectedSlot].consumable)
+                            renderX = Math.Min(renderX + 1, 999);
+                        }
+                        if (keyInfo.Key == ConsoleKey.LeftArrow && canMoveLeft())
+                        {
+                            renderX = Math.Max(renderX - 1, 0);
+                        }
+                        if (keyInfo.Key == ConsoleKey.DownArrow && canMoveDown())
+                        {
+                            renderY = Math.Min(renderY + 1, 999);
+                        }
+                        if (keyInfo.Key == ConsoleKey.UpArrow && canMoveUp())
+                        {
+                            renderY = Math.Max(renderY - 1, 0);
+                        }
+                        if (!player.status.hasAttr("Fly"))
+                        {
+                            if (World.gold[renderX, renderY] > 0)
                             {
-                                player.inventoryStacks[Program.selectedSlot]--;
+                                player.addGold(World.gold[renderX, renderY]);
+                                World.gold[renderX, renderY] = 0;
+                            }
+                            if (World.items[renderX, renderY] != null)
+                            {
+                                player.addToInventory(World.items[renderX, renderY]);
+                                World.items[renderX, renderY] = null;
                             }
                         }
-                    }
-                    if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
-                    {
-                        if (player.species != Species._faerie)
+                        else
+                        {
+                            msgLog.Add("You can't pick-up items while flying!");
+                        }
+                        turn = false;
+                        if (keyInfo.Key == ConsoleKey.W && !Console.CapsLock)
+                        {
+                            turn = true;
+                            Program.selectedSlot--;
+                            if (Program.selectedSlot < 0)
+                            {
+                                Program.selectedSlot = player.inventory.Length - 1;
+                            }
+                        }
+                        if (keyInfo.Key == ConsoleKey.S && !Console.CapsLock)
+                        {
+                            turn = true;
+                            Program.selectedSlot++;
+                            if (Program.selectedSlot > player.inventory.Length - 1)
+                            {
+                                Program.selectedSlot = 0;
+                            }
+                        }
+                        if (keyInfo.Key == ConsoleKey.Q && !Console.CapsLock)
+                        {
+                            if (player.inventoryStacks[Program.selectedSlot] > 0)
+                            {
+                                player.inventory[Program.selectedSlot].useItem(player);
+                                if (player.inventory[Program.selectedSlot].consumable)
+                                {
+                                    player.inventoryStacks[Program.selectedSlot]--;
+                                }
+                            }
+                        }
+                        if (keyInfo.Key == ConsoleKey.I && !Console.CapsLock)
+                        {
+                            showingItem = player.inventory[Program.selectedSlot];
+                        }
+                        if (keyInfo.Key == ConsoleKey.E && !Console.CapsLock)
                         {
                             if (player.inventoryStacks[Program.selectedSlot] > 0 && player.inventory[Program.selectedSlot].equippable && player.canEquipSelectedItem())
                             {
@@ -369,6 +387,15 @@ namespace Dungeon_Crawl
                                     if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
                                     {
                                         player.inventory[Program.selectedSlot].discoveredBound = true;
+                                        if (player.status.hasAttr("Accursed"))
+                                        {
+                                            if (World.rand.Next(10) < player.status.getLvl("Accursed"))
+                                            {
+                                                player.inventory[Program.selectedSlot].discoveredBound = false;
+                                                player.inventory[Program.selectedSlot].bound = false;
+                                                player.inventory[Program.selectedSlot].addBrand("was bound");
+                                            }
+                                        }
                                     }
                                 }
                                 catch
@@ -379,51 +406,80 @@ namespace Dungeon_Crawl
                             {
                                 turn = true;
                             }
+                            //else
+                            //{
+                            //    turn = true;
+                            //    msgLog.Add("You are intangible and cannot wield any items!");
+                            //}
                         }
-                        else
+                        else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
                         {
-                            turn = true;
-                            msgLog.Add("You are intangible and cannot wield any items!");
+                            if (player.inventory[Program.selectedSlot].equippable)
+                            {
+                                msgLog.Add("You can't equip anything in that slot!");
+                            }
                         }
+                        iteration++;
                     }
-                    else if (!player.canEquipSelectedItem() && player.inventoryStacks[Program.selectedSlot] > 0)
+                    if (player.species != Species._faerie)
                     {
-                        if (player.inventory[Program.selectedSlot].equippable)
+                        player.hunger--;
+                        if (player.hunger < -4500 && World.rand.Next(100) < 73)
                         {
-                            msgLog.Add("You can't equip anything in that slot!");
+                            player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
                         }
                     }
-                    iteration++;
+                    Mob.updatePaths();
+                    Mob.updateMobs();
+                    player.stats.calcStats();
+                    if (World.map[renderX, renderY] == Tile.shallowWater && !player.status.hasAttr("Fly"))
+                    {
+                        player.status.removeAttr("Wet");
+                        player.status.addStatus(new Status("Wet", 1, true, ConsoleForeground.Blue, ConsoleBackground.Black));
+                    }
+                    else
+                    {
+                        player.status.removeAttr("Wet");
+                    }
+                    if (World.map[renderX, renderY] == Tile.deepWater && !player.status.hasAttr("Fly"))
+                    {
+                        player.status.removeAttr("Wet+");
+                        player.status.addStatus(new Status("Wet+", 1, true, ConsoleForeground.Navy, ConsoleBackground.Black));
+                    }
+                    else
+                    {
+                        player.status.removeAttr("Wet+");
+                    }
+                    player.update();
+                    currTurn++;
                 }
-                if (player.species != Species._faerie)
+                else
                 {
-                    player.hunger--;
-                    if (player.hunger < -4500 && World.rand.Next(100) < 73)
-                    {
-                        player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());
-                    }
+                    Console.Clear();
+                    ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, Console.LargestWindowWidth - 10, Console.LargestWindowHeight - 10, false);
+                    Util.writeLn("Press enter to exit...", 2, 2);
+                    Util.writeLn(showingItem.name + " (weight: " + showingItem.weight + ")", 2, 4);
+                    Util.writeLn(showingItem.compileTags(), 2, 5);
+                    Console.ReadLine();
+                    showingItem = null;
                 }
-                Mob.updatePaths();
-                Mob.updateMobs();
-                player.stats.calcStats();
-                currTurn++;
             }
         }
         public static Boolean canMoveRight()
         {
-            return !World.map[renderX + 1, renderY].solid;
+            return !World.map[renderX + 1, renderY].solid && (World.map[renderX + 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveLeft()
         {
-            return !World.map[renderX - 1, renderY].solid;
+            return !World.map[renderX - 1, renderY].solid && (World.map[renderX - 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveUp()
         {
-            return !World.map[renderX, renderY - 1].solid;
+            return !World.map[renderX, renderY - 1].solid && (World.map[renderX, renderY - 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveDown()
         {
-            return !World.map[renderX, renderY + 1].solid;
+            return !World.map[renderX, renderY + 1].solid && (World.map[renderX, renderY + 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
     }
 }

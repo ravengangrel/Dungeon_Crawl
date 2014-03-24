@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dungeon Crawl.exe" size="31232">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dungeon Crawl.exe" size="37888">
       <assemblyIdentity name="Dungeon Crawl" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>OL7mFfa3QE8wrpfX3aUri9wGdR0=</dsig:DigestValue>
+        <dsig:DigestValue>mGW21P2+DoGFR4jaOPAkuXjuMNI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

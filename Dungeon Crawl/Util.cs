@@ -5,6 +5,13 @@ using System.Text;
 
 namespace Dungeon_Crawl
 {
+    public static class Extensions
+    {
+        public static bool NextBool(this Random rand)
+        {
+            return rand.Next(2) == 0;
+        }
+    }
     public class Util
     {
         public static void writeLn(string s, int x, int y)

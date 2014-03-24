@@ -27,7 +27,8 @@ namespace Dungeon_Crawl
             null, //boots 5
             
             null, //ring 6
-            null  //amulet 7
+            null, //amulet 7
+            null  //weapon 8
         };
     }
 }

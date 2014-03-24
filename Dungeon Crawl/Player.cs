@@ -14,9 +14,9 @@ namespace Dungeon_Crawl
         public Class career;
         public Equipment equipment;
         public StatusHandler status = new StatusHandler();
-        public Item[] inventory = new Item[30];
-        public int[] inventoryStacks = new int[30];
-        public Boolean[] inventoryEquip = new Boolean[30];
+        public Item[] inventory = new Item[39];
+        public int[] inventoryStacks = new int[39];
+        public Boolean[] inventoryEquip = new Boolean[39];
         public int hunger = 1000;
 
         //-5000 to -2500- Starving
@@ -34,18 +34,79 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
-            addToInventory(Item.get(1), 1, false);
-            addToInventory(Item.get(0), 1, false);
+            if (species != Species._darkElf)
+            {
+                addToInventory(Item.get(4), 1, false);
+                addToInventory(Item.get(5), 1, false);
+                addToInventory(Item.get(6), 1, false);
+                addToInventory(Item.get(7), 1, false);
+                addToInventory(Item.get(8), 1, false);
+                addToInventory(Item.get(9), 1, false);
+                addToInventory(Item.get(0), 1, false);
+            }
+            else
+            {
+                status.addStatus(new Status("Shadowbound", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
+                status.addStatus(new Status("Accursed", 1, true, ConsoleForeground.Red, ConsoleBackground.Black));
+                addToInventory(Item.get(4).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(5).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(6).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(7).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(8).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(9).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(0), 1, false);
+            }
             equipment = new Equipment();
+            //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
+        }
+
+        public void update()
+        {
+            if (status.hasAttr("Shadowbound"))
+            {
+                status.removeAttr("Divine Wrath");
+                int wrathCounter = 0;
+                for (int x = 0; x < equipment.equipSlots.Length; x++)
+                {
+                    if (equipment.equipSlots[x] != null)
+                    {
+                        if (equipment.equipSlots[x].brands.Contains("holy"))
+                        {
+                            wrathCounter++;
+                        }
+                    }
+                }
+                if (wrathCounter > 0)
+                {
+                    status.addStatus(new Status("Divine Wrath", wrathCounter, true, ConsoleForeground.White, ConsoleBackground.Black));
+                }
+                if (World.rand.Next(3) != 0)
+                {
+                    hurt(status.getLvl("Divine Wrath"), true, "The ancients strike against you for tainting their blessings!");
+                }
+            }
         }
 
         public Boolean canEquipSelectedItem()
         {
-            if (inventoryStacks[Program.selectedSlot] > 0 && inventory[Program.selectedSlot].slotEquip > -1)
+            try
             {
-                return ((inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] != null) || (!inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] == null));
+                if ((inventory[Program.selectedSlot].equipType == species.armor && !inventory[Program.selectedSlot].weapon) || inventory[Program.selectedSlot].weapon)
+                {
+                    if (inventory[Program.selectedSlot].size == species.size || inventory[Program.selectedSlot].size == Size.ANY)
+                    {
+                        if (inventoryStacks[Program.selectedSlot] > 0 && inventory[Program.selectedSlot].slotEquip > -1)
+                        {
+                            return ((inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] != null) || (!inventory[Program.selectedSlot].equipped && equipment.equipSlots[inventory[Program.selectedSlot].slotEquip] == null));
+                        }
+                    }
+                }
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         public static double calcInvWeight(Player p)
@@ -80,7 +141,7 @@ namespace Dungeon_Crawl
             {
                 stats.health = 0;
             }
-            if (s != "")
+            if (s != "" && amt > 0)
             {
                 Program.msgLog.Add(s);
             }
@@ -92,7 +153,7 @@ namespace Dungeon_Crawl
             {
                 try
                 {
-                    if (inventory[x].Equals(i))
+                    if (inventory[x].Equals(i) && inventory[x].consumable)
                     {
                         inventoryStacks[x] += amt;
                         if (msg)
