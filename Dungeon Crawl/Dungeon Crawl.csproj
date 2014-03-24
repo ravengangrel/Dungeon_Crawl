@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ability.cs" />
     <Compile Include="Armor.cs" />
     <Compile Include="BaseStatSet.cs" />
     <Compile Include="Class.cs" />

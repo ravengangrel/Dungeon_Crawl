@@ -19,6 +19,8 @@ namespace Dungeon_Crawl
         public Boolean[] inventoryEquip = new Boolean[39];
         public int hunger = 1000;
 
+        public List<Ability> abilities = new List<Ability>();
+
         //-5000 to -2500- Starving
         //-2500 to -1000- Hungry
         //-1000 to 0- Slightly Hungry
@@ -56,7 +58,22 @@ namespace Dungeon_Crawl
                 addToInventory(Item.get(9).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(0), 1, false);
             }
+            if (species == Species._faerie)
+            {
+                status.addStatus(new Status("Magic Sight", 1, true, ConsoleForeground.Yellow, ConsoleBackground.Black));
+                status.addStatus(new Status("Fly", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
+            }
+            if (species == Species._woodElf)
+            {
+                status.addStatus(new Status("rPoison", 1, true, ConsoleForeground.Green, ConsoleBackground.Black));
+            }
+            if (species == Species._merfolk)
+            {
+                status.addStatus(new Status("Swimmer", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
+            }
             equipment = new Equipment();
+            abilities.Add(new Ability("Rest and Heal", AbilityEffect.RESTHEAL, 0, 0));
+            stats.health = stats.maxHealth / 4;
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
 
@@ -149,6 +166,10 @@ namespace Dungeon_Crawl
 
         public void addToInventory(Item i, int amt, bool msg = true)
         {
+            if (status.hasAttr("Magic Sight"))
+            {
+                i.discoveredBound = true;
+            }
             for (int x = 0; x < inventory.Length; x++)
             {
                 try
