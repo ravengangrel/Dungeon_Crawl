@@ -16,6 +16,9 @@ namespace Dungeon_Crawl
         public int foodFill = 0;
         public int slotEquip = -1;
         public int armor = 0;
+        public int maxEnchant_attack = 0;
+        public int maxEnchant_block = 0;
+        public int maxEnchant_crit = 0;
 
         public Boolean equippable = false;
         public Boolean bound = false;
@@ -28,7 +31,7 @@ namespace Dungeon_Crawl
         public Armor equipType = Armor.DEFAULT;
         public Size size = Size.ANY;
 
-        public static Item[] items = new Item[75000];
+        public static Item[] items = new Item[115000];
 
         public Item(string n)
         {
@@ -155,6 +158,9 @@ namespace Dungeon_Crawl
             items[7] = new Item("Leather Cap").setWeight(1).setArmor(1).setEquipSlot(0).setEquippable(true);
             items[8] = new Item("Leather Pants").setWeight(4).setArmor(2).setEquipSlot(4).setEquippable(true);
             items[9] = new Item("Leather Moccasins").setWeight(3).setArmor(1).setEquipSlot(5).setEquippable(true);
+            
+            items[10] = new Item("Iron Chainmail").setWeight(5).setArmor(4).setEquipSlot(3).setEquippable(true);
+            items[11] = new Item("Iron Bracers").setWeight(4).setArmor(3).setEquipSlot(1).setEquippable(true);
         }
 
         public Boolean Equals(Item i)
@@ -167,6 +173,15 @@ namespace Dungeon_Crawl
             return true;
         }
 
+        public string compileEnchant()
+        {
+            if (equippable)
+            {
+                return "Can be enchanted to " + this.maxEnchant_attack + "," + this.maxEnchant_block + "," this.maxEnchant_crit; 
+            }
+            return "";
+        }
+        
         public string compileTags()
         {
             string final = "";
