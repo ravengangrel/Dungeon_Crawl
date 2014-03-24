@@ -19,6 +19,7 @@ namespace Dungeon_Crawl
         public Boolean[] inventoryEquip = new Boolean[39];
         public int hunger = 1000;
         public Path pathToExit = new Path();
+        public string death = "";
 
         public List<Ability> abilities = new List<Ability>();
 
@@ -51,9 +52,9 @@ namespace Dungeon_Crawl
             {
                 status.addStatus(new Status("Shadowbound", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
                 status.addStatus(new Status("Accursed", 1, true, ConsoleForeground.Red, ConsoleBackground.Black));
-                addToInventory(Item.get(4).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(5).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(6).addBrand("unholy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(4).addBrand("holy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(5).addBrand("holy").setSpecial("Runed"), 1, false);
+                addToInventory(Item.get(6).addBrand("holy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(7).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(8).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(9).addBrand("unholy").setSpecial("Runed"), 1, false);
@@ -159,6 +160,8 @@ namespace Dungeon_Crawl
             if (stats.health < 0)
             {
                 stats.health = 0;
+                Program.dead = true;
+                death = s;
             }
             if (s != "" && amt > 0)
             {
