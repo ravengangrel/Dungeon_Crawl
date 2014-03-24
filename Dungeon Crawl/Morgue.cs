@@ -12,7 +12,7 @@ namespace Dungeon_Crawl
         {
             Directory.CreateDirectory("/DungeonCrawl/morgue");
             StreamWriter morgue = new StreamWriter("/DungeonCrawl/morgue/" + DateTime.Now.ToBinary() + ".morgue");
-            morgue.Write(p.name + " was a " + p.species.name + " " + p.career.name + " (CoD: " + p.death + " on turn " + Program.currTurn + ") who died at " + Program.renderX + "/" + Program.renderY + " on floor " + World.area + " " + World.floor);
+            morgue.Write(p.name + " was a " + p.species.name + " " + p.career.name + " (CoD: " + p.death + ") who on turn " + Program.currTurn + " died at " + Program.renderX + "/" + Program.renderY + " on floor " + World.area + " " + World.floor);
             morgue.Close();
         }
 
