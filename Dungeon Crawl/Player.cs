@@ -56,6 +56,10 @@ namespace Dungeon_Crawl
                 addToInventory(Item.get(9).addBrand("unholy").setSpecial("Runed"), 1, false);
                 addToInventory(Item.get(0), 1, false);
             }
+            if (species == Species._faerie)
+            {
+                status.addStatus(new Status("Magic Sight", 1, true, ConsoleForeground.Yellow, ConsoleBackground.Black));
+            }
             equipment = new Equipment();
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
@@ -149,6 +153,10 @@ namespace Dungeon_Crawl
 
         public void addToInventory(Item i, int amt, bool msg = true)
         {
+            if (status.hasAttr("Magic Sight"))
+            {
+                i.discoveredBound = true;
+            }
             for (int x = 0; x < inventory.Length; x++)
             {
                 try

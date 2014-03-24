@@ -357,6 +357,7 @@ namespace Dungeon_Crawl
                                         if (player.inventory[Program.selectedSlot].equipped)
                                         {
                                             player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
+                                            player.inventory[Program.selectedSlot].addBrand("used");
                                         }
                                         else
                                         {
@@ -372,6 +373,7 @@ namespace Dungeon_Crawl
                                 catch
                                 {
                                     player.inventory[Program.selectedSlot].equipped = true;
+                                    player.inventory[Program.selectedSlot].addBrand("used");
                                     if (player.inventory[Program.selectedSlot].equipped)
                                     {
                                         player.equipment.equipSlots[player.inventory[Program.selectedSlot].slotEquip] = player.inventory[Program.selectedSlot];
@@ -384,17 +386,25 @@ namespace Dungeon_Crawl
                                 }
                                 try
                                 {
-                                    if (player.inventory[Program.selectedSlot].equipped && player.inventory[Program.selectedSlot].bound && !player.inventory[Program.selectedSlot].discoveredBound)
+                                    if (player.inventory[Program.selectedSlot].equipped && !player.inventory[Program.selectedSlot].discoveredBound)
                                     {
                                         player.inventory[Program.selectedSlot].discoveredBound = true;
-                                        if (player.status.hasAttr("Accursed"))
+                                        if (player.inventory[Program.selectedSlot].bound)
                                         {
-                                            if (World.rand.Next(10) < player.status.getLvl("Accursed"))
+                                            if (player.status.hasAttr("Accursed"))
                                             {
-                                                player.inventory[Program.selectedSlot].discoveredBound = false;
-                                                player.inventory[Program.selectedSlot].bound = false;
-                                                player.inventory[Program.selectedSlot].addBrand("was bound");
+                                                if (World.rand.Next(10) < player.status.getLvl("Accursed"))
+                                                {
+                                                    player.inventory[Program.selectedSlot].discoveredBound = false;
+                                                    player.inventory[Program.selectedSlot].bound = false;
+                                                    player.inventory[Program.selectedSlot].addBrand("was bound");
+                                                    msgLog.Add(player.inventory[Program.selectedSlot].name + " was not strong enough to bind to you!");
+                                                }
                                             }
+                                        }
+                                        else
+                                        {
+                                            player.inventory[Program.selectedSlot].addBrand("not bound");
                                         }
                                     }
                                 }
@@ -460,7 +470,8 @@ namespace Dungeon_Crawl
                     Util.writeLn("Press enter to exit...", 2, 2);
                     Util.writeLn(showingItem.name + " (weight: " + showingItem.weight + ")", 2, 4);
                     Util.writeLn(showingItem.compileTags(), 2, 5);
-                    Console.ReadLine();
+                    Console.SetCursorPosition(Console.LargestWindowWidth - 1, Console.LargestWindowHeight - 1);
+                    Console.ReadKey();
                     showingItem = null;
                 }
             }
