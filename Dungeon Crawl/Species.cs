@@ -25,6 +25,7 @@ namespace Dungeon_Crawl
         public static Species _trollGnome = new Species();
         public static Species _darkElf = new Species();
         public static Species _merfolk = new Species();
+        public static Species _karura = new Species();
 
         public static Species[] speciesList;
         
@@ -45,6 +46,13 @@ namespace Dungeon_Crawl
             _merfolk.abbrv = "Mf";
             _merfolk.name = "Merfolk";
             _merfolk.lore = "Citizens of the oceans, these are amphibious";
+
+            _karura.baseStats = new BaseStatSet(7, 13, 12, 10, 12, 0);
+            _karura.size = Size.MEDIUM;
+            _karura.armor = Armor.DEFAULT;
+            _karura.abbrv = "Ka";
+            _karura.name = "Karura";
+            _karura.lore = "As Karura mature, they grow wings";
 
             _highElf.baseStats = new BaseStatSet(9, 11, 12, 10, 10, 2);
             _highElf.size = Size.MEDIUM;
@@ -107,6 +115,7 @@ namespace Dungeon_Crawl
             speciesList = new Species[] {
                 _human,
                 _merfolk,
+                _karura,
                 _highElf,
                 _woodElf,
                 _darkElf,

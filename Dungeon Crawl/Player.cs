@@ -21,6 +21,9 @@ namespace Dungeon_Crawl
         public Path pathToExit = new Path();
         public string death = "";
 
+        //Racial variables
+        public bool _karura_addedFly = false;
+
         public List<Ability> abilities = new List<Ability>();
 
         //-5000 to -2500- Starving
@@ -38,27 +41,10 @@ namespace Dungeon_Crawl
             identifier = species.abbrv + career.abbrv;
             stats = species.baseStats.addStatMod(career.statMod).adjust();
             stats.xp = 0;
-            if (species != Species._darkElf)
-            {
-                addToInventory(Item.get(4), 1, false);
-                addToInventory(Item.get(5), 1, false);
-                addToInventory(Item.get(6), 1, false);
-                addToInventory(Item.get(7), 1, false);
-                addToInventory(Item.get(8), 1, false);
-                addToInventory(Item.get(9), 1, false);
-                addToInventory(Item.get(0), 1, false);
-            }
-            else
+            if (species == Species._darkElf)
             {
                 status.addStatus(new Status("Shadowbound", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
                 status.addStatus(new Status("Accursed", 1, true, ConsoleForeground.Red, ConsoleBackground.Black));
-                addToInventory(Item.get(4).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(5).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(6).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(7).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(8).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(9).addBrand("unholy").setSpecial("Runed"), 1, false);
-                addToInventory(Item.get(0), 1, false);
             }
             if (species == Species._faerie)
             {
@@ -72,6 +58,10 @@ namespace Dungeon_Crawl
             if (species == Species._merfolk)
             {
                 status.addStatus(new Status("Swimmer", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
+            }
+            if (species == Species._karura)
+            {
+                status.addStatus(new Status("Fast Metabolism", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
             }
             //status.addStatus(new Status("Clairvoyance", 1, true, ConsoleForeground.Olive, ConsoleBackground.Black));
             equipment = new Equipment();
@@ -105,6 +95,12 @@ namespace Dungeon_Crawl
                 }
             }
             pathToExit = Path.calcPath(new Point(Program.renderX, Program.renderY), World.suggestedExit, "playerPath", true, false, 10000);
+            if (species == Species._karura && stats.level >= 8 && !_karura_addedFly)
+            {
+                _karura_addedFly = true;
+                abilities.Add(new Ability("Fly", AbilityEffect.TOGGLEFLIGHT));
+                Program.msgLog.Add("Your vestigal wing stubs grow into feathery appendages!");
+            }
         }
 
         public Boolean canEquipSelectedItem()

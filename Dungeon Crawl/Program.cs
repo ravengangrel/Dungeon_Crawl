@@ -253,9 +253,9 @@ namespace Dungeon_Crawl
             else
             {
                 int iter = 0;
-                string s = "";
                 foreach (Ability a in player.abilities)
                 {
+                    string s = "";
                     if (iter == Program.selectedSlot)
                     {
                         s = "> ";
@@ -503,7 +503,7 @@ namespace Dungeon_Crawl
                     }
                     if (player.species != Species._faerie)
                     {
-                        player.hunger--;
+                        player.hunger -= (1 + player.status.getLvl("Fast Metabolism"));
                         if (player.hunger < -4500 && World.rand.Next(100) < 73)
                         {
                             player.hurt(World.rand.Next(4) + 1, true, Player.chooseHungerMsg());

@@ -7,7 +7,8 @@ namespace Dungeon_Crawl
 {
     public enum AbilityEffect
     {
-        RESTHEAL
+        RESTHEAL,
+        TOGGLEFLIGHT
     }
     public class Ability
     {
@@ -26,14 +27,30 @@ namespace Dungeon_Crawl
 
         public void useAbility(Player p)
         {
-            if (effect == AbilityEffect.RESTHEAL)
+            if (p.stats.mana >= etherCost)
             {
-                p.stats.health += (int)(0.25f * p.stats.maxHealth);
-                if (p.stats.health > p.stats.maxHealth)
+                p.stats.mana -= etherCost;
+                p.hurt(healthCost, true, "You drained some health to perform " + name + "!");
+                if (effect == AbilityEffect.RESTHEAL)
                 {
-                    p.stats.health = p.stats.maxHealth;
+                    p.stats.health += (int)(0.25f * p.stats.maxHealth);
+                    if (p.stats.health > p.stats.maxHealth)
+                    {
+                        p.stats.health = p.stats.maxHealth;
+                    }
+                    Program.msgLog.Add("You feel rested!");
                 }
-                Program.msgLog.Add("You feel rested!");
+                if (effect == AbilityEffect.TOGGLEFLIGHT)
+                {
+                    if (p.status.hasAttr("Fly"))
+                    {
+                        p.status.removeAttr("Fly");
+                    }
+                    else
+                    {
+                        p.status.addStatus(new Status("Fly", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
+                    }
+                }
             }
         }
     }
