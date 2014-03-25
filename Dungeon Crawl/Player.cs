@@ -21,6 +21,9 @@ namespace Dungeon_Crawl
         public Path pathToExit = new Path();
         public string death = "";
 
+        //Racial variables
+        public bool _karura_addedFly = false;
+
         public List<Ability> abilities = new List<Ability>();
 
         //-5000 to -2500- Starving
@@ -88,6 +91,12 @@ namespace Dungeon_Crawl
                 }
             }
             pathToExit = Path.calcPath(new Point(Program.renderX, Program.renderY), World.suggestedExit, "playerPath", true, false, 10000);
+            if (species == Species._karura && stats.level >= 8 && !_karura_addedFly)
+            {
+                _karura_addedFly = true;
+                abilities.Add(new Ability("Fly", AbilityEffect.TOGGLEFLIGHT));
+                Program.msgLog.Add("Your vestigal wing stubs grow into feathery appendages!");
+            }
         }
 
         public Boolean canEquipSelectedItem()

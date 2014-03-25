@@ -253,9 +253,9 @@ namespace Dungeon_Crawl
             else
             {
                 int iter = 0;
-                string s = "";
                 foreach (Ability a in player.abilities)
                 {
+                    string s = "";
                     if (iter == Program.selectedSlot)
                     {
                         s = "> ";
