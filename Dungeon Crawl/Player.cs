@@ -59,6 +59,10 @@ namespace Dungeon_Crawl
             {
                 status.addStatus(new Status("Swimmer", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
             }
+            if (species == Species._karura)
+            {
+                status.addStatus(new Status("Fast Metabolism", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
+            }
             //status.addStatus(new Status("Clairvoyance", 1, true, ConsoleForeground.Olive, ConsoleBackground.Black));
             equipment = new Equipment();
             abilities.Add(new Ability("Rest and Heal", AbilityEffect.RESTHEAL, 0, 0));
