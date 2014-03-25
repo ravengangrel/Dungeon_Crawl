@@ -18,6 +18,8 @@ namespace Dungeon_Crawl
         public int[] inventoryStacks = new int[39];
         public Boolean[] inventoryEquip = new Boolean[39];
         public int hunger = 1000;
+        public Path pathToExit = new Path();
+        public string death = "";
 
         public List<Ability> abilities = new List<Ability>();
 
@@ -71,9 +73,9 @@ namespace Dungeon_Crawl
             {
                 status.addStatus(new Status("Swimmer", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
             }
+            //status.addStatus(new Status("Clairvoyance", 1, true, ConsoleForeground.Olive, ConsoleBackground.Black));
             equipment = new Equipment();
             abilities.Add(new Ability("Rest and Heal", AbilityEffect.RESTHEAL, 0, 0));
-            stats.health = stats.maxHealth / 4;
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
         }
 
@@ -102,6 +104,7 @@ namespace Dungeon_Crawl
                     hurt(status.getLvl("Divine Wrath"), true, "The ancients strike against you for tainting their blessings!");
                 }
             }
+            pathToExit = Path.calcPath(new Point(Program.renderX, Program.renderY), World.suggestedExit, "playerPath", true, false, 10000);
         }
 
         public Boolean canEquipSelectedItem()
@@ -157,6 +160,8 @@ namespace Dungeon_Crawl
             if (stats.health < 0)
             {
                 stats.health = 0;
+                Program.dead = true;
+                death = s;
             }
             if (s != "" && amt > 0)
             {

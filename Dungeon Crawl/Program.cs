@@ -24,6 +24,7 @@ namespace Dungeon_Crawl
         public static Item showingItem = null;
 
         public static bool showAbilities = false;
+        public static bool dead = false;
 
         static void Main(string[] args)
         {
@@ -304,7 +305,7 @@ namespace Dungeon_Crawl
         public static void startGame()
         {
             Boolean turn = false;
-            while (true)
+            while (!dead)
             {
                 if (showingItem == null)
                 {
@@ -342,6 +343,7 @@ namespace Dungeon_Crawl
                             msgLog.Add("You descend into the darkness...");
                             World.floor++;
                             World.genMap();
+                            Mob.mobList.Clear();
                         }
                         if (World.gold[renderX, renderY] > 0)
                         {
@@ -544,6 +546,8 @@ namespace Dungeon_Crawl
                     showingItem = null;
                 }
             }
+            Morgue.update(player);
+            Morgue.show();
         }
         public static Boolean canMoveRight()
         {
