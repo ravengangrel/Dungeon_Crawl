@@ -200,7 +200,7 @@ namespace Dungeon_Crawl
             Console.SetCursorPosition(2, 27);
             Console.WriteLine("Turn " + currTurn);
             Console.SetCursorPosition(2, 0);
-            Console.Write(area + ":" + floor);
+            Console.Write(area + ":" + floor + " (" + renderX + " ~ " + renderY + ")");
             player.WriteRPGStats(28, 1);
             if (player.status.statusEffects.Count > 0)
             {

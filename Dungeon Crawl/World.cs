@@ -81,8 +81,8 @@ namespace Dungeon_Crawl
 
         public void drawClary()
         {
-            ConsoleEx.TextColor(ConsoleForeground.Magenta, ConsoleBackground.Magenta);
-            Console.Write(icon);
+            ConsoleEx.TextColor(colorFore, colorBack);
+            Console.Write('x');
         }
 
         public void draw()
@@ -104,14 +104,7 @@ namespace Dungeon_Crawl
         {
             if (isEmpty(x, y))
             {
-                if (Program.player.status.hasAttr("Clairvoyance") && Program.player.pathToExit.points.Contains(new Point(x, y)))
-                {
-                    map[x, y].drawClary();
-                }
-                else
-                {
-                    map[x, y].draw();
-                }
+                map[x, y].draw();
             }
             else
             {
