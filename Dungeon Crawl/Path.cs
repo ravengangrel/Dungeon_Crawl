@@ -59,7 +59,7 @@ namespace Dungeon_Crawl
                         }
                         else
                         {
-                            if ((World.map[start.X + x, start.Y + y].solid && !ignoreWalls) || World.map[start.X + x, start.Y] == Tile.deepWater)
+                            if ((Program.world.map[start.X + x, start.Y + y].solid && !ignoreWalls) || Program.world.map[start.X + x, start.Y] == Tile.deepWater)
                             {
                                 skipPoint = true;
                             }
@@ -73,7 +73,7 @@ namespace Dungeon_Crawl
                         }
                         if (!skipPoint && !path.hasPoint(new Point(start.X + x, start.Y + y)))
                         {
-                            double heuristic = (World.map[start.X + x, start.Y + y].moveCost * 10);
+                            double heuristic = (Program.world.map[start.X + x, start.Y + y].moveCost * 10);
                             if (dijkastra)
                             {
                                 heuristic = 0;

@@ -94,7 +94,7 @@ namespace Dungeon_Crawl
                     hurt(status.getLvl("Divine Wrath"), true, "The ancients strike against you for tainting their blessings!");
                 }
             }
-            pathToExit = Path.calcPath(new Point(Program.renderX, Program.renderY), World.suggestedExit, "playerPath", true, false, 10000);
+            pathToExit = Path.calcPath(new Point(Program.renderX, Program.renderY), Program.world.suggestedExit, "playerPath", true, false, 10000);
             if (species == Species._karura && stats.level >= 8 && !_karura_addedFly)
             {
                 _karura_addedFly = true;
@@ -108,6 +108,7 @@ namespace Dungeon_Crawl
                 Program.msgLog.Add("You are now level " + stats.level);
                 stats.reqXp = (int)Math.Pow(stats.level + 1, (7 / 4)) * stats.level;
             }
+            Program.world = Program.levelMap[Program.area + ":" + Program.floor];
         }
 
         public Boolean canEquipSelectedItem()
