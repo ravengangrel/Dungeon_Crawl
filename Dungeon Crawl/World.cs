@@ -19,6 +19,7 @@ namespace Dungeon_Crawl
         public static Tile stoneFloor = new Tile();
         public static Tile shallowWater = new Tile();
         public static Tile deepWater = new Tile();
+        public static Tile swampWater = new Tile();
         public static Tile stairCase = new Tile();
         public static Tile upStairCase = new Tile();
         public static Tile swampCase = new Tile();
@@ -60,7 +61,14 @@ namespace Dungeon_Crawl
             shallowWater.solid = false;
             shallowWater.colorFore = ConsoleForeground.Blue;
             shallowWater.moveCost = 2;
-            
+
+            swampWater.name = "Swamp Water";
+            swampWater.lore = "Looks wet";
+            swampWater.icon = '~';
+            swampWater.solid = false;
+            swampWater.colorFore = ConsoleForeground.Green;
+            swampWater.moveCost = 2;
+
             deepWater.name = "Deep Water";
             deepWater.lore = "Looks really wet";
             deepWater.icon = '~';
@@ -192,13 +200,18 @@ namespace Dungeon_Crawl
                     {
                         cY--;
                     }
-                    if (rand.Next(4000) == 0 && !genWater)
+                    if (rand.Next(6000) == 0 && !genWater)
                     {
                         genWater = !genWater;
+                        if (rand.Next(250) == 0)
+                        {
+                            genSwamp = true;
+                        }
                     }
                     if (rand.Next(400) == 0 && genWater)
                     {
                         genWater = !genWater;
+                        genSwamp = false;
                     }
                     if (!genWater)
                     {
@@ -228,11 +241,11 @@ namespace Dungeon_Crawl
                                 {
                                     if (Program.player.species != Species._darkElf)
                                     {
-                                        items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.NextBool()), 1);
+                                        items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.chooseBound()), 1);
                                     }
                                     else
                                     {
-                                        items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.NextBool()), 1);
+                                        items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.chooseBound()), 1);
                                     }
                                 }
                             }
@@ -244,13 +257,21 @@ namespace Dungeon_Crawl
                         {
                             genDeep = !genDeep;
                         }
-                        if (genDeep)
+                        if (genSwamp)
                         {
-                            map[sX + cX, sY + cY] = Tile.deepWater;
+                            genDeep = false;
+                            map[sX + cX, sY + cY] = Tile.swampWater;
                         }
                         else
                         {
-                            map[sX + cX, sY + cY] = Tile.shallowWater;
+                            if (genDeep)
+                            {
+                                map[sX + cX, sY + cY] = Tile.deepWater;
+                            }
+                            else
+                            {
+                                map[sX + cX, sY + cY] = Tile.shallowWater;
+                            }
                         }
                     }
                 }

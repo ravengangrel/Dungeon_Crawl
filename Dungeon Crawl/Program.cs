@@ -539,7 +539,7 @@ namespace Dungeon_Crawl
                     Mob.updatePaths();
                     Mob.updateMobs();
                     player.stats.calcStats();
-                    if (world.map[renderX, renderY] == Tile.shallowWater && !player.status.hasAttr("Fly"))
+                    if ((world.map[renderX, renderY] == Tile.shallowWater || world.map[renderX, renderY] == Tile.swampWater) && !player.status.hasAttr("Fly"))
                     {
                         player.status.removeAttr("Wet");
                         player.status.addStatus(new Status("Wet", 1, true, ConsoleForeground.Blue, ConsoleBackground.Black));
