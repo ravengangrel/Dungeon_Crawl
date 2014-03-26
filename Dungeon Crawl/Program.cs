@@ -7,6 +7,7 @@ namespace Dungeon_Crawl
 {
     class Program
     {
+        private static Boolean stuck = false;
         public static string area = "Dungeon";
         public static int floor = 1;
         public static int selectedSpecies = 0;
@@ -134,179 +135,182 @@ namespace Dungeon_Crawl
         }
         public static void renderGame()
         {
-            Console.Clear();
-            ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 26, 26, false);
-
-            for (int y = -14; y < 13; y++)
+            if (!stuck)
             {
-                for (int x = -14; x < 13; x++)
+                Console.Clear();
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 0, 26, 26, false);
+
+                for (int y = -14; y < 13; y++)
                 {
-                    while (renderX + x < 0)
+                    for (int x = -14; x < 13; x++)
                     {
-                        x++;
-                    }
-                    while (renderY + y < 0)
-                    {
-                        y++;
-                    }
-                    if (Math.Sqrt(Math.Pow((renderX + x) - renderX, 2) + Math.Pow((renderY + y) - renderY, 2)) < 12.6)
-                    {
-                        Console.SetCursorPosition(Math.Min(26, Math.Max(1, x + 13)), Math.Min(26, Math.Max(1, y + 13)));
-                        try
+                        while (renderX + x < 0)
                         {
-                            if (renderX + x == renderX && renderY + y == renderY)
+                            x++;
+                        }
+                        while (renderY + y < 0)
+                        {
+                            y++;
+                        }
+                        if (Math.Sqrt(Math.Pow((renderX + x) - renderX, 2) + Math.Pow((renderY + y) - renderY, 2)) < 12.6)
+                        {
+                            Console.SetCursorPosition(Math.Min(26, Math.Max(1, x + 13)), Math.Min(26, Math.Max(1, y + 13)));
+                            try
                             {
-                                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
-                                if (player.status.hasAttr("Invisible"))
+                                if (renderX + x == renderX && renderY + y == renderY)
                                 {
-                                    ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
-                                }
-                                Console.Write("P");
-                                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
-                            }
-                            else
-                            {
-                                if (Mob.getMobsAtPos(renderX + x, renderY + y).Count == 0)
-                                {
-                                    world.draw(renderX + x, renderY + y);
+                                    ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                                    if (player.status.hasAttr("Invisible"))
+                                    {
+                                        ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
+                                    }
+                                    Console.Write("P");
+                                    ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
                                 }
                                 else
                                 {
-                                    ConsoleEx.TextColor(Mob.getMobsAtPos(renderX + x, renderY + y)[0].colorFore, Mob.getMobsAtPos(renderX + x, renderY + y)[0].colorBack);
-                                    Console.Write(Mob.getMobsAtPos(renderX + x, renderY + y)[0].symbol);
-                                    msgLog.Add(Mob.getMobsAtPos(renderX + x, renderY + y)[0].name + " has been spotted near you!");
+                                    if (Mob.getMobsAtPos(renderX + x, renderY + y).Count == 0)
+                                    {
+                                        world.draw(renderX + x, renderY + y);
+                                    }
+                                    else
+                                    {
+                                        ConsoleEx.TextColor(Mob.getMobsAtPos(renderX + x, renderY + y)[0].colorFore, Mob.getMobsAtPos(renderX + x, renderY + y)[0].colorBack);
+                                        Console.Write(Mob.getMobsAtPos(renderX + x, renderY + y)[0].symbol);
+                                        msgLog.Add(Mob.getMobsAtPos(renderX + x, renderY + y)[0].name + " has been spotted near you!");
+                                    }
                                 }
-                            }
 
+                            }
+                            catch
+                            {
+                                //ConsoleEx.TextColor(ConsoleForeground.Red, ConsoleBackground.Black);
+                                //Console.Write('X');
+                            }
+                            ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
                         }
-                        catch
+                        else
                         {
-                            //ConsoleEx.TextColor(ConsoleForeground.Red, ConsoleBackground.Black);
-                            //Console.Write('X');
+                            Console.SetCursorPosition(Math.Min(26, Math.Max(1, x + 13)), Math.Min(26, Math.Max(1, y + 13)));
+                            ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
+                            Console.Write(':');
                         }
-                        ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
-                    }
-                    else
-                    {
-                        Console.SetCursorPosition(Math.Min(26, Math.Max(1, x + 13)), Math.Min(26, Math.Max(1, y + 13)));
-                        ConsoleEx.TextColor(ConsoleForeground.DarkGray, ConsoleBackground.Black);
-                        Console.Write(':');
                     }
                 }
-            }
-            ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
-            ConsoleEx.DrawRectangle(BorderStyle.Text, 27, 0, 26, 40, false);
-            ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 27, 26, 13, false);
-            Console.SetCursorPosition(2, 27);
-            Console.WriteLine("Turn " + currTurn);
-            Console.SetCursorPosition(2, 0);
-            Console.Write(area + ":" + floor + " (" + renderX + " ~ " + renderY + ")");
-            player.WriteRPGStats(28, 1);
-            if (player.status.statusEffects.Count > 0)
-            {
-                ConsoleEx.DrawRectangle(BorderStyle.Text, 54, 0, 35, player.status.statusEffects.Count + 1, false);
-                player.status.drawStatus(55, 1);
-            }
-            if (!showAbilities)
-            {
-                for (int x = 0; x < player.inventory.Length; x++)
+                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 27, 0, 26, 40, false);
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 27, 26, 13, false);
+                Console.SetCursorPosition(2, 27);
+                Console.WriteLine("Turn " + currTurn);
+                Console.SetCursorPosition(2, 0);
+                Console.Write(area + ":" + floor + " (" + renderX + " ~ " + renderY + ")");
+                player.WriteRPGStats(28, 1);
+                if (player.status.statusEffects.Count > 0)
                 {
-                    if (player.inventoryStacks[x] > 0)
+                    ConsoleEx.DrawRectangle(BorderStyle.Text, 54, 0, 35, player.status.statusEffects.Count + 1, false);
+                    player.status.drawStatus(55, 1);
+                }
+                if (!showAbilities)
+                {
+                    for (int x = 0; x < player.inventory.Length; x++)
                     {
-                        string s = player.inventoryStacks[x] + " " + player.inventory[x].name;
-                        if (Program.selectedSlot == x)
+                        if (player.inventoryStacks[x] > 0)
                         {
-                            s = "> " + s;
+                            string s = player.inventoryStacks[x] + " " + player.inventory[x].name;
+                            if (Program.selectedSlot == x)
+                            {
+                                s = "> " + s;
+                            }
+                            if (player.inventoryEquip[x] || player.inventory[x].equipped)
+                            {
+                                s = s + " (Equipped)";
+                            }
+                            if (player.inventory[x].bound && player.inventory[x].discoveredBound)
+                            {
+                                s = s + " (Bound)";
+                            }
+                            if (player.status.statusEffects.Count > 0)
+                            {
+                                Util.writeLn(s, 91, 1 + x);
+                            }
+                            else
+                            {
+                                Util.writeLn(s, 54, 1 + x);
+                            }
                         }
-                        if (player.inventoryEquip[x] || player.inventory[x].equipped)
+                        else
                         {
-                            s = s + " (Equipped)";
+                            string s = "Empty Slot";
+                            if (Program.selectedSlot == x)
+                            {
+                                s = "> " + s;
+                            }
+                            if (player.status.statusEffects.Count > 0)
+                            {
+                                Util.writeLn(s, 91, 1 + x);
+                            }
+                            else
+                            {
+                                Util.writeLn(s, 54, 1 + x);
+                            }
+                            player.inventory[x] = null;
+                            player.inventoryStacks[x] = 0;
+                            player.inventoryEquip[x] = false;
                         }
-                        if (player.inventory[x].bound && player.inventory[x].discoveredBound)
+                    }
+                }
+                else
+                {
+                    int iter = 0;
+                    foreach (Ability a in player.abilities)
+                    {
+                        string s = "";
+                        if (iter == Program.selectedSlot)
                         {
-                            s = s + " (Bound)";
+                            s = "> ";
+                        }
+                        s += a.name;
+                        if (a.etherCost > 0)
+                        {
+                            s += "(costs " + a.etherCost + " ether";
+                            if (a.healthCost > 0)
+                            {
+                                s += " and " + a.healthCost + " health)";
+                            }
+                            else
+                            {
+                                s += ")";
+                            }
+                        }
+                        if (a.healthCost > 0 && a.etherCost <= 0)
+                        {
+                            s += "(costs " + a.healthCost + " health)";
                         }
                         if (player.status.statusEffects.Count > 0)
                         {
-                            Util.writeLn(s, 91, 1 + x);
+                            Util.writeLn(s, 91, 1 + iter);
                         }
                         else
                         {
-                            Util.writeLn(s, 54, 1 + x);
+                            Util.writeLn(s, 54, 1 + iter);
                         }
-                    }
-                    else
-                    {
-                        string s = "Empty Slot";
-                        if (Program.selectedSlot == x)
-                        {
-                            s = "> " + s;
-                        }
-                        if (player.status.statusEffects.Count > 0)
-                        {
-                            Util.writeLn(s, 91, 1 + x);
-                        }
-                        else
-                        {
-                            Util.writeLn(s, 54, 1 + x);
-                        }
-                        player.inventory[x] = null;
-                        player.inventoryStacks[x] = 0;
-                        player.inventoryEquip[x] = false;
+                        iter++;
                     }
                 }
-            }
-            else
-            {
-                int iter = 0;
-                foreach (Ability a in player.abilities)
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 41, 88, 6, false);
+                for (int x = 0; x < 5; x++)
                 {
-                    string s = "";
-                    if (iter == Program.selectedSlot)
+                    try
                     {
-                        s = "> ";
+                        Util.writeLn(msgLog.ToArray()[msgLog.ToArray().Length - (1 + x)], 1, 42 + x);
                     }
-                    s += a.name;
-                    if (a.etherCost > 0)
+                    catch
                     {
-                        s += "(costs " + a.etherCost + " ether";
-                        if (a.healthCost > 0)
-                        {
-                            s += " and " + a.healthCost + " health)";
-                        }
-                        else
-                        {
-                            s += ")";
-                        }
+                        break;
                     }
-                    if (a.healthCost > 0 && a.etherCost <= 0)
-                    {
-                        s += "(costs " + a.healthCost + " health)";
-                    }
-                    if (player.status.statusEffects.Count > 0)
-                    {
-                        Util.writeLn(s, 91, 1 + iter);
-                    }
-                    else
-                    {
-                        Util.writeLn(s, 54, 1 + iter);
-                    }
-                    iter++;
                 }
+                player.status.update();
             }
-            ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 41, 88, 6, false);
-            for (int x = 0; x < 5; x++)
-            {
-                try
-                {
-                    Util.writeLn(msgLog.ToArray()[msgLog.ToArray().Length - (1 + x)], 1, 42 + x);
-                }
-                catch
-                {
-                    break;
-                }
-            }
-            player.status.update();
         }
         public static void startGame()
         {
@@ -329,21 +333,42 @@ namespace Dungeon_Crawl
                             renderGame();
                         }
                         ConsoleKeyInfo keyInfo = Console.ReadKey();
-                        if (keyInfo.Key == ConsoleKey.RightArrow && canMoveRight())
+                        if (keyInfo.Key == ConsoleKey.RightArrow)
                         {
-                            renderX = Math.Min(renderX + 1, 999);
+                            if (canMoveRight())
+                            {
+                                renderX = Math.Min(renderX + 1, 999);
+                                stuck = false;
+                            }
+                            else { stuck = true; }
                         }
-                        if (keyInfo.Key == ConsoleKey.LeftArrow && canMoveLeft())
+
+                        if (keyInfo.Key == ConsoleKey.LeftArrow)
                         {
-                            renderX = Math.Max(renderX - 1, 0);
+                            if (canMoveLeft())
+                            {
+                                renderX = Math.Max(renderX - 1, 0);
+                                stuck = false;
+                            }
+                            else { stuck = true; }
                         }
-                        if (keyInfo.Key == ConsoleKey.DownArrow && canMoveDown())
+                        if (keyInfo.Key == ConsoleKey.DownArrow)
                         {
-                            renderY = Math.Min(renderY + 1, 999);
+                            if (canMoveDown())
+                            {
+                                renderY = Math.Min(renderY + 1, 999);
+                                stuck = false;
+                            }
+                            else { stuck = true; }
                         }
-                        if (keyInfo.Key == ConsoleKey.UpArrow && canMoveUp())
+                        if (keyInfo.Key == ConsoleKey.UpArrow)
                         {
-                            renderY = Math.Max(renderY - 1, 0);
+                            if (canMoveUp())
+                            {
+                                renderY = Math.Max(renderY - 1, 0);
+                                stuck = false;
+                            }
+                            else { stuck = true; }
                         }
                         if (world.map[renderX, renderY] == Tile.stairCase)
                         {
