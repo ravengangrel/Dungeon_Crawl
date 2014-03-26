@@ -1,6 +1,7 @@
 Any changelog for v 0.01a does not exist except for in the commit history
 
-*v 0.02a Changelog*
+v 0.02a Changelog
+=================
 
 ***_Patch #1_***
 - Bread now has 600 sustanence giving (up from 400)
