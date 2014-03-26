@@ -101,6 +101,13 @@ namespace Dungeon_Crawl
                 abilities.Add(new Ability("Fly", AbilityEffect.TOGGLEFLIGHT));
                 Program.msgLog.Add("Your vestigal wing stubs grow into feathery appendages!");
             }
+            if (stats.xp >= stats.reqXp)
+            {
+                stats.xp -= stats.reqXp;
+                stats.level++;
+                Program.msgLog.Add("You are now level " + stats.level);
+                stats.reqXp = (int)Math.Pow(stats.level + 1, (7 / 4)) * stats.level;
+            }
         }
 
         public Boolean canEquipSelectedItem()

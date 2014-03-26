@@ -344,6 +344,7 @@ namespace Dungeon_Crawl
                             World.floor++;
                             World.genMap();
                             Mob.mobList.Clear();
+                            player.stats.xp += World.rand.Next(2, 6);
                         }
                         if (World.gold[renderX, renderY] > 0)
                         {
