@@ -319,6 +319,7 @@ namespace Dungeon_Crawl
                     {
                         if (iteration > 0)
                         {
+                            ConsoleEx.CursorVisible = false;
                             renderGame();
                         }
                         ConsoleKeyInfo keyInfo = Console.ReadKey();
