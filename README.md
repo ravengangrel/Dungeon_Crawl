@@ -15,3 +15,4 @@ v 0.02a Changelog
 - Coordinates now show
 
 ***_Patch #3_***
+- Game doesn't redraw if player doesn't change position
