@@ -13,13 +13,13 @@ namespace Dungeon_Crawl
 
         public void print()
         {
-            //Directory.CreateDirectory("C:/Users/Ian/Desktop/mobpaths"); 
-            //StreamWriter writer = new StreamWriter("C:/Users/Ian/Desktop/mobpaths/" + name + "_path" + points[0].X + "." + points[0].Y + " - " + points[points.Count - 1].X + "." + points[points.Count - 1].Y + ".txt");
-            //for (int x = 0; x < points.Count; x++)
-            //{
-            //    writer.WriteLine(points[x].X + "/" + points[x].Y);
-            //}
-            //writer.Close();
+            Directory.CreateDirectory("C:/Users/Ian/Desktop/mobpaths"); 
+            StreamWriter writer = new StreamWriter("C:/Users/Ian/Desktop/mobpaths/" + name + "_path" + points[0].X + "." + points[0].Y + " - " + points[points.Count - 1].X + "." + points[points.Count - 1].Y + ".txt");
+            for (int x = 0; x < points.Count; x++)
+            {
+                writer.WriteLine(points[x].X + "/" + points[x].Y);
+            }
+            writer.Close();
         }
 
         public bool hasPoint(Point p)
