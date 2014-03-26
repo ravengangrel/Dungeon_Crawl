@@ -7,6 +7,8 @@ namespace Dungeon_Crawl
 {
     class Program
     {
+        public static string area = "Dungeon";
+        public static int floor = 1;
         public static int selectedSpecies = 0;
 
         public static Species currSpecies;
@@ -25,6 +27,9 @@ namespace Dungeon_Crawl
 
         public static bool showAbilities = false;
         public static bool dead = false;
+
+        public static World world = new World();
+        public static Dictionary<string, World> levelMap = new Dictionary<string, World>();
 
         static void Main(string[] args)
         {
@@ -123,7 +128,8 @@ namespace Dungeon_Crawl
             player.WriteStats();
             player.stats.calcStats();
             Console.ReadLine();
-            World.genMap();
+            world.genMap();
+            levelMap.Add(Program.area + ":" + Program.floor, world);
             startGame();
         }
         public static void renderGame()
@@ -162,7 +168,7 @@ namespace Dungeon_Crawl
                             {
                                 if (Mob.getMobsAtPos(renderX + x, renderY + y).Count == 0)
                                 {
-                                    World.draw(renderX + x, renderY + y);
+                                    world.draw(renderX + x, renderY + y);
                                 }
                                 else
                                 {
@@ -194,7 +200,7 @@ namespace Dungeon_Crawl
             Console.SetCursorPosition(2, 27);
             Console.WriteLine("Turn " + currTurn);
             Console.SetCursorPosition(2, 0);
-            Console.Write(World.area + ":" + World.floor);
+            Console.Write(area + ":" + floor);
             player.WriteRPGStats(28, 1);
             if (player.status.statusEffects.Count > 0)
             {
@@ -319,6 +325,7 @@ namespace Dungeon_Crawl
                     {
                         if (iteration > 0)
                         {
+                            ConsoleEx.CursorVisible = false;
                             renderGame();
                         }
                         ConsoleKeyInfo keyInfo = Console.ReadKey();
@@ -338,22 +345,42 @@ namespace Dungeon_Crawl
                         {
                             renderY = Math.Max(renderY - 1, 0);
                         }
-                        if (World.map[renderX, renderY] == Tile.stairCase)
+                        if (world.map[renderX, renderY] == Tile.stairCase)
                         {
                             msgLog.Add("You descend into the darkness...");
-                            World.floor++;
-                            World.genMap();
+                            Program.floor++;
+                            if (!levelMap.ContainsKey(Program.area + ":" + Program.floor))
+                            {
+                                World w = new World();
+                                w.genMap();
+                                levelMap.Add(Program.area + ":" + Program.floor, w);
+                            }
+                            else
+                            {
+                                world = levelMap[Program.area + ":" + Program.floor];
+                            }
                             Mob.mobList.Clear();
+                            player.stats.xp += World.rand.Next(2, 6);
                         }
-                        if (World.gold[renderX, renderY] > 0)
+                        if (world.map[renderX, renderY] == Tile.upStairCase)
                         {
-                            player.addGold(World.gold[renderX, renderY]);
-                            World.gold[renderX, renderY] = 0;
+                            if (Program.floor - 1 > 0)
+                            {
+                                msgLog.Add("You climb to the previous floor...");
+                                Program.floor--;
+                                world = levelMap[Program.area + ":" + Program.floor];
+                                //player.stats.xp += World.rand.Next(2, 6);
+                            }
                         }
-                        if (World.items[renderX, renderY] != null)
+                        if (world.gold[renderX, renderY] > 0)
                         {
-                            player.addToInventory(World.items[renderX, renderY]);
-                            World.items[renderX, renderY] = null;
+                            player.addGold(world.gold[renderX, renderY]);
+                            world.gold[renderX, renderY] = 0;
+                        }
+                        if (world.items[renderX, renderY] != null)
+                        {
+                            player.addToInventory(world.items[renderX, renderY]);
+                            world.items[renderX, renderY] = null;
                         }
                         turn = false;
                         if (keyInfo.Key == ConsoleKey.A)
@@ -512,7 +539,7 @@ namespace Dungeon_Crawl
                     Mob.updatePaths();
                     Mob.updateMobs();
                     player.stats.calcStats();
-                    if (World.map[renderX, renderY] == Tile.shallowWater && !player.status.hasAttr("Fly"))
+                    if ((world.map[renderX, renderY] == Tile.shallowWater || world.map[renderX, renderY] == Tile.swampWater) && !player.status.hasAttr("Fly"))
                     {
                         player.status.removeAttr("Wet");
                         player.status.addStatus(new Status("Wet", 1, true, ConsoleForeground.Blue, ConsoleBackground.Black));
@@ -521,7 +548,7 @@ namespace Dungeon_Crawl
                     {
                         player.status.removeAttr("Wet");
                     }
-                    if (World.map[renderX, renderY] == Tile.deepWater && !player.status.hasAttr("Fly"))
+                    if (world.map[renderX, renderY] == Tile.deepWater && !player.status.hasAttr("Fly"))
                     {
                         player.status.removeAttr("Wet+");
                         player.status.addStatus(new Status("Wet+", 1, true, ConsoleForeground.Navy, ConsoleBackground.Black));
@@ -551,19 +578,19 @@ namespace Dungeon_Crawl
         }
         public static Boolean canMoveRight()
         {
-            return !World.map[renderX + 1, renderY].solid && (World.map[renderX + 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
+            return !world.map[renderX + 1, renderY].solid && (world.map[renderX + 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveLeft()
         {
-            return !World.map[renderX - 1, renderY].solid && (World.map[renderX - 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
+            return !world.map[renderX - 1, renderY].solid && (world.map[renderX - 1, renderY] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveUp()
         {
-            return !World.map[renderX, renderY - 1].solid && (World.map[renderX, renderY - 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
+            return !world.map[renderX, renderY - 1].solid && (world.map[renderX, renderY - 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
         public static Boolean canMoveDown()
         {
-            return !World.map[renderX, renderY + 1].solid && (World.map[renderX, renderY + 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
+            return !world.map[renderX, renderY + 1].solid && (world.map[renderX, renderY + 1] != Tile.deepWater || player.status.hasAttr("Swimmer") || player.status.hasAttr("Fly"));
         }
     }
 }

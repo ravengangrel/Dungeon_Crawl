@@ -19,7 +19,10 @@ namespace Dungeon_Crawl
         public static Tile stoneFloor = new Tile();
         public static Tile shallowWater = new Tile();
         public static Tile deepWater = new Tile();
+        public static Tile swampWater = new Tile();
         public static Tile stairCase = new Tile();
+        public static Tile upStairCase = new Tile();
+        public static Tile swampCase = new Tile();
 
         public static void init()
         {
@@ -40,19 +43,40 @@ namespace Dungeon_Crawl
             stairCase.icon = '#';
             stairCase.solid = false;
 
+            upStairCase.name = "Staircase";
+            upStairCase.lore = "A staircase";
+            upStairCase.icon = '#';
+            upStairCase.solid = false;
+            upStairCase.colorFore = ConsoleForeground.DarkGray;
+
+            swampCase.name = "Swamp Staircase";
+            swampCase.lore = "A staircase leading to the swamps";
+            swampCase.icon = '#';
+            swampCase.solid = false;
+            swampCase.colorFore = ConsoleForeground.Green;
+
             shallowWater.name = "Shallow Water";
             shallowWater.lore = "Looks wet";
             shallowWater.icon = '~';
             shallowWater.solid = false;
             shallowWater.colorFore = ConsoleForeground.Blue;
             shallowWater.moveCost = 2;
-            
+
+            swampWater.name = "Swamp Water";
+            swampWater.lore = "Looks wet";
+            swampWater.icon = '~';
+            swampWater.solid = false;
+            swampWater.colorFore = ConsoleForeground.Green;
+            swampWater.moveCost = 2;
+
             deepWater.name = "Deep Water";
             deepWater.lore = "Looks really wet";
             deepWater.icon = '~';
             deepWater.solid = false;
             deepWater.colorFore = ConsoleForeground.Navy;
             deepWater.moveCost = 3;
+
+
         }
 
         public void drawClary()
@@ -70,15 +94,13 @@ namespace Dungeon_Crawl
 
     public class World
     {
-        public static string area = "Dungeon";
-        public static int floor = 1;
-        public static Tile[,] map = new Tile[1000, 1000];
-        public static int[,] gold = new int[1000, 1000];
-        public static ItemCache[,] items = new ItemCache[1000, 1000];
+        public Tile[,] map = new Tile[1000, 1000];
+        public int[,] gold = new int[1000, 1000];
+        public ItemCache[,] items = new ItemCache[1000, 1000];
         public static Random rand = new Random();
-        public static Point suggestedExit;
+        public Point suggestedExit;
 
-        public static void draw(int x, int y)
+        public void draw(int x, int y)
         {
             if (isEmpty(x, y))
             {
@@ -106,12 +128,12 @@ namespace Dungeon_Crawl
             }
         }
 
-        public static Boolean isEmpty(int x, int y)
+        public Boolean isEmpty(int x, int y)
         {
             return gold[x, y] == 0 && items[x, y] == null;
         }
 
-        public static void genMap()
+        public void genMap()
         {
             for (int x = 0; x < 1000; x++)
             {
@@ -131,6 +153,7 @@ namespace Dungeon_Crawl
             int cY = 0;
             bool genWater = false;
             bool genDeep = false;
+            bool genSwamp = false;
             for (int z = 0; z < 6; z++)
             {
                 for (int a = 0; a < rand.Next(80000, 150000); a++)
@@ -177,13 +200,18 @@ namespace Dungeon_Crawl
                     {
                         cY--;
                     }
-                    if (rand.Next(4000) == 0 && !genWater)
+                    if (rand.Next(6000) == 0 && !genWater)
                     {
                         genWater = !genWater;
+                        if (rand.Next(250) == 0)
+                        {
+                            genSwamp = true;
+                        }
                     }
                     if (rand.Next(400) == 0 && genWater)
                     {
                         genWater = !genWater;
+                        genSwamp = false;
                     }
                     if (!genWater)
                     {
@@ -213,11 +241,11 @@ namespace Dungeon_Crawl
                                 {
                                     if (Program.player.species != Species._darkElf)
                                     {
-                                        items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.NextBool()), 1);
+                                        items[sX + cX, sY + cY].addItem(Item.get(1).setBound(rand.chooseBound()), 1);
                                     }
                                     else
                                     {
-                                        items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.NextBool()), 1);
+                                        items[sX + cX, sY + cY].addItem(Item.get(3).setBound(rand.chooseBound()), 1);
                                     }
                                 }
                             }
@@ -229,17 +257,30 @@ namespace Dungeon_Crawl
                         {
                             genDeep = !genDeep;
                         }
-                        if (genDeep)
+                        if (genSwamp)
                         {
-                            map[sX + cX, sY + cY] = Tile.deepWater;
+                            genDeep = false;
+                            map[sX + cX, sY + cY] = Tile.swampWater;
                         }
                         else
                         {
-                            map[sX + cX, sY + cY] = Tile.shallowWater;
+                            if (genDeep)
+                            {
+                                map[sX + cX, sY + cY] = Tile.deepWater;
+                            }
+                            else
+                            {
+                                map[sX + cX, sY + cY] = Tile.shallowWater;
+                            }
                         }
                     }
                 }
             }
+            if (Program.floor > 1)
+            {
+                map[Program.renderX, Program.renderY] = Tile.upStairCase;
+            }
+            //Program.levelMap.Add(Program.area + ":" + Program.floor, this);
         }
     }
 }

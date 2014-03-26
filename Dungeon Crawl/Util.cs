@@ -11,6 +11,10 @@ namespace Dungeon_Crawl
         {
             return rand.Next(2) == 0;
         }
+        public static bool chooseBound(this Random rand)
+        {
+            return rand.Next(100) < 10;
+        }
     }
     public class Util
     {
