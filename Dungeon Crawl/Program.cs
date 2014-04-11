@@ -197,120 +197,120 @@ namespace Dungeon_Crawl
                         }
                     }
                 }
-                ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
-                ConsoleEx.DrawRectangle(BorderStyle.Text, 27, 0, 26, 40, false);
-                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 27, 26, 13, false);
-                Console.SetCursorPosition(2, 27);
-                Console.WriteLine("Turn " + currTurn);
-                Console.SetCursorPosition(2, 0);
-                Console.Write(area + ":" + floor + " (" + renderX + " ~ " + renderY + ")");
-                player.WriteRPGStats(28, 1);
-                if (player.status.statusEffects.Count > 0)
+            }
+            ConsoleEx.TextColor(ConsoleForeground.LightGray, ConsoleBackground.Black);
+            ConsoleEx.DrawRectangle(BorderStyle.Text, 27, 0, 26, 40, false);
+            ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 27, 26, 13, false);
+            Console.SetCursorPosition(2, 27);
+            Console.WriteLine("Turn " + currTurn);
+            Console.SetCursorPosition(2, 0);
+            Console.Write(area + ":" + floor + " (" + renderX + " ~ " + renderY + ")");
+            player.WriteRPGStats(28, 1);
+            if (player.status.statusEffects.Count > 0)
+            {
+                ConsoleEx.DrawRectangle(BorderStyle.Text, 54, 0, 35, player.status.statusEffects.Count + 1, false);
+                player.status.drawStatus(55, 1);
+            }
+            if (!showAbilities)
+            {
+                for (int x = 0; x < player.inventory.Length; x++)
                 {
-                    ConsoleEx.DrawRectangle(BorderStyle.Text, 54, 0, 35, player.status.statusEffects.Count + 1, false);
-                    player.status.drawStatus(55, 1);
-                }
-                if (!showAbilities)
-                {
-                    for (int x = 0; x < player.inventory.Length; x++)
+                    if (player.inventoryStacks[x] > 0)
                     {
-                        if (player.inventoryStacks[x] > 0)
+                        string s = player.inventoryStacks[x] + " " + player.inventory[x].name;
+                        if (Program.selectedSlot == x)
                         {
-                            string s = player.inventoryStacks[x] + " " + player.inventory[x].name;
-                            if (Program.selectedSlot == x)
-                            {
-                                s = "> " + s;
-                            }
-                            if (player.inventoryEquip[x] || player.inventory[x].equipped)
-                            {
-                                s = s + " (Equipped)";
-                            }
-                            if (player.inventory[x].bound && player.inventory[x].discoveredBound)
-                            {
-                                s = s + " (Bound)";
-                            }
-                            if (player.status.statusEffects.Count > 0)
-                            {
-                                Util.writeLn(s, 91, 1 + x);
-                            }
-                            else
-                            {
-                                Util.writeLn(s, 54, 1 + x);
-                            }
+                            s = "> " + s;
                         }
-                        else
+                        if (player.inventoryEquip[x] || player.inventory[x].equipped)
                         {
-                            string s = "Empty Slot";
-                            if (Program.selectedSlot == x)
-                            {
-                                s = "> " + s;
-                            }
-                            if (player.status.statusEffects.Count > 0)
-                            {
-                                Util.writeLn(s, 91, 1 + x);
-                            }
-                            else
-                            {
-                                Util.writeLn(s, 54, 1 + x);
-                            }
-                            player.inventory[x] = null;
-                            player.inventoryStacks[x] = 0;
-                            player.inventoryEquip[x] = false;
+                            s = s + " (Equipped)";
                         }
-                    }
-                }
-                else
-                {
-                    int iter = 0;
-                    foreach (Ability a in player.abilities)
-                    {
-                        string s = "";
-                        if (iter == Program.selectedSlot)
+                        if (player.inventory[x].bound && player.inventory[x].discoveredBound)
                         {
-                            s = "> ";
-                        }
-                        s += a.name;
-                        if (a.etherCost > 0)
-                        {
-                            s += "(costs " + a.etherCost + " ether";
-                            if (a.healthCost > 0)
-                            {
-                                s += " and " + a.healthCost + " health)";
-                            }
-                            else
-                            {
-                                s += ")";
-                            }
-                        }
-                        if (a.healthCost > 0 && a.etherCost <= 0)
-                        {
-                            s += "(costs " + a.healthCost + " health)";
+                            s = s + " (Bound)";
                         }
                         if (player.status.statusEffects.Count > 0)
                         {
-                            Util.writeLn(s, 91, 1 + iter);
+                            Util.writeLn(s, 91, 1 + x);
                         }
                         else
                         {
-                            Util.writeLn(s, 54, 1 + iter);
+                            Util.writeLn(s, 54, 1 + x);
                         }
-                        iter++;
+                    }
+                    else
+                    {
+                        string s = "Empty Slot";
+                        if (Program.selectedSlot == x)
+                        {
+                            s = "> " + s;
+                        }
+                        if (player.status.statusEffects.Count > 0)
+                        {
+                            Util.writeLn(s, 91, 1 + x);
+                        }
+                        else
+                        {
+                            Util.writeLn(s, 54, 1 + x);
+                        }
+                        player.inventory[x] = null;
+                        player.inventoryStacks[x] = 0;
+                        player.inventoryEquip[x] = false;
                     }
                 }
-                ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 41, 88, 6, false);
-                for (int x = 0; x < 5; x++)
-                {
-                    try
-                    {
-                        Util.writeLn(msgLog.ToArray()[msgLog.ToArray().Length - (1 + x)], 1, 42 + x);
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                }
-                player.status.update();
             }
+            else
+            {
+                int iter = 0;
+                foreach (Ability a in player.abilities)
+                {
+                    string s = "";
+                    if (iter == Program.selectedSlot)
+                    {
+                        s = "> ";
+                    }
+                    s += a.name;
+                    if (a.etherCost > 0)
+                    {
+                        s += "(costs " + a.etherCost + " ether";
+                        if (a.healthCost > 0)
+                        {
+                            s += " and " + a.healthCost + " health)";
+                        }
+                        else
+                        {
+                            s += ")";
+                        }
+                    }
+                    if (a.healthCost > 0 && a.etherCost <= 0)
+                    {
+                        s += "(costs " + a.healthCost + " health)";
+                    }
+                    if (player.status.statusEffects.Count > 0)
+                    {
+                        Util.writeLn(s, 91, 1 + iter);
+                    }
+                    else
+                    {
+                        Util.writeLn(s, 54, 1 + iter);
+                    }
+                    iter++;
+                }
+            }
+            ConsoleEx.DrawRectangle(BorderStyle.Text, 0, 41, 88, 6, false);
+            for (int x = 0; x < 5; x++)
+            {
+                try
+                {
+                    Util.writeLn(msgLog.ToArray()[msgLog.ToArray().Length - (1 + x)], 1, 42 + x);
+                }
+                catch
+                {
+                    break;
+                }
+            }
+            player.status.update();
         }
         public static void startGame()
         {
@@ -379,22 +379,31 @@ namespace Dungeon_Crawl
                                 World w = new World();
                                 w.genMap();
                                 levelMap.Add(Program.area + ":" + Program.floor, w);
+                                player.stats.xp += World.rand.Next(2, 6);
                             }
                             else
                             {
+                                world = null;
                                 world = levelMap[Program.area + ":" + Program.floor];
                             }
                             Mob.mobList.Clear();
-                            player.stats.xp += World.rand.Next(2, 6);
                         }
                         if (world.map[renderX, renderY] == Tile.upStairCase)
                         {
-                            if (Program.floor - 1 > 0)
+                            if (1 == 2)
                             {
-                                msgLog.Add("You climb to the previous floor...");
-                                Program.floor--;
-                                world = levelMap[Program.area + ":" + Program.floor];
-                                //player.stats.xp += World.rand.Next(2, 6);
+                                if (Program.floor - 1 > 0)
+                                {
+                                    msgLog.Add("You climb to the previous floor...");
+                                    Program.floor--;
+                                    world = null;
+                                    world = levelMap[Program.area + ":" + Program.floor];
+                                    //player.stats.xp += World.rand.Next(2, 6);
+                                }
+                            }
+                            else
+                            {
+                                msgLog.Add("You can't climb back up this way!");
                             }
                         }
                         if (world.gold[renderX, renderY] > 0)

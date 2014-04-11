@@ -63,10 +63,44 @@ namespace Dungeon_Crawl
             {
                 status.addStatus(new Status("Fast Metabolism", 1, true, ConsoleForeground.Maroon, ConsoleBackground.Black));
             }
+            if (species == Species._mountainDwarf)
+            {
+                abilities.Add(new Ability("Extract Gold", AbilityEffect.EXTRACTGOLD, 0, 0));
+            }
             //status.addStatus(new Status("Clairvoyance", 1, true, ConsoleForeground.Olive, ConsoleBackground.Black));
             equipment = new Equipment();
             abilities.Add(new Ability("Rest and Heal", AbilityEffect.RESTHEAL, 0, 0));
             //status.addStatus(new Status("Fly", 1, 2000, ConsoleForeground.Cyan, ConsoleBackground.Black));
+        }
+        /// <summary>
+        /// A function for calculating adjacent tiles
+        /// </summary>
+        /// <returns>Returns a grid of solid tiles adjacent to player (diagonally included)</returns>
+        public Tile[,] calcAdj()
+        {
+            Tile[,] adjTiles = new Tile[3, 3];
+            for (int x = 0; x < 3; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    try
+                    {
+                        if (Program.world.map[Program.renderX + (x - 1), Program.renderY + (y - 1)].solid)
+                        {
+                            adjTiles[x, y] = Program.world.map[Program.renderX + (x - 1), Program.renderY + (y - 1)];
+                        }
+                        else
+                        {
+                            adjTiles[x, y] = null;
+                        }
+                    }
+                    catch
+                    {
+                        adjTiles[x, y] = null;
+                    }
+                }
+            }
+            return adjTiles;
         }
 
         public void update()
@@ -230,22 +264,31 @@ namespace Dungeon_Crawl
             }
         }
 
-        public void addGold(int addGold)
+        public void addGold(int addGold, bool showText = true, bool applyBoosts = true)
         {
-            if (status.hasAttr("Loot") || species == Species._mountainDwarf)
+            if ((status.hasAttr("Loot") || species == Species._mountainDwarf) && applyBoosts)
             {
                 stats.gold += (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot"))));
-                Program.msgLog.Add("You found " + (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot")))) + " gold!");
+                if (showText)
+                {
+                    Program.msgLog.Add("You found " + (int)((float)addGold * (1.25f + (0.05f * status.getLvl("Loot")))) + " gold!");
+                }
             }
-            else if (status.hasAttr("Greed") || species == Species._trollGnome)
+            else if ((status.hasAttr("Greed") || species == Species._trollGnome) && applyBoosts)
             {
                 stats.gold += (int)((float)addGold * (0.9f - (0.05f * status.getLvl("Greed"))));
-                Program.msgLog.Add("You found " + (int)((float)addGold * (0.9f - (0.05f * status.getLvl("Greed")))) + " gold!");
+                if (showText)
+                {
+                    Program.msgLog.Add("You found " + (int)((float)addGold * (0.9f - (0.05f * status.getLvl("Greed")))) + " gold!");
+                }
             }
             else
             {
                stats.gold += addGold;
-               Program.msgLog.Add("You found " + addGold + " gold!");
+               if (showText)
+               {
+                   Program.msgLog.Add("You found " + addGold + " gold!");
+               }
             }
         }
 

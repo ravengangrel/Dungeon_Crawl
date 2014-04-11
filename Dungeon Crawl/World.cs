@@ -96,6 +96,7 @@ namespace Dungeon_Crawl
     {
         public Tile[,] map = new Tile[1000, 1000];
         public int[,] gold = new int[1000, 1000];
+        public bool[,] hasExtracted = new bool[1000, 1000];
         public ItemCache[,] items = new ItemCache[1000, 1000];
         public static Random rand = new Random();
         public Point suggestedExit;
@@ -134,6 +135,7 @@ namespace Dungeon_Crawl
                 {
                     map[x, y] = Tile.stoneWall;
                     gold[x, y] = 0;
+                    hasExtracted[x, y] = false;
                 }
             }
             int sX = rand.Next(250, 750);

@@ -8,7 +8,8 @@ namespace Dungeon_Crawl
     public enum AbilityEffect
     {
         RESTHEAL,
-        TOGGLEFLIGHT
+        TOGGLEFLIGHT,
+        EXTRACTGOLD
     }
     public class Ability
     {
@@ -49,6 +50,56 @@ namespace Dungeon_Crawl
                     else
                     {
                         p.status.addStatus(new Status("Fly", 1, true, ConsoleForeground.Cyan, ConsoleBackground.Black));
+                    }
+                }
+                if (effect == AbilityEffect.EXTRACTGOLD)
+                {
+                    Tile[,] adjTiles = p.calcAdj();
+                    Point selectedTile = new Point(World.rand.Next(3), World.rand.Next(3));
+                    int iter = 0;
+                    bool noSolid = false;
+                    for (int x = 0; x < 3; x++)
+                    {
+                        for (int y = 0; y < 3; y++)
+                        {
+                            if (adjTiles[x, y] == null)
+                            {
+                                noSolid = true;
+                            }
+                        }
+                    }
+                    if (!noSolid)
+                    {
+                        while ((Program.world.hasExtracted[Program.renderX + (selectedTile.X - 1), Program.renderY + (selectedTile.Y - 1)] || adjTiles[selectedTile.X, selectedTile.Y] == null) && iter <= 10000)
+                        {
+                            selectedTile = new Point(World.rand.Next(3), World.rand.Next(3));
+                            iter++;
+                        }
+                    }
+                    if (iter >= 10000 || adjTiles[selectedTile.X, selectedTile.Y] == null)
+                    {
+                        if (iter >= 10000)
+                        {
+                            Program.msgLog.Add("No luck! You couldn't extract any gold!");
+                        }
+                        else
+                        {
+                            Program.msgLog.Add("No luck! You couldn't extract any gold!");
+                        }
+                    }
+                    else
+                    {
+                        if (Program.world.hasExtracted[Program.renderX + (selectedTile.X - 1), Program.renderY + (selectedTile.Y - 1)])
+                        {
+                            Program.msgLog.Add("There's no gold left here...");
+                        }
+                        else
+                        {
+                            Program.world.hasExtracted[Program.renderX + (selectedTile.X - 1), Program.renderY + (selectedTile.Y - 1)] = true;
+                            int goldAmt = World.rand.Next(100) + 20;
+                            p.addGold(goldAmt, false, false);
+                            Program.msgLog.Add("You managed to extract " + goldAmt + " gold from the surrounding tile!");
+                        }
                     }
                 }
             }
